@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +22,7 @@
                     <label for="vote_options">의결 선지 (쉼표로 구분):</label>
                     <input type="text" id="vote_options" name="options" placeholder="찬성, 반대, 기권" required>
                 </div>
-                <button type="submit">투표 생성</button>
+                <button type="submit">의결 생성</button>
             </form>
         </div>
 
@@ -36,7 +36,7 @@
                         <h3>{{ vote.title }}</h3>
                         <div class="vote-status">
                             <span class="status-badge {{ 'active' if vote.is_active else 'ended' }}">
-                                {{ 'Active' if vote.is_active else 'Ended' }}
+                                {{ '진행중' if vote.is_active else '종료됨' }}
                             </span>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                             의결 삭제
                         </a>
                         {% else %}
-                        <a href="{{ url_for('end_vote', vote_id=vote.vote_id) }}" class="btn">End Vote</a>
+                        <a href="{{ url_for('end_vote', vote_id=vote.vote_id) }}" class="btn">표결 종료</a>
                         {% endif %}
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <label for="token_count">생성할 의결권의 수:</label>
                     <input type="number" id="token_count" name="count" min="1" required>
                 </div>
-                <button type="submit">Generate Tokens</button>
+                <button type="submit">의결권 생성</button>
             </form>
         </div>
 
