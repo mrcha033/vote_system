@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cast Your Vote - Voting System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Cast Your Vote</h1>
+        
+        <div class="section">
+            <form action="{{ url_for('submit_vote') }}" method="post">
+                <input type="hidden" name="token" value="{{ token }}">
+                
+                <div class="form-group">
+                    <label for="voter_name">Your Name:</label>
+                    <input type="text" id="voter_name" name="voter_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Vote:</label>
+                    <select name="vote_id" required>
+                        <option value="">-- Select a vote --</option>
+                        {% for vote in votes %}
+                        <option value="{{ vote.vote_id }}">{{ vote.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Choice:</label>
+                    <div class="vote-options">
+                        {% for vote in votes %}
+                        <div class="vote-option-group" data-vote-id="{{ vote.vote_id }}" style="display: none;">
+                            {% for option in vote.options.split(',') %}
+                            <div class="vote-option">
+                                <input type="radio" name="choice" value="{{ option }}" required>
+                                <label>{{ option }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit">Submit Vote</button>
+            </form>
+        </div>
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.querySelector('select[name="vote_id"]').addEventListener('change', function(e) {
+            const voteId = e.target.value;
+            document.querySelectorAll('.vote-option-group').forEach(group => {
+                group.style.display = group.dataset.voteId === voteId ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html> 
