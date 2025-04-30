@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, send_file, url_for, flash
+from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session
 import sqlite3
 import uuid
 import qrcode
@@ -6,9 +6,54 @@ import io
 from zipfile import ZipFile
 import os
 from datetime import datetime
+from functools import wraps
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+# 관리자 비밀번호 설정 (환경변수에서 가져오기)
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "changeme123")
+
+# 로그인 상태 체크 함수
+def is_logged_in():
+    return session.get('logged_in') is True
+
+# 로그인 필요 데코레이터
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not is_logged_in():
+            flash('관리자 로그인이 필요합니다.', 'error')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# 로그인 라우트
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if is_logged_in():
+        return redirect(url_for('admin_dashboard'))
+        
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if password == ADMIN_PASSWORD:
+            session['logged_in'] = True
+            flash('로그인 성공', 'success')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('비밀번호가 올바르지 않습니다.', 'error')
+    return render_template('login.html')
+
+# 로그아웃 라우트
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('로그아웃 되었습니다.', 'success')
+    return redirect(url_for('login'))
 
 DB_PATH = 'data.db'
 
@@ -52,9 +97,12 @@ def generate_qr_zip(tokens):
     memory_file = io.BytesIO()
     with ZipFile(memory_file, 'w') as zipf:
         for i, token in enumerate(tokens, 1):
-            # Generate QR code
+            # Generate voting URL with token
+            voting_url = url_for('vote', token=token, _external=True)
+            
+            # Generate QR code with the full URL
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
-            qr.add_data(token)
+            qr.add_data(voting_url)
             qr.make(fit=True)
             img = qr.make_image(fill_color="black", back_color="white")
             
@@ -70,17 +118,21 @@ def generate_qr_zip(tokens):
     return memory_file
 
 @app.route('/admin/generate_tokens', methods=['POST'])
+@login_required
 def generate_tokens():
     count = int(request.form['count'])
-    tokens = []
+    if count <= 0:
+        flash('생성할 토큰 수는 1 이상이어야 합니다.', 'error')
+        return redirect(url_for('admin_dashboard'))
     
+    tokens = []
     conn = get_db_connection()
     try:
         for _ in range(count):
             token = str(uuid.uuid4())
             conn.execute('''
-                INSERT INTO tokens (token)
-                VALUES (?)
+                INSERT INTO tokens (token, created_at)
+                VALUES (?, datetime('now'))
             ''', (token,))
             tokens.append(token)
         conn.commit()
@@ -94,13 +146,14 @@ def generate_tokens():
             download_name=f'voting_tokens_{datetime.now().strftime("%Y%m%d_%H%M%S")}.zip'
         )
     except sqlite3.Error as e:
-        flash(f'Error generating tokens: {str(e)}', 'error')
+        flash(f'토큰 생성 중 오류가 발생했습니다: {str(e)}', 'error')
         return redirect(url_for('admin_dashboard'))
     finally:
         conn.close()
 
 # 관리자: 투표 항목 생성
 @app.route('/admin/create_vote', methods=['POST'])
+@login_required
 def create_vote():
     title = request.form['title']
     options = request.form['options']
@@ -175,6 +228,7 @@ def vote_status():
 
 # 관리자: 대시보드
 @app.route('/admin')
+@login_required
 def admin_dashboard():
     conn = get_db_connection()
     try:
@@ -243,20 +297,39 @@ def admin_dashboard():
 @app.route('/vote')
 def vote():
     token = request.args.get('token')
-    vote_id = request.args.get('vote_id')
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM tokens WHERE token = ?", (token,))
-        if not cur.fetchone():
-            return "잘못된 토큰입니다.", 403
-        cur.execute("SELECT * FROM vote_items WHERE vote_id = ?", (vote_id,))
-        vote_info = cur.fetchone()
-        if not vote_info:
-            return "존재하지 않는 투표입니다.", 404
-        cur.execute("SELECT * FROM votes WHERE token = ? AND vote_id = ?", (token, vote_id))
-        if cur.fetchone():
-            return "이미 투표하셨습니다.", 403
-    return render_template("vote.html", vote_id=vote_id, token=token, title=vote_info[1])
+    if not token:
+        return "토큰이 필요합니다.", 400
+    
+    conn = get_db_connection()
+    try:
+        # Check if token exists and is valid
+        token_data = conn.execute('''
+            SELECT id, is_used 
+            FROM tokens 
+            WHERE token = ?
+        ''', (token,)).fetchone()
+        
+        if not token_data:
+            return "유효하지 않은 토큰입니다.", 403
+        
+        if token_data['is_used']:
+            return "이미 사용된 토큰입니다.", 403
+        
+        # Get active votes
+        active_votes = conn.execute('''
+            SELECT vote_id, title, options 
+            FROM vote_items 
+            WHERE is_active = 1
+        ''').fetchall()
+        
+        if not active_votes:
+            return "현재 진행 중인 투표가 없습니다.", 404
+        
+        return render_template('vote.html', 
+                             token=token,
+                             votes=active_votes)
+    finally:
+        conn.close()
 
 # 사용자: 투표 제출
 @app.route('/submit_vote', methods=['POST'])
@@ -264,15 +337,43 @@ def submit_vote():
     token = request.form['token']
     vote_id = request.form['vote_id']
     choice = request.form['choice']
-    with sqlite3.connect(DB_PATH) as conn:
-        try:
-            conn.execute("INSERT INTO votes (vote_id, token, choice) VALUES (?, ?, ?)", (vote_id, token, choice))
-            conn.commit()
-        except sqlite3.IntegrityError:
-            return "이미 투표하셨습니다.", 403
-    return "투표가 완료되었습니다. 감사합니다."
+    voter_name = request.form.get('voter_name', '')
+    
+    conn = get_db_connection()
+    try:
+        # Get and validate token
+        token_row = conn.execute('''
+            SELECT id 
+            FROM tokens 
+            WHERE token = ? AND is_used = 0
+        ''', (token,)).fetchone()
+        
+        if not token_row:
+            return "유효하지 않거나 이미 사용된 토큰입니다.", 403
+        
+        token_id = token_row['id']
+        
+        # Insert vote and mark token as used
+        conn.execute('''
+            INSERT INTO votes (vote_id, token_id, choice, voter_name)
+            VALUES (?, ?, ?, ?)
+        ''', (vote_id, token_id, choice, voter_name))
+        
+        conn.execute('''
+            UPDATE tokens 
+            SET is_used = 1 
+            WHERE id = ?
+        ''', (token_id,))
+        
+        conn.commit()
+        return "투표가 완료되었습니다. 감사합니다."
+    except sqlite3.IntegrityError:
+        return "이미 투표하셨습니다.", 403
+    finally:
+        conn.close()
 
 @app.route('/admin/start_vote/<vote_id>')
+@login_required
 def start_vote(vote_id):
     conn = get_db_connection()
     try:
@@ -290,9 +391,11 @@ def start_vote(vote_id):
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/end_vote/<vote_id>')
+@login_required
 def end_vote(vote_id):
     conn = get_db_connection()
     try:
+        # End the vote
         conn.execute('''
             UPDATE vote_items 
             SET is_active = 0 
@@ -302,6 +405,39 @@ def end_vote(vote_id):
         flash('Vote ended successfully!', 'success')
     except sqlite3.Error as e:
         flash(f'Error ending vote: {str(e)}', 'error')
+    finally:
+        conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/cleanup_vote/<vote_id>')
+@login_required
+def cleanup_vote(vote_id):
+    conn = get_db_connection()
+    try:
+        # Get all tokens used in this vote
+        used_tokens = conn.execute('''
+            SELECT DISTINCT token_id 
+            FROM votes 
+            WHERE vote_id = ?
+        ''', (vote_id,)).fetchall()
+        
+        # Delete used tokens
+        for token in used_tokens:
+            conn.execute('''
+                DELETE FROM tokens 
+                WHERE id = ?
+            ''', (token['token_id'],))
+        
+        # Delete the vote item
+        conn.execute('''
+            DELETE FROM vote_items 
+            WHERE vote_id = ?
+        ''', (vote_id,))
+        
+        conn.commit()
+        flash('Vote and related tokens cleaned up successfully!', 'success')
+    except sqlite3.Error as e:
+        flash(f'Error cleaning up vote: {str(e)}', 'error')
     finally:
         conn.close()
     return redirect(url_for('admin_dashboard'))

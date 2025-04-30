@@ -60,9 +60,13 @@
                     </div>
 
                     <div class="vote-controls">
-                        <a href="{{ url_for('vote_status', vote_id=vote.vote_id) }}" class="btn">View Details</a>
+                        <a href="{{ url_for('vote_status', vote_id=vote.vote_id) }}" class="btn">상세 보기</a>
                         {% if not vote.is_active %}
-                        <a href="{{ url_for('start_vote', vote_id=vote.vote_id) }}" class="btn">Start Vote</a>
+                        <a href="{{ url_for('start_vote', vote_id=vote.vote_id) }}" class="btn">표결 시작</a>
+                        <a href="{{ url_for('cleanup_vote', vote_id=vote.vote_id) }}" class="btn btn-danger" 
+                           onclick="return confirm('이 표결과 관련 의결권을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')">
+                            의결 삭제
+                        </a>
                         {% else %}
                         <a href="{{ url_for('end_vote', vote_id=vote.vote_id) }}" class="btn">End Vote</a>
                         {% endif %}
