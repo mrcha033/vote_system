@@ -442,6 +442,22 @@ def cleanup_vote(vote_id):
         conn.close()
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/admin/delete_tokens', methods=['POST'])
+@login_required
+def delete_tokens():
+    conn = get_db_connection()
+    try:
+        # 사용되지 않은 모든 토큰 삭제
+        conn.execute('DELETE FROM tokens WHERE is_used = 0')
+        conn.commit()
+        flash('미사용 의결권이 모두 삭제되었습니다.', 'success')
+    except Exception as e:
+        conn.rollback()
+        flash('의결권 삭제 중 오류가 발생했습니다.', 'error')
+    finally:
+        conn.close()
+    return redirect(url_for('admin_dashboard'))
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)

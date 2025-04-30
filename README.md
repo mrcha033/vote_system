@@ -129,6 +129,27 @@ fly secrets set ADMIN_PASSWORD="your_secure_password"
 fly deploy
 ```
 
+### 도메인 설정 (선택사항)
+1. 도메인 추가
+```bash
+fly domains add your-domain.com
+```
+
+2. DNS 설정
+- 도메인 공급자의 DNS 설정에서 다음 레코드 추가:
+  - A 레코드: `@` → Fly.io IP
+  - CNAME 레코드: `www` → your-app.fly.dev
+
+3. SSL 인증서 발급
+```bash
+fly certs create your-domain.com
+```
+
+4. 인증서 상태 확인
+```bash
+fly certs show your-domain.com
+```
+
 ## 라이선스
 
 MIT License 

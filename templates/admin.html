@@ -63,10 +63,6 @@
                         <a href="{{ url_for('vote_status', vote_id=vote.vote_id) }}" class="btn">상세 보기</a>
                         {% if not vote.is_active %}
                         <a href="{{ url_for('start_vote', vote_id=vote.vote_id) }}" class="btn">표결 시작</a>
-                        <a href="{{ url_for('cleanup_vote', vote_id=vote.vote_id) }}" class="btn btn-danger" 
-                           onclick="return confirm('이 표결과 관련 의결권을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')">
-                            의결 삭제
-                        </a>
                         {% else %}
                         <a href="{{ url_for('end_vote', vote_id=vote.vote_id) }}" class="btn">표결 종료</a>
                         {% endif %}
@@ -76,16 +72,54 @@
             </div>
         </div>
 
-        <!-- Generate Tokens Section -->
+        <!-- Token Management Section -->
         <div class="section">
-            <h2>의결권 생성</h2>
-            <form action="{{ url_for('generate_tokens') }}" method="post">
-                <div class="form-group">
-                    <label for="token_count">생성할 의결권의 수:</label>
-                    <input type="number" id="token_count" name="count" min="1" required>
+            <h2>의결권 관리</h2>
+            
+            <!-- Generate Tokens -->
+            <div class="subsection">
+                <h3>의결권 생성</h3>
+                <form action="{{ url_for('generate_tokens') }}" method="post">
+                    <div class="form-group">
+                        <label for="token_count">생성할 의결권의 수:</label>
+                        <input type="number" id="token_count" name="count" min="1" required>
+                    </div>
+                    <button type="submit">의결권 생성</button>
+                </form>
+            </div>
+
+            <!-- Delete Vote and Tokens -->
+            <div class="subsection">
+                <h3>의결 및 의결권 삭제</h3>
+                <div class="delete-section">
+                    <!-- Delete Unused Tokens -->
+                    <div class="delete-item">
+                        <span class="delete-title">미사용 의결권 삭제</span>
+                        <form action="{{ url_for('delete_tokens') }}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" 
+                                    onclick="return confirm('사용되지 않은 모든 의결권을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')">
+                                의결권 삭제
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Delete Votes -->
+                    <div class="delete-votes">
+                        <h4>의결 삭제</h4>
+                        {% for vote in votes %}
+                        {% if not vote.is_active %}
+                        <div class="delete-item">
+                            <span class="delete-title">{{ vote.title }}</span>
+                            <a href="{{ url_for('cleanup_vote', vote_id=vote.vote_id) }}" class="btn btn-danger" 
+                               onclick="return confirm('이 표결과 관련 의결권을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')">
+                                의결 삭제
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
-                <button type="submit">의결권 생성</button>
-            </form>
+            </div>
         </div>
 
         <!-- Voting Statistics Section -->
