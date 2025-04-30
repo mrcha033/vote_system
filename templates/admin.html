@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting System - Admin Dashboard</title>
+    <title>의결 시스템 - 관리자 대시보드</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Admin Dashboard</h1>
+        <h1>관리자 대시보드</h1>
         
         <!-- Create New Vote Item Section -->
         <div class="section">
-            <h2>Create New Vote Item</h2>
+            <h2>새로운 의결 만들기</h2>
             <form action="{{ url_for('create_vote') }}" method="post">
                 <div class="form-group">
-                    <label for="vote_title">Vote Title:</label>
-                    <input type="text" id="vote_title" name="title" placeholder="Enter vote title" required>
+                    <label for="vote_title">표결명:</label>
+                    <input type="text" id="vote_title" name="title" placeholder="표결명을 입력하세요" required>
                 </div>
                 <div class="form-group">
-                    <label for="vote_options">Vote Options (comma-separated):</label>
-                    <input type="text" id="vote_options" name="options" placeholder="Option 1, Option 2, Option 3" required>
+                    <label for="vote_options">의결 선지 (쉼표로 구분):</label>
+                    <input type="text" id="vote_options" name="options" placeholder="찬성, 반대, 기권" required>
                 </div>
-                <button type="submit">Create Vote</button>
+                <button type="submit">투표 생성</button>
             </form>
         </div>
 
         <!-- Vote Item List Section -->
         <div class="section">
-            <h2>Vote Item List</h2>
+            <h2>의결 목록</h2>
             <div class="vote-list">
                 {% for vote in votes %}
                 <div class="vote-item">
@@ -40,12 +40,31 @@
                             </span>
                         </div>
                     </div>
-                    <div class="vote-controls">
-                        <a href="{{ url_for('vote_status', vote_id=vote.id) }}" class="btn">View Status</a>
-                        {% if not vote.is_active %}
-                        <a href="{{ url_for('start_vote', vote_id=vote.id) }}" class="btn">Start Vote</a>
+                    
+                    <!-- Vote Results Summary -->
+                    {% set vote_result = results[vote.vote_id] %}
+                    <div class="vote-results-summary">
+                        <h4>현황:</h4>
+                        {% if vote_result %}
+                        <div class="results-summary">
+                            {% for option, count in vote_result.items() %}
+                            <div class="result-summary-item">
+                                <span class="option">{{ option }}:</span>
+                                <span class="count">{{ count }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
                         {% else %}
-                        <a href="{{ url_for('end_vote', vote_id=vote.id) }}" class="btn">End Vote</a>
+                        <p class="no-votes">아직 의결이 없습니다.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="vote-controls">
+                        <a href="{{ url_for('vote_status', vote_id=vote.vote_id) }}" class="btn">View Details</a>
+                        {% if not vote.is_active %}
+                        <a href="{{ url_for('start_vote', vote_id=vote.vote_id) }}" class="btn">Start Vote</a>
+                        {% else %}
+                        <a href="{{ url_for('end_vote', vote_id=vote.vote_id) }}" class="btn">End Vote</a>
                         {% endif %}
                     </div>
                 </div>
@@ -55,10 +74,10 @@
 
         <!-- Generate Tokens Section -->
         <div class="section">
-            <h2>Generate Voting Tokens</h2>
+            <h2>의결권 생성</h2>
             <form action="{{ url_for('generate_tokens') }}" method="post">
                 <div class="form-group">
-                    <label for="token_count">Number of tokens to generate:</label>
+                    <label for="token_count">생성할 의결권의 수:</label>
                     <input type="number" id="token_count" name="count" min="1" required>
                 </div>
                 <button type="submit">Generate Tokens</button>
@@ -67,33 +86,24 @@
 
         <!-- Voting Statistics Section -->
         <div class="section">
-            <h2>Voting Statistics</h2>
+            <h2>의결 통계</h2>
             <div class="stats">
                 <div class="stat-item">
-                    <span class="stat-label">Total Votes:</span>
+                    <span class="stat-label">총 표결:</span>
                     <span class="stat-value">{{ total_votes }}</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Active Tokens:</span>
+                    <span class="stat-label">활성 표결:</span>
+                    <span class="stat-value">{{ active_vote_count }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">활성 의결권:</span>
                     <span class="stat-value">{{ active_tokens }}</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Used Tokens:</span>
+                    <span class="stat-label">사용된 의결권:</span>
                     <span class="stat-value">{{ used_tokens }}</span>
                 </div>
-            </div>
-        </div>
-
-        <!-- Vote Results Section -->
-        <div class="section">
-            <h2>Vote Results</h2>
-            <div class="results">
-                {% for option, count in results.items() %}
-                <div class="result-item">
-                    <span class="option">{{ option }}:</span>
-                    <span class="count">{{ count }}</span>
-                </div>
-                {% endfor %}
             </div>
         </div>
     </div>

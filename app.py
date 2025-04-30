@@ -103,30 +103,141 @@ def generate_tokens():
 @app.route('/admin/create_vote', methods=['POST'])
 def create_vote():
     title = request.form['title']
+    options = request.form['options']
     vote_id = str(uuid.uuid4())
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("INSERT INTO vote_items (vote_id, title) VALUES (?, ?)", (vote_id, title))
+
+    # Validate options
+    if not options.strip():
+        flash('Options cannot be empty.', 'error')
+        return redirect(url_for('admin_dashboard'))
+
+    conn = get_db_connection()
+    try:
+        conn.execute('''
+            INSERT INTO vote_items (vote_id, title, options)
+            VALUES (?, ?, ?)
+        ''', (vote_id, title, options))
         conn.commit()
-    return redirect('/admin')
+        flash('Vote item created successfully!', 'success')
+    except sqlite3.Error as e:
+        flash(f'Error creating vote item: {str(e)}', 'error')
+    finally:
+        conn.close()
+
+    return redirect(url_for('admin_dashboard'))
 
 # 관리자: 현황 페이지
 @app.route('/admin/status')
 def vote_status():
     vote_id = request.args.get('vote_id')
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT choice, COUNT(*) FROM votes WHERE vote_id = ? GROUP BY choice", (vote_id,))
-        results = cur.fetchall()
-    return render_template("status.html", results=results, vote_id=vote_id)
+    if not vote_id:
+        flash('Vote ID is required', 'error')
+        return redirect(url_for('admin_dashboard'))
+    
+    conn = get_db_connection()
+    try:
+        # Get vote details
+        vote = conn.execute('''
+            SELECT * FROM vote_items 
+            WHERE vote_id = ?
+        ''', (vote_id,)).fetchone()
+        
+        if not vote:
+            flash('Vote not found', 'error')
+            return redirect(url_for('admin_dashboard'))
+        
+        # Get vote results
+        results = conn.execute('''
+            SELECT choice, COUNT(*) as count 
+            FROM votes 
+            WHERE vote_id = ? 
+            GROUP BY choice
+        ''', (vote_id,)).fetchall()
+        
+        # Get recent votes
+        recent_votes = conn.execute('''
+            SELECT voter_name, choice, timestamp 
+            FROM votes 
+            WHERE vote_id = ? 
+            ORDER BY timestamp DESC 
+            LIMIT 10
+        ''', (vote_id,)).fetchall()
+        
+        total_votes = sum(row['count'] for row in results)
+        
+        return render_template('status.html',
+                             vote=vote,
+                             results={row['choice']: row['count'] for row in results},
+                             recent_votes=recent_votes,
+                             total_votes=total_votes)
+    finally:
+        conn.close()
 
 # 관리자: 대시보드
 @app.route('/admin')
-def admin():
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT vote_id, title FROM vote_items ORDER BY created_at DESC")
-        votes = cur.fetchall()
-    return render_template("admin.html", votes=votes)
+def admin_dashboard():
+    conn = get_db_connection()
+    try:
+        # Get all vote items with their results in a single query
+        votes = conn.execute('''
+            SELECT 
+                vi.vote_id,
+                vi.title,
+                vi.options,
+                vi.is_active,
+                vi.created_at,
+                v.choice,
+                COUNT(v.choice) as vote_count
+            FROM vote_items vi
+            LEFT JOIN votes v ON vi.vote_id = v.vote_id
+            GROUP BY vi.vote_id, v.choice
+            ORDER BY vi.created_at DESC
+        ''').fetchall()
+        
+        # Get statistics
+        total_votes = conn.execute('SELECT COUNT(*) FROM votes').fetchone()[0]
+        all_tokens = conn.execute('SELECT COUNT(*) FROM tokens').fetchone()[0]
+        used_tokens = conn.execute('''
+            SELECT COUNT(DISTINCT token_id) FROM votes
+        ''').fetchone()[0]
+        active_tokens = all_tokens - used_tokens
+
+        # Process results into nested dictionary
+        results = {}
+        current_vote = None
+        for row in votes:
+            if row['vote_id'] != current_vote:
+                current_vote = row['vote_id']
+                results[current_vote] = {}
+            if row['choice']:  # Only add if there are votes
+                results[current_vote][row['choice']] = row['vote_count']
+
+        # Get unique vote items for template
+        vote_items = []
+        seen_votes = set()
+        active_vote_count = 0
+        for row in votes:
+            if row['vote_id'] not in seen_votes:
+                seen_votes.add(row['vote_id'])
+                vote_items.append({
+                    'vote_id': row['vote_id'],
+                    'title': row['title'],
+                    'options': row['options'],
+                    'is_active': row['is_active'],
+                    'created_at': row['created_at']
+                })
+                if row['is_active']:
+                    active_vote_count += 1
+
+        return render_template('admin.html',
+                             votes=vote_items,
+                             total_votes=total_votes,
+                             used_tokens=used_tokens,
+                             active_tokens=active_tokens,
+                             active_vote_count=active_vote_count,
+                             results=results)
+    finally:
+        conn.close()
 
 # 사용자: 투표 접속
 @app.route('/vote')
@@ -160,6 +271,40 @@ def submit_vote():
         except sqlite3.IntegrityError:
             return "이미 투표하셨습니다.", 403
     return "투표가 완료되었습니다. 감사합니다."
+
+@app.route('/admin/start_vote/<vote_id>')
+def start_vote(vote_id):
+    conn = get_db_connection()
+    try:
+        conn.execute('''
+            UPDATE vote_items 
+            SET is_active = 1 
+            WHERE vote_id = ?
+        ''', (vote_id,))
+        conn.commit()
+        flash('Vote started successfully!', 'success')
+    except sqlite3.Error as e:
+        flash(f'Error starting vote: {str(e)}', 'error')
+    finally:
+        conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/end_vote/<vote_id>')
+def end_vote(vote_id):
+    conn = get_db_connection()
+    try:
+        conn.execute('''
+            UPDATE vote_items 
+            SET is_active = 0 
+            WHERE vote_id = ?
+        ''', (vote_id,))
+        conn.commit()
+        flash('Vote ended successfully!', 'success')
+    except sqlite3.Error as e:
+        flash(f'Error ending vote: {str(e)}', 'error')
+    finally:
+        conn.close()
+    return redirect(url_for('admin_dashboard'))
 
 if __name__ == '__main__':
     init_db()
