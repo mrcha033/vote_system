@@ -1,28 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cast Your Vote - Voting System</title>
+    <title>의결 참여 - 의결 시스템</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Cast Your Vote</h1>
-        
+        <h1>의결 참여</h1>
+
+        {% if votes %}
         <div class="section">
             <form action="{{ url_for('submit_vote') }}" method="post">
                 <input type="hidden" name="token" value="{{ token }}">
-                
-                <div class="form-group">
-                    <label for="voter_name">Your Name:</label>
-                    <input type="text" id="voter_name" name="voter_name" required>
-                </div>
 
                 <div class="form-group">
-                    <label>Select Vote:</label>
+                    <label>의결 선택:</label>
                     <select name="vote_id" required>
-                        <option value="">-- Select a vote --</option>
+                        <option value="">-- 의결 항목 선택 --</option>
                         {% for vote in votes %}
                         <option value="{{ vote.vote_id }}">{{ vote.title }}</option>
                         {% endfor %}
@@ -30,7 +26,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Your Choice:</label>
+                    <label>선택지:</label>
                     <div class="vote-options">
                         {% for vote in votes %}
                         <div class="vote-option-group" data-vote-id="{{ vote.vote_id }}" style="display: none;">
@@ -45,9 +41,14 @@
                     </div>
                 </div>
 
-                <button type="submit">Submit Vote</button>
+                <button type="submit">투표 제출</button>
             </form>
         </div>
+        {% else %}
+        <div class="section empty-message">
+            현재 진행 중인 투표가 없습니다.
+        </div>
+        {% endif %}
 
         {% if error %}
         <div class="error-message">
@@ -65,4 +66,4 @@
         });
     </script>
 </body>
-</html> 
+</html>

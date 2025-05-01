@@ -12,15 +12,30 @@ import socket
 import ipaddress
 import netifaces
 import csv
+import sys
 
 # Load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)
+def resource_path(relative_path):
+    """PyInstaller 환경에서 리소스 경로를 정확히 가져오기 위한 함수"""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
+template_dir = resource_path("templates")
+static_dir = resource_path("static")
+
+if getattr(sys, 'frozen', False):
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.abspath(".")
+
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+app.secret_key = os.environ.get("SECRET_KEY", "fallback_secure_key")
 
 # 관리자 비밀번호 설정 (환경변수에서 가져오기)
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "changeme123")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "chairperson113@")
 
 # 로그 디렉토리 생성
 LOG_DIR = 'log'
@@ -56,28 +71,34 @@ def calculate_network_range(ip, netmask):
 
 def get_local_ip():
     """현재 서버의 로컬 IP 주소를 가져옵니다."""
-    try:
-        ip, _ = get_network_info()
-        if ip:
-            return ip
-        # fallback: 소켓을 생성하여 외부 서버에 연결 시도
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        local_ip = s.getsockname()[0]
-        s.close()
-        return local_ip
-    except Exception:
-        return "127.0.0.1"  # 실패 시 localhost 반환
+
+    for iface in netifaces.interfaces():
+        addrs = netifaces.ifaddresses(iface)
+        gws = netifaces.gateways()
+        default_iface = gws.get('default', {}).get(netifaces.AF_INET, [None])[1]
+
+        if iface != default_iface:
+            continue  # 기본 게이트웨이를 사용하는 인터페이스만 고려
+
+        if netifaces.AF_INET in addrs:
+            for entry in addrs[netifaces.AF_INET]:
+                ip = entry.get('addr')
+                if ip and (ip.startswith("192.168.") or ip.startswith("10.") or ip.startswith("172.")):
+                    return ip  # 적절한 사설 IP를 반환
+
+    return "127.0.0.1"  # fallback
+
 
 # 네트워크 정보 자동 감지
-ip, netmask = get_network_info()
-if ip and netmask:
-    ALLOWED_NETWORK = calculate_network_range(ip, netmask)
-    print(f"자동 감지된 네트워크: {ALLOWED_NETWORK}")
-else:
-    # 자동 감지 실패 시 환경변수나 기본값 사용
-    ALLOWED_NETWORK = os.environ.get("ALLOWED_NETWORK", "192.168.1.0/24")
-    print(f"네트워크 자동 감지 실패. 기본값 사용: {ALLOWED_NETWORK}")
+ALLOWED_NETWORK = os.environ.get("ALLOWED_NETWORK")
+if not ALLOWED_NETWORK:
+    ip, netmask = get_network_info()
+    if ip and netmask:
+        ALLOWED_NETWORK = calculate_network_range(ip, netmask)
+    else:
+        ALLOWED_NETWORK = "192.168.1.0/24"  # fallback
+print(f"허용된 네트워크: {ALLOWED_NETWORK}")
+
 
 def is_allowed_network(ip):
     """주어진 IP가 허용된 네트워크에 속하는지 확인합니다."""
@@ -91,9 +112,12 @@ def is_allowed_network(ip):
 def check_network_access():
     """네트워크 접근 권한을 확인합니다."""
     client_ip = request.remote_addr
+    print(f"접속한 클라이언트 IP: {client_ip}")
+    print(f"허용된 네트워크: {ALLOWED_NETWORK}")
     if not is_allowed_network(client_ip):
-        return False, f"허용되지 않은 네트워크입니다. 회의장 내부에서 접속해주세요. (허용 네트워크: {ALLOWED_NETWORK})"
+        return False, f"허용되지 않은 네트워크입니다. (클라이언트 IP: {client_ip}, 허용 네트워크: {ALLOWED_NETWORK})"
     return True, None
+
 
 # 로그인 상태 체크 함수
 def is_logged_in():
@@ -159,7 +183,6 @@ def init_db():
             token TEXT,
             choice TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            voter_name TEXT,
             UNIQUE(token, vote_id)
         )""")
         conn.commit()
@@ -194,6 +217,10 @@ def generate_qr_zip(tokens):
     
     memory_file.seek(0)
     return memory_file
+
+@app.route('/')
+def index():
+    return '서버가 실행중입니다', 200
 
 @app.route('/admin/generate_tokens', methods=['POST'])
 @login_required
@@ -287,7 +314,7 @@ def vote_status():
         
         # Get recent votes
         recent_votes = conn.execute('''
-            SELECT voter_name, choice, timestamp 
+            SELECT choice, timestamp 
             FROM votes 
             WHERE vote_id = ? 
             ORDER BY timestamp DESC 
@@ -330,7 +357,7 @@ def admin_dashboard():
         total_votes = conn.execute('SELECT COUNT(*) FROM votes').fetchone()[0]
         all_tokens = conn.execute('SELECT COUNT(*) FROM tokens').fetchone()[0]
         used_tokens = conn.execute('''
-            SELECT COUNT(DISTINCT token_id) FROM votes
+            SELECT COUNT(DISTINCT token) FROM votes
         ''').fetchone()[0]
         active_tokens = all_tokens - used_tokens
 
@@ -387,7 +414,7 @@ def vote():
     try:
         # Check if token exists and is valid
         token_data = conn.execute('''
-            SELECT id, is_used 
+            SELECT token, is_used 
             FROM tokens 
             WHERE token = ?
         ''', (token,)).fetchone()
@@ -406,7 +433,7 @@ def vote():
         ''').fetchall()
         
         if not active_votes:
-            return "현재 진행 중인 투표가 없습니다.", 404
+            return render_template('vote.html', token=token, votes=[], error=None)
         
         return render_template('vote.html', 
                              token=token,
@@ -414,7 +441,7 @@ def vote():
     finally:
         conn.close()
 
-def log_vote(vote_id, token, choice, voter_name):
+def log_vote(vote_id, token, choice):
     """투표 로그를 CSV 파일에 기록합니다."""
     log_file = os.path.join(LOG_DIR, f'votes_{datetime.now().strftime("%Y%m%d")}.csv')
     file_exists = os.path.exists(log_file)
@@ -422,13 +449,12 @@ def log_vote(vote_id, token, choice, voter_name):
     with open(log_file, 'a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         if not file_exists:
-            writer.writerow(['timestamp', 'vote_id', 'token', 'choice', 'voter_name'])
+            writer.writerow(['timestamp', 'vote_id', 'token', 'choice'])
         writer.writerow([
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             vote_id,
             token,
-            choice,
-            voter_name
+            choice
         ])
 
 # 사용자: 투표 제출
@@ -442,36 +468,33 @@ def submit_vote():
     token = request.form['token']
     vote_id = request.form['vote_id']
     choice = request.form['choice']
-    voter_name = request.form.get('voter_name', '')
-    
+
     conn = get_db_connection()
     try:
         # Get and validate token
         token_row = conn.execute('''
-            SELECT id 
+            SELECT token
             FROM tokens 
             WHERE token = ? AND is_used = 0
         ''', (token,)).fetchone()
         
         if not token_row:
             return "유효하지 않거나 이미 사용된 토큰입니다.", 403
-        
-        token_id = token_row['id']
-        
+                
         # Insert vote and mark token as used
         conn.execute('''
-            INSERT INTO votes (vote_id, token_id, choice, voter_name)
-            VALUES (?, ?, ?, ?)
-        ''', (vote_id, token_id, choice, voter_name))
+            INSERT INTO votes (vote_id, token, choice)
+            VALUES (?, ?, ?)
+        ''', (vote_id, token, choice))
         
         conn.execute('''
             UPDATE tokens 
             SET is_used = 1 
-            WHERE id = ?
-        ''', (token_id,))
+            WHERE token = ?
+        ''', (token,))
         
         conn.commit()
-        log_vote(vote_id, token, choice, voter_name)
+        log_vote(vote_id, token, choice)
         return "투표가 완료되었습니다. 감사합니다."
     except Exception as e:
         return f"투표 처리 중 오류가 발생했습니다: {str(e)}", 500
@@ -522,7 +545,7 @@ def cleanup_vote(vote_id):
     try:
         # Get all tokens used in this vote
         used_tokens = conn.execute('''
-            SELECT DISTINCT token_id 
+            SELECT DISTINCT token 
             FROM votes 
             WHERE vote_id = ?
         ''', (vote_id,)).fetchall()
@@ -532,7 +555,7 @@ def cleanup_vote(vote_id):
             conn.execute('''
                 DELETE FROM tokens 
                 WHERE id = ?
-            ''', (token['token_id'],))
+            ''', (token['token'],))
         
         # Delete the vote item
         conn.execute('''
@@ -587,9 +610,9 @@ def export_logs():
         flash(f'로그 내보내기 실패: {str(e)}', 'error')
         return redirect(url_for('admin_dashboard'))
 
-if __name__ == '__main__':
-    init_db()
-    local_ip = get_local_ip()
-    print(f"서버가 시작되었습니다. 로컬 IP: {local_ip}")
-    print(f"허용된 네트워크: {ALLOWED_NETWORK}")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    if not request.environ.get('werkzeug.server.shutdown'):
+        return 'Not running with the Werkzeug Server', 500
+    request.environ['werkzeug.server.shutdown']()
+    return 'Server shutting down...', 200

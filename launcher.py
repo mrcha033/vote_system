@@ -1,6 +1,5 @@
 import sys
 import os
-import subprocess
 import webbrowser
 import requests
 import json
@@ -11,43 +10,110 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                            QTabWidget)
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QFont, QIcon
+from flask import Flask
+from server import app as flask_app
+import threading
+import time
+import socket
+
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try: 
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    except Exception:
+        ip = "127.0.0.1"
+    finally:
+        s.close()
+    return ip
+
+def get_resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 class ServerThread(QThread):
     log_signal = pyqtSignal(str)
     error_signal = pyqtSignal(str)
+    server_ready = pyqtSignal()
     
     def __init__(self):
         super().__init__()
-        self.process = None
         self.is_running = False
-        
+
     def run(self):
         try:
             self.is_running = True
-            self.process = subprocess.Popen(
-                ["python", "app.py"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-                creationflags=subprocess.CREATE_NO_WINDOW
-            )
+            self.log_signal.emit("서버를 시작합니다...")
             
+            # Flask 서버 실행
+            if getattr(sys, 'frozen', False):
+                # 실행 파일 내부에서 실행
+                base_path = sys._MEIPASS
+                os.environ['FLASK_APP'] = os.path.join(base_path, 'server.py')
+                os.environ['FLASK_ENV'] = 'production'
+            else:
+                # 개발 환경에서 실행
+                os.environ['FLASK_APP'] = 'server.py'
+                os.environ['FLASK_ENV'] = 'development'
+            
+            # Flask 서버를 별도 스레드에서 실행
+            def run_flask():
+                try:
+                    flask_app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
+                except Exception as e:
+                    self.error_signal.emit(f"Flask 서버 오류: {str(e)}")
+            
+            flask_thread = threading.Thread(target=run_flask, daemon=True)
+            flask_thread.start()
+            
+            # 서버 시작 대기 및 상태 확인
+            start_time = time.time()
+            server_started = False
+            server_url = f"http://{get_local_ip()}:5000"
+            
+            while self.is_running and time.time() - start_time < 10:  # 10초 동안 대기
+                try:
+                    response = requests.get(server_url)
+                    if response.status_code == 200:
+                        server_started = True
+                        self.log_signal.emit("서버가 정상적으로 시작되었습니다.")
+                        self.server_ready.emit()
+                        break
+                except:
+                    pass
+                
+                time.sleep(0.1)
+            
+            if not server_started:
+                self.error_signal.emit("서버 시작 실패: 10초 내에 서버가 시작되지 않았습니다.")
+                self.stop()
+                return
+            
+            # 서버 실행 상태 유지
             while self.is_running:
-                output = self.process.stdout.readline()
-                if output:
-                    self.log_signal.emit(output.strip())
-                error = self.process.stderr.readline()
-                if error:
-                    self.error_signal.emit(error.strip())
+                time.sleep(0.1)
                     
         except Exception as e:
             self.error_signal.emit(f"서버 실행 오류: {str(e)}")
+            import traceback
+            self.error_signal.emit(f"상세 오류: {traceback.format_exc()}")
             
     def stop(self):
         self.is_running = False
-        if self.process:
-            self.process.terminate()
-            self.process.wait()
+        try:
+            # 서버 종료 요청
+            response = requests.post(f'http://{get_local_ip()}:5000/shutdown')
+            if response.status_code == 200:
+                self.log_signal.emit("서버가 종료되었습니다.")
+            else:
+                self.error_signal.emit("서버 종료 실패: 서버가 실행 중이지 않습니다.")
+        except Exception as e:
+            self.error_signal.emit(f"서버 종료 중 오류 발생: {str(e)}")
 
 class VoteLauncher(QMainWindow):
     def __init__(self):
@@ -74,6 +140,30 @@ class VoteLauncher(QMainWindow):
         # 서버 제어 그룹
         server_group = QGroupBox("서버 제어")
         server_group_layout = QVBoxLayout()
+        
+        # 관리자 비밀번호 설정
+        password_group = QGroupBox("관리자 비밀번호 설정")
+        password_layout = QVBoxLayout()
+        
+        # 현재 비밀번호 표시
+        self.current_password_label = QLabel("현재 비밀번호: ********")
+        password_layout.addWidget(self.current_password_label)
+        
+        # 새 비밀번호 입력
+        new_password_layout = QHBoxLayout()
+        new_password_layout.addWidget(QLabel("새 비밀번호:"))
+        self.new_password_input = QLineEdit()
+        self.new_password_input.setEchoMode(QLineEdit.Password)
+        new_password_layout.addWidget(self.new_password_input)
+        password_layout.addLayout(new_password_layout)
+        
+        # 비밀번호 변경 버튼
+        self.change_password_button = QPushButton("비밀번호 변경")
+        self.change_password_button.clicked.connect(self.change_password)
+        password_layout.addWidget(self.change_password_button)
+        
+        password_group.setLayout(password_layout)
+        server_group_layout.addWidget(password_group)
         
         # 서버 상태 표시
         self.status_label = QLabel("서버 상태: 중지됨")
@@ -143,20 +233,30 @@ class VoteLauncher(QMainWindow):
         
     def start_server(self):
         try:
+            if self.server_thread and self.server_thread.is_running:
+                QMessageBox.warning(self, "경고", "서버가 이미 실행 중입니다.")
+                return
+                
             self.server_thread = ServerThread()
             self.server_thread.log_signal.connect(self.log_message)
             self.server_thread.error_signal.connect(self.log_error)
+            self.server_thread.server_ready.connect(self.on_server_ready)
             self.server_thread.start()
             
-            self.status_label.setText("서버 상태: 실행 중")
+            self.status_label.setText("서버 상태: 시작 중...")
             self.start_button.setEnabled(False)
             self.stop_button.setEnabled(True)
-            self.admin_button.setEnabled(True)
-            self.log_message("서버가 시작되었습니다.")
+            self.admin_button.setEnabled(False)
+            self.log_message("서버를 시작합니다...")
             
         except Exception as e:
             QMessageBox.critical(self, "오류", f"서버 시작 실패: {str(e)}")
             
+    def on_server_ready(self):
+        self.status_label.setText("서버 상태: 실행 중")
+        self.admin_button.setEnabled(True)
+        self.log_message("서버가 준비되었습니다.")
+        
     def stop_server(self):
         if self.server_thread:
             self.server_thread.stop()
@@ -174,8 +274,9 @@ class VoteLauncher(QMainWindow):
                 QMessageBox.warning(self, "오류", "토큰 수는 숫자여야 합니다.")
                 return
                 
+            server_ip = get_local_ip()
             response = requests.post(
-                f"http://localhost:5000/admin/generate_tokens",
+                f"http://{server_ip}:5000/admin/generate_tokens",
                 data={"count": count},
                 headers={"Content-Type": "application/x-www-form-urlencoded"}
             )
@@ -200,7 +301,7 @@ class VoteLauncher(QMainWindow):
             QMessageBox.critical(self, "오류", f"QR 코드 생성 중 오류 발생: {str(e)}")
             
     def open_admin(self):
-        webbrowser.open("http://localhost:5000/admin")
+        webbrowser.open(f"http://{get_local_ip()}:5000/admin")
         
     def log_message(self, message):
         self.log_text.append(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
@@ -210,7 +311,7 @@ class VoteLauncher(QMainWindow):
         
     def export_logs(self):
         try:
-            response = requests.get("http://localhost:5000/admin/export_logs")
+            response = requests.get(f"http://{get_local_ip()}:5000/admin/export_logs")
             if response.status_code == 200:
                 # ZIP 파일 저장 위치 선택
                 file_path, _ = QFileDialog.getSaveFileName(
@@ -230,6 +331,37 @@ class VoteLauncher(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "오류", f"로그 내보내기 중 오류 발생: {str(e)}")
         
+    def change_password(self):
+        try:
+            new_password = self.new_password_input.text()
+            if not new_password:
+                QMessageBox.warning(self, "오류", "새 비밀번호를 입력하세요.")
+                return
+                
+            # .env 파일 경로 설정
+            if getattr(sys, 'frozen', False):
+                env_path = os.path.join(sys._MEIPASS, '.env')
+            else:
+                env_path = '.env'
+                
+            # .env 파일 읽기 및 수정
+            with open(env_path, 'r') as f:
+                lines = f.readlines()
+                
+            with open(env_path, 'w') as f:
+                for line in lines:
+                    if line.startswith('ADMIN_PASSWORD='):
+                        f.write(f'ADMIN_PASSWORD={new_password}\n')
+                    else:
+                        f.write(line)
+                        
+            self.new_password_input.clear()
+            QMessageBox.information(self, "성공", "비밀번호가 변경되었습니다.")
+            self.log_message("관리자 비밀번호가 변경되었습니다.")
+            
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"비밀번호 변경 실패: {str(e)}")
+        
     def closeEvent(self, event):
         if self.server_thread and self.server_thread.is_running:
             self.stop_server()
@@ -238,5 +370,15 @@ class VoteLauncher(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     launcher = VoteLauncher()
+    
+    # 아이콘 설정
+    try:
+        icon_path = get_resource_path('static/favicon.ico')
+        if os.path.exists(icon_path):
+            app.setWindowIcon(QIcon(icon_path))
+            launcher.setWindowIcon(QIcon(icon_path))
+    except Exception as e:
+        print(f"아이콘 로드 실패: {str(e)}")
+    
     launcher.show()
     sys.exit(app.exec_()) 

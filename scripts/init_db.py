@@ -34,8 +34,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS votes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             vote_id TEXT NOT NULL,
-            token_id INTEGER NOT NULL,
-            voter_name TEXT NOT NULL,
+            token INTEGER NOT NULL,
             choice TEXT NOT NULL,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (vote_id) REFERENCES vote_items (vote_id),
