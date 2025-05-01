@@ -8,6 +8,10 @@ import os
 from datetime import datetime
 from functools import wraps
 from dotenv import load_dotenv
+import socket
+import ipaddress
+import netifaces
+import csv
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,6 +21,79 @@ app.secret_key = os.urandom(24)
 
 # 관리자 비밀번호 설정 (환경변수에서 가져오기)
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "changeme123")
+
+# 로그 디렉토리 생성
+LOG_DIR = 'log'
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
+
+def get_network_info():
+    """현재 연결된 네트워크의 IP와 서브넷 마스크를 가져옵니다."""
+    try:
+        # 모든 네트워크 인터페이스 검사
+        for interface in netifaces.interfaces():
+            addrs = netifaces.ifaddresses(interface)
+            if netifaces.AF_INET in addrs:
+                for addr in addrs[netifaces.AF_INET]:
+                    if 'addr' in addr and 'netmask' in addr:
+                        ip = addr['addr']
+                        netmask = addr['netmask']
+                        # localhost나 특수 IP는 제외
+                        if not ip.startswith('127.') and not ip.startswith('169.254.'):
+                            return ip, netmask
+    except Exception as e:
+        print(f"네트워크 정보 가져오기 실패: {e}")
+    return None, None
+
+def calculate_network_range(ip, netmask):
+    """IP와 서브넷 마스크로부터 네트워크 대역을 계산합니다."""
+    try:
+        network = ipaddress.IPv4Network(f"{ip}/{netmask}", strict=False)
+        return str(network)
+    except Exception as e:
+        print(f"네트워크 대역 계산 실패: {e}")
+        return None
+
+def get_local_ip():
+    """현재 서버의 로컬 IP 주소를 가져옵니다."""
+    try:
+        ip, _ = get_network_info()
+        if ip:
+            return ip
+        # fallback: 소켓을 생성하여 외부 서버에 연결 시도
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+        return local_ip
+    except Exception:
+        return "127.0.0.1"  # 실패 시 localhost 반환
+
+# 네트워크 정보 자동 감지
+ip, netmask = get_network_info()
+if ip and netmask:
+    ALLOWED_NETWORK = calculate_network_range(ip, netmask)
+    print(f"자동 감지된 네트워크: {ALLOWED_NETWORK}")
+else:
+    # 자동 감지 실패 시 환경변수나 기본값 사용
+    ALLOWED_NETWORK = os.environ.get("ALLOWED_NETWORK", "192.168.1.0/24")
+    print(f"네트워크 자동 감지 실패. 기본값 사용: {ALLOWED_NETWORK}")
+
+def is_allowed_network(ip):
+    """주어진 IP가 허용된 네트워크에 속하는지 확인합니다."""
+    try:
+        client_ip = ipaddress.ip_address(ip)
+        network = ipaddress.ip_network(ALLOWED_NETWORK)
+        return client_ip in network
+    except ValueError:
+        return False
+
+def check_network_access():
+    """네트워크 접근 권한을 확인합니다."""
+    client_ip = request.remote_addr
+    if not is_allowed_network(client_ip):
+        return False, f"허용되지 않은 네트워크입니다. 회의장 내부에서 접속해주세요. (허용 네트워크: {ALLOWED_NETWORK})"
+    return True, None
 
 # 로그인 상태 체크 함수
 def is_logged_in():
@@ -94,11 +171,12 @@ def get_db_connection():
 
 def generate_qr_zip(tokens):
     """Generate a ZIP file containing QR codes for tokens"""
+    local_ip = get_local_ip()
     memory_file = io.BytesIO()
     with ZipFile(memory_file, 'w') as zipf:
         for i, token in enumerate(tokens, 1):
-            # Generate voting URL with token
-            voting_url = url_for('vote', token=token, _external=True)
+            # 로컬 IP 기반 URL 생성
+            voting_url = f"http://{local_ip}:5000/vote?token={token}"
             
             # Generate QR code with the full URL
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
@@ -300,6 +378,11 @@ def vote():
     if not token:
         return "토큰이 필요합니다.", 400
     
+    # 네트워크 접근 권한 확인
+    allowed, message = check_network_access()
+    if not allowed:
+        return message, 403
+    
     conn = get_db_connection()
     try:
         # Check if token exists and is valid
@@ -331,9 +414,31 @@ def vote():
     finally:
         conn.close()
 
+def log_vote(vote_id, token, choice, voter_name):
+    """투표 로그를 CSV 파일에 기록합니다."""
+    log_file = os.path.join(LOG_DIR, f'votes_{datetime.now().strftime("%Y%m%d")}.csv')
+    file_exists = os.path.exists(log_file)
+    
+    with open(log_file, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(['timestamp', 'vote_id', 'token', 'choice', 'voter_name'])
+        writer.writerow([
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            vote_id,
+            token,
+            choice,
+            voter_name
+        ])
+
 # 사용자: 투표 제출
 @app.route('/submit_vote', methods=['POST'])
 def submit_vote():
+    # 네트워크 접근 권한 확인
+    allowed, message = check_network_access()
+    if not allowed:
+        return message, 403
+    
     token = request.form['token']
     vote_id = request.form['vote_id']
     choice = request.form['choice']
@@ -366,9 +471,10 @@ def submit_vote():
         ''', (token_id,))
         
         conn.commit()
+        log_vote(vote_id, token, choice, voter_name)
         return "투표가 완료되었습니다. 감사합니다."
-    except sqlite3.IntegrityError:
-        return "이미 투표하셨습니다.", 403
+    except Exception as e:
+        return f"투표 처리 중 오류가 발생했습니다: {str(e)}", 500
     finally:
         conn.close()
 
@@ -458,6 +564,32 @@ def delete_tokens():
         conn.close()
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/admin/export_logs', methods=['GET'])
+@login_required
+def export_logs():
+    """로그 파일을 ZIP으로 압축하여 다운로드합니다."""
+    try:
+        memory_file = io.BytesIO()
+        with ZipFile(memory_file, 'w') as zipf:
+            for filename in os.listdir(LOG_DIR):
+                if filename.endswith('.csv'):
+                    file_path = os.path.join(LOG_DIR, filename)
+                    zipf.write(file_path, filename)
+        
+        memory_file.seek(0)
+        return send_file(
+            memory_file,
+            mimetype='application/zip',
+            as_attachment=True,
+            download_name=f'vote_logs_{datetime.now().strftime("%Y%m%d_%H%M%S")}.zip'
+        )
+    except Exception as e:
+        flash(f'로그 내보내기 실패: {str(e)}', 'error')
+        return redirect(url_for('admin_dashboard'))
+
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    local_ip = get_local_ip()
+    print(f"서버가 시작되었습니다. 로컬 IP: {local_ip}")
+    print(f"허용된 네트워크: {ALLOWED_NETWORK}")
+    app.run(host='0.0.0.0', port=5000, debug=True)

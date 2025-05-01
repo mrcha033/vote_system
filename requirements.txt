@@ -1,6 +1,10 @@
-Flask==3.0.0
-python-dotenv==1.0.0
+Flask==3.0.2
+python-dotenv==1.0.1
 qrcode==7.4.2
-Pillow==10.1.0
+Pillow==10.2.0
 Werkzeug==3.0.1
-gunicorn==21.2.0 
+gunicorn==21.2.0
+netifaces==0.11.0
+PyQt5==5.15.10
+requests==2.32.2
+pyinstaller==6.3.0
