@@ -2,8 +2,7 @@ name: Build macOS App
 
 on:
   push:
-    branches:
-      - main  # 또는 원하는 브랜치
+    branches: [main]
 
 jobs:
   build-macos:
@@ -20,16 +19,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
           pip install pyinstaller flask python-dotenv qrcode netifaces PyQt5
 
-      - name: Create database and env file
+      - name: Prepare environment
         run: |
-          python scripts/init_db.py  # 또는 init_database()를 포함한 별도 초기화 스크립트
+          mkdir -p log
+          python scripts/init_db.py
           echo "ADMIN_PASSWORD=changeme123" > .env
 
       - name: Build macOS App with PyInstaller
-        working-directory: vote_system  # ← launcher.py가 있는 폴더
+        working-directory: .
         run: |
           pyinstaller \
             --windowed \
@@ -49,4 +49,3 @@ jobs:
         with:
           name: vote_system-macOS
           path: dist/vote_system
-
