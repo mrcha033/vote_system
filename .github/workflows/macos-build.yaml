@@ -29,19 +29,20 @@ jobs:
           echo "ADMIN_PASSWORD=changeme123" > .env
 
       - name: Build macOS App with PyInstaller
+        working-directory: vote_system  # ← launcher.py가 있는 폴더
         run: |
           pyinstaller \
             --windowed \
             --onedir \
             --name vote_system \
-            --icon vote_system/static/favicon.icns \
-            --add-data "vote_system/static:static" \
-            --add-data "vote_system/templates:templates" \
-            --add-data "vote_system/.env:." \
-            --add-data "vote_system/data.db:." \
-            --add-data "vote_system/log:log" \
-            --add-data "vote_system/server.py:." \
-            vote_system/launcher.py
+            --icon static/favicon.icns \
+            --add-data "static:static" \
+            --add-data "templates:templates" \
+            --add-data ".env:." \
+            --add-data "data.db:." \
+            --add-data "log:log" \
+            --add-data "server.py:." \
+            launcher.py
 
       - name: Upload macOS App
         uses: actions/upload-artifact@v4
