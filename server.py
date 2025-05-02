@@ -43,19 +43,16 @@ if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
 def get_network_info():
-    """현재 연결된 네트워크의 IP와 서브넷 마스크를 가져옵니다."""
     try:
-        # 모든 네트워크 인터페이스 검사
-        for interface in netifaces.interfaces():
-            addrs = netifaces.ifaddresses(interface)
-            if netifaces.AF_INET in addrs:
-                for addr in addrs[netifaces.AF_INET]:
-                    if 'addr' in addr and 'netmask' in addr:
-                        ip = addr['addr']
-                        netmask = addr['netmask']
-                        # localhost나 특수 IP는 제외
-                        if not ip.startswith('127.') and not ip.startswith('169.254.'):
-                            return ip, netmask
+        gateways = netifaces.gateways()
+        default_iface = gateways.get('default', {}).get(netifaces.AF_INET, [None])[1]
+        if default_iface:
+            addrs = netifaces.ifaddresses(default_iface)
+            for addr in addrs.get(netifaces.AF_INET, []):
+                ip = addr.get('addr')
+                netmask = addr.get('netmask')
+                if ip and netmask:
+                    return ip, netmask
     except Exception as e:
         print(f"네트워크 정보 가져오기 실패: {e}")
     return None, None
