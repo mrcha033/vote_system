@@ -4,8 +4,6 @@ import shutil
 import sqlite3
 from datetime import datetime
 
-
-
 def init_database():
     """데이터베이스를 초기화합니다."""
     conn = sqlite3.connect('data.db')
@@ -35,13 +33,13 @@ def init_database():
     CREATE TABLE IF NOT EXISTS votes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         vote_id TEXT,
-        token_id INTEGER,
+        token TEXT UNIQUE,
         choice TEXT,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         voter_name TEXT,
         FOREIGN KEY (vote_id) REFERENCES vote_items (vote_id),
-        FOREIGN KEY (token_id) REFERENCES tokens (id),
-        UNIQUE(token_id, vote_id)
+        FOREIGN KEY (token) REFERENCES tokens(token),
+        UNIQUE(token, vote_id)
     )""")
     
     conn.commit()
@@ -80,7 +78,11 @@ def build_executable():
         # 이전 빌드 디렉토리 삭제
         if os.path.exists('build'):
             shutil.rmtree('build')
-            
+
+        if os.path.exists('data.db'):
+            os.remove('data.db')
+        init_database()
+
         # 이전 spec 파일 삭제
         if os.path.exists('vote_system.spec'):
             os.remove('vote_system.spec')
@@ -123,6 +125,7 @@ def build_executable():
         '--exclude-module=backports',  # backports 제외
         '--runtime-hook=runtime_hook.py',  # 런타임 훅 추가
         '--collect-data=python-dotenv',  # python-dotenv 데이터 포함
+        '--collect-submodules=scripts',
     ]
     
     try:

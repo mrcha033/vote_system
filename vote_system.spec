@@ -1,8 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_data_files
+from PyInstaller.utils.hooks import collect_submodules
 
 datas = [('static', 'static'), ('templates', 'templates'), ('.env', '.'), ('data.db', '.'), ('log', 'log'), ('server.py', '.')]
+hiddenimports = ['sqlite3', 'netifaces', 'requests', 'flask', 'flask_sqlalchemy', 'flask_login', 'werkzeug.security', 'jinja2', 'markupsafe', 'itsdangerous', 'click', 'PyQt5', 'PyQt5.QtCore', 'PyQt5.QtGui', 'PyQt5.QtWidgets']
 datas += collect_data_files('python-dotenv')
+hiddenimports += collect_submodules('scripts')
 
 
 a = Analysis(
@@ -10,7 +13,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=datas,
-    hiddenimports=['sqlite3', 'netifaces', 'requests', 'flask', 'flask_sqlalchemy', 'flask_login', 'werkzeug.security', 'jinja2', 'markupsafe', 'itsdangerous', 'click', 'PyQt5', 'PyQt5.QtCore', 'PyQt5.QtGui', 'PyQt5.QtWidgets'],
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=['runtime_hook.py'],

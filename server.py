@@ -88,7 +88,6 @@ def get_local_ip():
 
     return "127.0.0.1"  # fallback
 
-
 # 네트워크 정보 자동 감지
 ALLOWED_NETWORK = os.environ.get("ALLOWED_NETWORK")
 if not ALLOWED_NETWORK:
@@ -156,7 +155,10 @@ def logout():
     flash('로그아웃 되었습니다.', 'success')
     return redirect(url_for('login'))
 
-DB_PATH = 'data.db'
+if not os.path.exists('data.db'):
+    from scripts.init_db import init_db
+    init_db()
+DB_PATH = os.path.join(os.path.dirname(__file__), 'data.db')
 
 # DB 초기화
 def init_db():
