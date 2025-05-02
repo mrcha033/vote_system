@@ -100,7 +100,7 @@ def build_executable():
         '--name=vote_system',  # 실행 파일 이름
         '--add-data=static;static',  # 정적 파일 포함
         '--add-data=templates;templates',  # 템플릿 파일 포함
-        '--add-data=.env;.',  # 환경 변수 파일 포함
+        '--add-data=.env.template;.',  # 환경 변수 파일 포함
         '--add-data=data.db;.',  # 데이터베이스 파일 포함
         '--add-data=log;log',  # 로그 디렉토리 포함
         '--add-data=server.py;.',  # server.py 파일 포함

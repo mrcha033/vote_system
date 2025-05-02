@@ -13,9 +13,17 @@ import ipaddress
 import netifaces
 import csv
 import sys
+import logging
+
+log_path = os.path.join('log', 'server_runtime.log')
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(message)s',
+    handlers=[logging.FileHandler(log_path), logging.StreamHandler()]
+)
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(override=True)
 
 def resource_path(relative_path):
     """PyInstaller 환경에서 리소스 경로를 정확히 가져오기 위한 함수"""
@@ -42,19 +50,41 @@ LOG_DIR = 'log'
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
-def get_network_info():
+def is_private_ip(ip):
     try:
-        gateways = netifaces.gateways()
-        default_iface = gateways.get('default', {}).get(netifaces.AF_INET, [None])[1]
+        return ipaddress.ip_address(ip).is_private
+    except ValueError:
+        return False
+
+def get_network_info():
+    """기본 게이트웨이 인터페이스의 IP 및 넷마스크를 반환 (모든 인터페이스에서 시도)"""
+    try:
+        gws = netifaces.gateways()
+        default_iface = gws.get('default', {}).get(netifaces.AF_INET, [None])[1]
+
         if default_iface:
             addrs = netifaces.ifaddresses(default_iface)
-            for addr in addrs.get(netifaces.AF_INET, []):
-                ip = addr.get('addr')
-                netmask = addr.get('netmask')
-                if ip and netmask:
+            inet = addrs.get(netifaces.AF_INET)
+            if inet:
+                for addr in inet:
+                    ip = addr.get("addr")
+                    netmask = addr.get("netmask")
+                    if ip and netmask and ipaddress.ip_address(ip).is_private:
+                        return ip, netmask
+
+        # fallback: 모든 인터페이스 순회
+        for iface in netifaces.interfaces():
+            addrs = netifaces.ifaddresses(iface)
+            inet = addrs.get(netifaces.AF_INET)
+            if not inet:
+                continue
+            for addr in inet:
+                ip = addr.get("addr")
+                netmask = addr.get("netmask")
+                if ip and netmask and ipaddress.ip_address(ip).is_private:
                     return ip, netmask
     except Exception as e:
-        print(f"네트워크 정보 가져오기 실패: {e}")
+        print(f"[!] 네트워크 정보 가져오기 실패: {e}")
     return None, None
 
 def calculate_network_range(ip, netmask):
@@ -67,34 +97,27 @@ def calculate_network_range(ip, netmask):
         return None
 
 def get_local_ip():
-    """현재 서버의 로컬 IP 주소를 가져옵니다."""
+    """실제 유선/무선 인터페이스의 로컬 IP 주소를 가져옵니다."""
+    try:
+        for iface in netifaces.interfaces():
+            if "VirtualBox" in iface or "VMware" in iface or "vEthernet" in iface or "Loopback" in iface:
+                continue  # 가상 인터페이스 제외
+            addrs = netifaces.ifaddresses(iface)
+            if netifaces.AF_INET in addrs:
+                for entry in addrs[netifaces.AF_INET]:
+                    ip = entry.get('addr')
+                    if ip and ipaddress.ip_address(ip).is_private and not ip.startswith("192.168.56."):
+                        return ip
+    except:
+        pass
+    return "127.0.0.1"
 
-    for iface in netifaces.interfaces():
-        addrs = netifaces.ifaddresses(iface)
-        gws = netifaces.gateways()
-        default_iface = gws.get('default', {}).get(netifaces.AF_INET, [None])[1]
-
-        if iface != default_iface:
-            continue  # 기본 게이트웨이를 사용하는 인터페이스만 고려
-
-        if netifaces.AF_INET in addrs:
-            for entry in addrs[netifaces.AF_INET]:
-                ip = entry.get('addr')
-                if ip and (ip.startswith("192.168.") or ip.startswith("10.") or ip.startswith("172.")):
-                    return ip  # 적절한 사설 IP를 반환
-
-    return "127.0.0.1"  # fallback
-
-# 네트워크 정보 자동 감지
-ALLOWED_NETWORK = os.environ.get("ALLOWED_NETWORK")
-if not ALLOWED_NETWORK:
-    ip, netmask = get_network_info()
-    if ip and netmask:
-        ALLOWED_NETWORK = calculate_network_range(ip, netmask)
-    else:
-        ALLOWED_NETWORK = "192.168.1.0/24"  # fallback
+ip, netmask = get_network_info()
+if ip and netmask:
+    ALLOWED_NETWORK = calculate_network_range(ip, netmask)
+else:
+    ALLOWED_NETWORK = "192.168.1.0/24"  # fallback
 print(f"허용된 네트워크: {ALLOWED_NETWORK}")
-
 
 def is_allowed_network(ip):
     """주어진 IP가 허용된 네트워크에 속하는지 확인합니다."""
@@ -108,6 +131,7 @@ def is_allowed_network(ip):
 def check_network_access():
     """네트워크 접근 권한을 확인합니다."""
     client_ip = request.remote_addr
+    logging.info(f"클라이언트 IP: {client_ip} / 허용 네트워크: {ALLOWED_NETWORK}")
     print(f"접속한 클라이언트 IP: {client_ip}")
     print(f"허용된 네트워크: {ALLOWED_NETWORK}")
     if not is_allowed_network(client_ip):

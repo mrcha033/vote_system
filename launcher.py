@@ -11,24 +11,79 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                            QHBoxLayout, QLabel, QLineEdit, QPushButton, 
                            QTextEdit, QFileDialog, QMessageBox, QGroupBox,
                            QTabWidget)
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
+from PyQt5.QtGui import QFont, QIcon, QTextCursor
 from flask import Flask
 from server import app as flask_app
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 import threading
 import time
 import socket
+import ipaddress
+import netifaces
 
 def get_local_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try: 
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-    except Exception:
-        ip = "127.0.0.1"
-    finally:
-        s.close()
-    return ip
+    """실제 유선/무선 인터페이스의 로컬 IP 주소를 가져옵니다."""
+    try:
+        for iface in netifaces.interfaces():
+            if "VirtualBox" in iface or "VMware" in iface or "vEthernet" in iface or "Loopback" in iface:
+                continue  # 가상 인터페이스 제외
+            addrs = netifaces.ifaddresses(iface)
+            if netifaces.AF_INET in addrs:
+                for entry in addrs[netifaces.AF_INET]:
+                    ip = entry.get('addr')
+                    if ip and ipaddress.ip_address(ip).is_private and not ip.startswith("192.168.56."):
+                        return ip
+    except:
+        pass
+    return "127.0.0.1"
+
+def is_private_ip(ip):
+    try:
+        return ipaddress.ip_address(ip).is_private
+    except ValueError:
+        return False
+
+def get_network_info():
+    """기본 게이트웨이 인터페이스의 IP 및 넷마스크를 반환 (모든 인터페이스에서 시도)"""
+    try:
+        gws = netifaces.gateways()
+        default_iface = gws.get('default', {}).get(netifaces.AF_INET, [None])[1]
+
+        if default_iface:
+            addrs = netifaces.ifaddresses(default_iface)
+            inet = addrs.get(netifaces.AF_INET)
+            if inet:
+                for addr in inet:
+                    ip = addr.get("addr")
+                    netmask = addr.get("netmask")
+                    if ip and netmask and ipaddress.ip_address(ip).is_private:
+                        return ip, netmask
+
+        # fallback: 모든 인터페이스 순회
+        for iface in netifaces.interfaces():
+            addrs = netifaces.ifaddresses(iface)
+            inet = addrs.get(netifaces.AF_INET)
+            if not inet:
+                continue
+            for addr in inet:
+                ip = addr.get("addr")
+                netmask = addr.get("netmask")
+                if ip and netmask and ipaddress.ip_address(ip).is_private:
+                    return ip, netmask
+    except Exception as e:
+        print(f"[!] 네트워크 정보 가져오기 실패: {e}")
+    return None, None
+
+def calculate_network_range(ip, netmask):
+    try:
+        network = ipaddress.IPv4Network(f"{ip}/{netmask}", strict=False)
+        return str(network)
+    except Exception as e:
+        print(f"[!] 네트워크 대역 계산 실패: {e}")
+        return None
+
 
 def get_resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller"""
@@ -52,18 +107,19 @@ class ServerThread(QThread):
         try:
             self.is_running = True
             self.log_signal.emit("서버를 시작합니다...")
+
+            ip, netmask = get_network_info()
+            self.log_signal.emit(f"[네트워크 감지] IP: {ip}, 넷마스크: {netmask}")
             
-            # Flask 서버 실행
-            if getattr(sys, 'frozen', False):
-                # 실행 파일 내부에서 실행
-                base_path = sys._MEIPASS
-                os.environ['FLASK_APP'] = os.path.join(base_path, 'server.py')
-                os.environ['FLASK_ENV'] = 'production'
+            if ip and netmask:
+                network_range = calculate_network_range(ip, netmask)
+                self.log_signal.emit(f"[허용 네트워크] {network_range}")
             else:
-                # 개발 환경에서 실행
-                os.environ['FLASK_APP'] = 'server.py'
-                os.environ['FLASK_ENV'] = 'development'
-            
+                self.log_signal.emit("[경고] 유효한 네트워크 정보를 감지하지 못해 기본값 사용")
+
+            server_url = f"http://{get_local_ip()}:5000"
+            self.log_signal.emit(f"[서버 주소] {server_url}")
+
             # Flask 서버를 별도 스레드에서 실행
             def run_flask():
                 try:
@@ -81,6 +137,7 @@ class ServerThread(QThread):
             start_time = time.time()
             server_started = False
             server_url = f"http://{get_local_ip()}:5000"
+            self.log_signal.emit(f"서버 주소: {server_url}")
             
             while self.is_running and time.time() - start_time < 10:  # 10초 동안 대기
                 try:
@@ -121,10 +178,32 @@ class ServerThread(QThread):
         except Exception as e:
             self.error_signal.emit(f"서버 종료 중 오류 발생: {str(e)}")
 
+class DotEnvChangeHandler(FileSystemEventHandler):
+    def __init__(self, restart_callback):
+        self.restart_callback = restart_callback
+        self.last_modified = None
+
+    def on_modified(self, event):
+        if event.src_path.endswith('.env'):
+            now = time.time()
+            if not self.last_modified or now - self.last_modified > 1:  # 최소 1초 간격 제한
+                self.last_modified = now
+                print("[자동감지] .env 변경 감지됨, 서버 재시작")
+                self.restart_callback()
+
+
 class VoteLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
         self.server_thread = None
+        self.server_log_path = os.path.join('log', 'server_runtime.log')
+        self.log_timer = QTimer(self)
+        self.log_timer.timeout.connect(self.read_server_log)
+        self.env_observer = Observer()
+        self.env_handler = DotEnvChangeHandler(self.restart_server_on_env_change)
+        self.env_observer.schedule(self.env_handler, path='.', recursive=False)
+        self.env_observer.start()
+        self.log_timer.start(1000)
         self.init_ui()
         
     def init_ui(self):
@@ -272,6 +351,29 @@ class VoteLauncher(QMainWindow):
             self.stop_button.setEnabled(False)
             self.admin_button.setEnabled(False)
             self.log_message("서버가 종료되었습니다.")
+
+    def restart_server_on_env_change(self):
+        self.log_message("`.env` 변경 감지됨, 서버를 재시작합니다...")
+        self.stop_server()
+        QTimer.singleShot(1000, self.start_server)  # 잠시 후 서버 재시작
+
+    def closeEvent(self, event):
+        if self.server_thread and self.server_thread.is_running:
+            self.stop_server()
+        self.env_observer.stop()
+        self.env_observer.join()
+        event.accept()
+
+    def read_server_log(self):
+        try:
+            if os.path.exists(self.server_log_path):
+                with open(self.server_log_path, 'r', encoding='utf-8', errors='replace') as f:
+                    lines = f.readlines()
+                    last_lines = lines[-50:]  # 마지막 50줄만 표시
+                    self.log_text.setPlainText("".join(last_lines))
+                    self.log_text.moveCursor(QTextCursor.End)
+        except Exception as e:
+            self.log_error(f"로그 파일 읽기 실패: {str(e)}")
             
     def generate_qr(self):
         try:
@@ -364,7 +466,10 @@ class VoteLauncher(QMainWindow):
             self.new_password_input.clear()
             QMessageBox.information(self, "성공", "비밀번호가 변경되었습니다.")
             self.log_message("관리자 비밀번호가 변경되었습니다.")
-            
+            self.log_message("관리자 비밀번호가 변경되어 서버를 재시작합니다.")
+            self.stop_server()
+            QTimer.singleShot(1000, self.start_server)  # 1초 후 서버 재시작
+
         except Exception as e:
             QMessageBox.critical(self, "오류", f"비밀번호 변경 실패: {str(e)}")
         
@@ -376,7 +481,6 @@ class VoteLauncher(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     launcher = VoteLauncher()
-    
     # 아이콘 설정
     try:
         icon_path = get_resource_path('static/favicon.ico')
