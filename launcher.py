@@ -69,6 +69,9 @@ class ServerThread(QThread):
                 try:
                     flask_app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
                 except Exception as e:
+                    import traceback
+                    self.log_signal.emit("Flask 서버 실행 중 예외 발생:")
+                    self.log_signal.emit(traceback.format_exc())
                     self.error_signal.emit(f"Flask 서버 오류: {str(e)}")
             
             flask_thread = threading.Thread(target=run_flask, daemon=True)
