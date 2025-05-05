@@ -186,18 +186,31 @@ def init_db():
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         cur.execute("""
+        CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )
+        """)
+        cur.execute("""
         CREATE TABLE IF NOT EXISTS tokens (
             token TEXT PRIMARY KEY,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            is_used BOOLEAN DEFAULT FALSE
+        )""")
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS vote_agendas (
+            agenda_id TEXT PRIMARY KEY,
+            title TEXT NOT NULL, --이게 "안건명"
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )""")
         cur.execute("""
         CREATE TABLE IF NOT EXISTS vote_items (
             vote_id TEXT PRIMARY KEY,
-            title TEXT,
+            agenda_id TEXT NOT NULL,
+            title TEXT NOT NULL, -- 이게 "표결명"
+            options TEXT NOT NULL,
+            is_active BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            options TEXT,
-            is_active BOOLEAN DEFAULT FALSE
+            FOREIGN KEY (agenda_id) REFERENCES vote_agendas(agenda_id)
         )""")
         cur.execute("""
         CREATE TABLE IF NOT EXISTS votes (
@@ -214,6 +227,12 @@ def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+def get_meeting_title():
+    conn = get_db_connection()
+    row = conn.execute("SELECT value FROM settings WHERE key = 'meeting_title'").fetchone()
+    conn.close()
+    return row["value"] if row else "회의명 미설정"
 
 def generate_qr_zip(tokens):
     """Generate a ZIP file containing QR codes for tokens"""
@@ -283,6 +302,7 @@ def generate_tokens():
 @app.route('/admin/create_vote', methods=['POST'])
 @login_required
 def create_vote():
+    agenda_id = request.form['agenda_id']
     title = request.form['title']
     options = request.form['options']
     vote_id = str(uuid.uuid4())
@@ -295,13 +315,13 @@ def create_vote():
     conn = get_db_connection()
     try:
         conn.execute('''
-            INSERT INTO vote_items (vote_id, title, options)
-            VALUES (?, ?, ?)
-        ''', (vote_id, title, options))
+            INSERT INTO vote_items (vote_id, agenda_id, title, options)
+            VALUES (?, ?, ?, ?)
+        ''', (vote_id, agenda_id, title, options))
         conn.commit()
-        flash('Vote item created successfully!', 'success')
+        flash('표결이 등록되었습니다!', 'success')
     except sqlite3.Error as e:
-        flash(f'Error creating vote item: {str(e)}', 'error')
+        flash(f'표결 등록 중 오류 발생생: {str(e)}', 'error')
     finally:
         conn.close()
 
@@ -360,107 +380,111 @@ def vote_status():
 def admin_dashboard():
     conn = get_db_connection()
     try:
-        # Get all vote items with their results in a single query
-        votes = conn.execute('''
-            SELECT 
-                vi.vote_id,
-                vi.title,
-                vi.options,
-                vi.is_active,
-                vi.created_at,
-                v.choice,
-                COUNT(v.choice) as vote_count
-            FROM vote_items vi
-            LEFT JOIN votes v ON vi.vote_id = v.vote_id
-            GROUP BY vi.vote_id, v.choice
-            ORDER BY vi.created_at DESC
-        ''').fetchall()
+        # 전체 안건 목록
+        agenda_rows = conn.execute('SELECT * FROM vote_agendas ORDER BY created_at DESC').fetchall()
         
-        # Get statistics
-        total_votes = conn.execute('SELECT COUNT(*) FROM votes').fetchone()[0]
+        # 모든 표결 항목
+        vote_rows = conn.execute('SELECT * FROM vote_items ORDER BY created_at DESC').fetchall()
+
+        # 안건에 따라 표결 항목 묶기
+        agenda_dict = {}
+        for agenda in agenda_rows:
+            agenda_dict[agenda['agenda_id']] = {
+                'agenda_id': agenda['agenda_id'],
+                'title': agenda['title'],
+                'items': []
+            }
+
+        for vote in vote_rows:
+            vote_item = {
+                'vote_id': vote['vote_id'],
+                'title': vote['title'],
+                'options': vote['options'],
+                'is_active': vote['is_active']
+            }
+            if vote['agenda_id'] in agenda_dict:
+                agenda_dict[vote['agenda_id']]['items'].append(vote_item)
+
+        agendas = list(agenda_dict.values())
+
+        # 통계
+        total_agendas = len(agendas)
+        total_votes = len(vote_rows)
+        active_votes = sum(1 for v in vote_rows if v['is_active'])
+
+        used_tokens = conn.execute('SELECT COUNT(DISTINCT token) FROM votes').fetchone()[0]
         all_tokens = conn.execute('SELECT COUNT(*) FROM tokens').fetchone()[0]
-        used_tokens = conn.execute('''
-            SELECT COUNT(DISTINCT token) FROM votes
-        ''').fetchone()[0]
         active_tokens = all_tokens - used_tokens
 
-        # Process results into nested dictionary
-        results = {}
-        current_vote = None
-        for row in votes:
-            if row['vote_id'] != current_vote:
-                current_vote = row['vote_id']
-                results[current_vote] = {}
-            if row['choice']:  # Only add if there are votes
-                results[current_vote][row['choice']] = row['vote_count']
-
-        # Get unique vote items for template
-        vote_items = []
-        seen_votes = set()
-        active_vote_count = 0
-        for row in votes:
-            if row['vote_id'] not in seen_votes:
-                seen_votes.add(row['vote_id'])
-                vote_items.append({
-                    'vote_id': row['vote_id'],
-                    'title': row['title'],
-                    'options': row['options'],
-                    'is_active': row['is_active'],
-                    'created_at': row['created_at']
-                })
-                if row['is_active']:
-                    active_vote_count += 1
-
         return render_template('admin.html',
-                             votes=vote_items,
-                             total_votes=total_votes,
-                             used_tokens=used_tokens,
-                             active_tokens=active_tokens,
-                             active_vote_count=active_vote_count,
-                             results=results)
+                               meeting_title=get_meeting_title(),
+                               agendas=agendas,
+                               total_agendas=total_agendas,
+                               total_votes=total_votes,
+                               active_votes=active_votes,
+                               used_tokens=used_tokens,
+                               active_tokens=active_tokens)
     finally:
         conn.close()
+
+
+@app.route('/admin/create_agenda', methods=['POST'])
+@login_required
+def create_agenda():
+    title = request.form['agenda_title']
+    agenda_id = str(uuid.uuid4())
+    conn = get_db_connection()
+    conn.execute('INSERT INTO vote_agendas (agenda_id, title) VALUES (?, ?)', (agenda_id, title))
+    conn.commit()
+    conn.close()
+    flash("안건이 등록되었습니다.")
+    return redirect(url_for('admin_dashboard'))
+
 
 # 사용자: 투표 접속
 @app.route('/vote')
 def vote():
-    token = request.args.get('token')
-    if not token:
-        return "토큰이 필요합니다.", 400
-    
-    # 네트워크 접근 권한 확인
     allowed, message = check_network_access()
     if not allowed:
         return message, 403
-    
+    token = request.args.get("token")
+    if not token:
+        return "토큰이 누락되었습니다.", 400
+
     conn = get_db_connection()
     try:
-        # Check if token exists and is valid
-        token_data = conn.execute('''
-            SELECT token, is_used 
-            FROM tokens 
-            WHERE token = ?
-        ''', (token,)).fetchone()
-        
-        if not token_data:
-            return "유효하지 않은 토큰입니다.", 403
-        
-        if token_data['is_used']:
-            return "이미 사용된 토큰입니다.", 403
-        
-        # Get active votes
-        active_votes = conn.execute('''
-            SELECT vote_id, title, options 
-            FROM vote_items 
-            WHERE is_active = 1
+        # 토큰 유효성 검증
+        token_row = conn.execute("SELECT * FROM tokens WHERE token = ?", (token,)).fetchone()
+        if not token_row:
+            return render_template("vote.html", grouped_votes=[], token=token, error="유효하지 않은 토큰입니다.")
+
+        # 활성 vote_items + 연결된 안건 불러오기
+        vote_rows = conn.execute('''
+            SELECT va.agenda_id, va.title as agenda_title,
+                   vi.vote_id, vi.title as subtitle, vi.options
+            FROM vote_items vi
+            JOIN vote_agendas va ON vi.agenda_id = va.agenda_id
+            WHERE vi.is_active = 1
+            ORDER BY va.created_at DESC, vi.created_at ASC
         ''').fetchall()
-        
-        if not active_votes:
-            return render_template('vote.html', token=token, votes=[], error=None)
-        
-        return render_template('vote.html', 
-                             token=token,
-                             votes=active_votes)
+
+        # grouped_votes 형태로 변환
+        grouped = {}
+        for row in vote_rows:
+            aid = row['agenda_id']
+            if aid not in grouped:
+                grouped[aid] = {
+                    'agenda_id': aid,
+                    'title': row['agenda_title'],
+                    'items': []
+                }
+            grouped[aid]['items'].append({
+                'vote_id': row['vote_id'],
+                'subtitle': row['subtitle'],
+                'options': row['options']
+            })
+
+        return render_template("vote.html", meeting_title=get_meeting_title(), token=token, grouped_votes=list(grouped.values()))
     finally:
         conn.close()
 
@@ -488,42 +512,50 @@ def submit_vote():
     if not allowed:
         return message, 403
     
-    token = request.form['token']
-    vote_id = request.form['vote_id']
-    choice = request.form['choice']
+    token = request.form.get('token')
+    if not token:
+        return "토큰이 누락되었습니다.", 400
 
     conn = get_db_connection()
     try:
-        # Get and validate token
-        token_row = conn.execute('''
-            SELECT token
-            FROM tokens 
-            WHERE token = ? AND is_used = 0
-        ''', (token,)).fetchone()
-        
+        # 1. 토큰 유효성 확인
+        token_row = conn.execute(
+            "SELECT token FROM tokens WHERE token = ?", (token,)
+        ).fetchone()
         if not token_row:
-            return "유효하지 않거나 이미 사용된 토큰입니다.", 403
-                
-        # Insert vote and mark token as used
-        conn.execute('''
-            INSERT INTO votes (vote_id, token, choice)
-            VALUES (?, ?, ?)
-        ''', (vote_id, token, choice))
-        
-        conn.execute('''
-            UPDATE tokens 
-            SET is_used = 1 
-            WHERE token = ?
-        ''', (token,))
-        
+            flash("유효하지 않거나 만료된 토큰입니다.", "error")
+            return redirect(url_for("vote", token=token))
+
+        # 2. 모든 choice_* 항목을 순회하며 투표 삽입
+        for key in request.form:
+            if key.startswith("choice_"):
+                vote_id = key.split("_", 1)[1]
+                choice = request.form.get(key)
+
+                # 중복 투표 확인
+                already_voted = conn.execute(
+                    "SELECT 1 FROM votes WHERE vote_id = ? AND token = ?",
+                    (vote_id, token)
+                ).fetchone()
+                if already_voted:
+                    flash(f"이미 투표한 항목이 있습니다. (vote_id={vote_id})", "error")
+                    continue
+
+                # 투표 삽입
+                conn.execute(
+                    "INSERT INTO votes (vote_id, token, choice) VALUES (?, ?, ?)",
+                    (vote_id, token, choice)
+                )
+                log_vote(vote_id, token, choice)
+
         conn.commit()
-        log_vote(vote_id, token, choice)
-        return "투표가 완료되었습니다. 감사합니다."
+        flash("모든 투표가 성공적으로 제출되었습니다.", "success")
+        return redirect(url_for("vote", token=token))
+
     except Exception as e:
-        return f"투표 처리 중 오류가 발생했습니다: {str(e)}", 500
+        return f"투표 처리 중 오류 발생: {str(e)}", 500
     finally:
         conn.close()
-
 @app.route('/admin/start_vote/<vote_id>')
 @login_required
 def start_vote(vote_id):
@@ -600,7 +632,7 @@ def delete_tokens():
     conn = get_db_connection()
     try:
         # 사용되지 않은 모든 토큰 삭제
-        conn.execute('DELETE FROM tokens WHERE is_used = 0')
+        conn.execute('DELETE FROM tokens WHERE token = ?')
         conn.commit()
         flash('미사용 의결권이 모두 삭제되었습니다.', 'success')
     except Exception as e:

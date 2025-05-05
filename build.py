@@ -8,6 +8,13 @@ def init_database():
     """데이터베이스를 초기화합니다."""
     conn = sqlite3.connect('data.db')
     cur = conn.cursor()
+
+    # settings 테이블
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT
+    )""")
     
     # tokens 테이블
     cur.execute("""
@@ -18,15 +25,25 @@ def init_database():
         is_used BOOLEAN DEFAULT FALSE
     )""")
     
-    # vote_items 테이블
+    #안건 테이블
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS vote_items (
-        vote_id TEXT PRIMARY KEY,
-        title TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        options TEXT,
-        is_active BOOLEAN DEFAULT FALSE
-    )""")
+        CREATE TABLE IF NOT EXISTS vote_agendas (
+            agenda_id TEXT PRIMARY KEY,
+            title TEXT NOT NULL, --이게 "안건명"
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
+    
+    #표결 테이블
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS vote_items (
+            vote_id TEXT PRIMARY KEY,
+            agenda_id TEXT NOT NULL,
+            title TEXT NOT NULL, -- 이게 "표결명"
+            options TEXT NOT NULL,
+            is_active BOOLEAN DEFAULT FALSE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (agenda_id) REFERENCES vote_agendas(agenda_id)
+        )""")
     
     # votes 테이블
     cur.execute("""
@@ -100,7 +117,7 @@ def build_executable():
         '--name=vote_system',  # 실행 파일 이름
         '--add-data=static;static',  # 정적 파일 포함
         '--add-data=templates;templates',  # 템플릿 파일 포함
-        '--add-data=.env.template;.',  # 환경 변수 파일 포함
+        '--add-data=.env;.',  # 환경 변수 파일 포함
         '--add-data=data.db;.',  # 데이터베이스 파일 포함
         '--add-data=log;log',  # 로그 디렉토리 포함
         '--add-data=server.py;.',  # server.py 파일 포함

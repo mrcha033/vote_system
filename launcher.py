@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import sys
 import os
 
@@ -5,7 +6,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts'))
 
 import webbrowser
 import requests
-import json
+import sqlite3
 from datetime import datetime
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                            QHBoxLayout, QLabel, QLineEdit, QPushButton, 
@@ -203,6 +204,7 @@ class VoteLauncher(QMainWindow):
         self.env_handler = DotEnvChangeHandler(self.restart_server_on_env_change)
         self.env_observer.schedule(self.env_handler, path='.', recursive=False)
         self.env_observer.start()
+        self.last_log_content = ""
         self.log_timer.start(1000)
         self.init_ui()
         
@@ -249,7 +251,23 @@ class VoteLauncher(QMainWindow):
         
         password_group.setLayout(password_layout)
         server_group_layout.addWidget(password_group)
-        
+
+        # 회의명 설정
+        meeting_title_group = QGroupBox("회의명 설정")
+        meeting_title_layout = QVBoxLayout()
+
+        self.meeting_title_input = QLineEdit()
+        self.meeting_title_input.setPlaceholderText("예: 2025년 제3차 확대운영위원회")
+        meeting_title_layout.addWidget(QLabel("회의명:"))
+        meeting_title_layout.addWidget(self.meeting_title_input)
+
+        self.set_meeting_title_button = QPushButton("회의명 저장")
+        self.set_meeting_title_button.clicked.connect(self.save_meeting_title)
+        meeting_title_layout.addWidget(self.set_meeting_title_button)
+
+        meeting_title_group.setLayout(meeting_title_layout)
+        server_group_layout.addWidget(meeting_title_group)
+
         # 서버 상태 표시
         self.status_label = QLabel("서버 상태: 중지됨")
         server_group_layout.addWidget(self.status_label)
@@ -315,6 +333,7 @@ class VoteLauncher(QMainWindow):
         tabs.addTab(log_management_tab, "로그 관리")
         
         layout.addWidget(tabs)
+        self.load_current_password
         
     def start_server(self):
         try:
@@ -341,6 +360,7 @@ class VoteLauncher(QMainWindow):
         self.status_label.setText("서버 상태: 실행 중")
         self.admin_button.setEnabled(True)
         self.log_message("서버가 준비되었습니다.")
+        QTimer.singleShot(500, self.load_current_password)
         
     def stop_server(self):
         if self.server_thread:
@@ -369,9 +389,11 @@ class VoteLauncher(QMainWindow):
             if os.path.exists(self.server_log_path):
                 with open(self.server_log_path, 'r', encoding='utf-8', errors='replace') as f:
                     lines = f.readlines()
-                    last_lines = lines[-50:]  # 마지막 50줄만 표시
-                    self.log_text.setPlainText("".join(last_lines))
-                    self.log_text.moveCursor(QTextCursor.End)
+                    content = "".join(lines[-50:])
+                    if content != self.last_log_content:
+                        self.log_text.setPlainText(content)
+                        self.log_text.moveCursor(QTextCursor.End)
+                        self.last_log_content = content
         except Exception as e:
             self.log_error(f"로그 파일 읽기 실패: {str(e)}")
             
@@ -448,7 +470,7 @@ class VoteLauncher(QMainWindow):
                 
             # .env 파일 경로 설정
             if getattr(sys, 'frozen', False):
-                env_path = os.path.join(sys._MEIPASS, '.env')
+                env_path = os.path.join(os.getcwd, '.env')
             else:
                 env_path = '.env'
                 
@@ -472,11 +494,42 @@ class VoteLauncher(QMainWindow):
 
         except Exception as e:
             QMessageBox.critical(self, "오류", f"비밀번호 변경 실패: {str(e)}")
-        
+    
+    def load_current_password(self):
+        env_path = os.path.join(os.getcwd(), '.env')
+        if os.path.exists(env_path):
+            with open(env_path, 'r') as f:
+                for line in f:
+                    if line.startswith("ADMIN_PASSWORD="):
+                        pw = line.strip().split("=", 1)[1]
+                        self.current_password_label.setText(f"현재 비밀번호: {pw}")
+
     def closeEvent(self, event):
         if self.server_thread and self.server_thread.is_running:
             self.stop_server()
         event.accept()
+
+    def save_meeting_title(self):
+        new_title = self.meeting_title_input.text().strip()
+        DB_PATH = os.path.join(os.path.dirname(__file__), 'data.db')
+        if not new_title:
+            QMessageBox.warning(self, "오류", "회의명을 입력하세요.")
+            return
+
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cur = conn.cursor()
+            cur.execute("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)")
+            cur.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", ('meeting_title', new_title))
+            conn.commit()
+            conn.close()
+
+            self.log_message(f"회의명이 저장되었습니다: {new_title}")
+            QMessageBox.information(self, "성공", "회의명이 저장되었습니다. 새로고침 시 바로 적용됩니다.")
+
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"회의명 저장 실패: {str(e)}")
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
