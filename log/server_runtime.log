@@ -668,3 +668,370 @@ sqlite3.OperationalError: no such column: serial_number
 [2025-05-06 11:49:30,726]  * Restarting with watchdog (windowsapi)
 [2025-05-06 11:49:31,336]  * Debugger is active!
 [2025-05-06 11:49:31,342]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:19,175]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\idlelib\\__init__.py', reloading
+[2025-05-06 11:50:19,191]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\lib2to3\\__init__.py', reloading
+[2025-05-06 11:50:19,207]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\turtledemo\\__init__.py', reloading
+[2025-05-06 11:50:19,222]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\wsgiref\\__init__.py', reloading
+[2025-05-06 11:50:19,423]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:20,782]  * Debugger is active!
+[2025-05-06 11:50:20,792]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:20,861]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_resources.py', reloading
+[2025-05-06 11:50:20,875]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_signals.py', reloading
+[2025-05-06 11:50:20,901]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_sockets.py', reloading
+[2025-05-06 11:50:20,923]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_streams.py', reloading
+[2025-05-06 11:50:20,946]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_subprocesses.py', reloading
+[2025-05-06 11:50:20,971]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_synchronization.py', reloading
+[2025-05-06 11:50:20,996]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_tasks.py', reloading
+[2025-05-06 11:50:21,015]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_testing.py', reloading
+[2025-05-06 11:50:21,030]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\_core\\_typedattr.py', reloading
+[2025-05-06 11:50:21,051]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\to_thread.py', reloading
+[2025-05-06 11:50:21,068]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\anyio\\from_thread.py', reloading
+[2025-05-06 11:50:21,090]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\async_timeout\\__init__.py', reloading
+[2025-05-06 11:50:21,165]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\audioread\\__init__.py', reloading
+[2025-05-06 11:50:21,180]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\backports\\__init__.py', reloading
+[2025-05-06 11:50:21,204]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\bitsandbytes\\__init__.py', reloading
+[2025-05-06 11:50:21,224]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\boto3\\__init__.py', reloading
+[2025-05-06 11:50:21,246]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\botocore\\__init__.py', reloading
+[2025-05-06 11:50:21,470]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\contourpy\\__init__.py', reloading
+[2025-05-06 11:50:21,541]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\contourpy\\_version.py', reloading
+[2025-05-06 11:50:21,569]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\contourpy\\convert.py', reloading
+[2025-05-06 11:50:21,620]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\contourpy\\dechunk.py', reloading
+[2025-05-06 11:50:21,658]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\version.py', reloading
+[2025-05-06 11:50:21,701]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\control.py', reloading
+[2025-05-06 11:50:21,793]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\exceptions.py', reloading
+[2025-05-06 11:50:21,828]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\plugin.py', reloading
+[2025-05-06 11:50:21,847]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coveralls\\__init__.py', reloading
+[2025-05-06 11:50:21,875]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coveralls\\api.py', reloading
+[2025-05-06 11:50:21,967]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:23,074]  * Debugger is active!
+[2025-05-06 11:50:23,089]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:23,228]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\exceptions.py', reloading
+[2025-05-06 11:50:23,254]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\exception_handlers.py', reloading
+[2025-05-06 11:50:23,282]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\logger.py', reloading
+[2025-05-06 11:50:23,298]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\middleware\\__init__.py', reloading
+[2025-05-06 11:50:23,313]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\middleware\\__init__.py', reloading
+[2025-05-06 11:50:23,334]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\params.py', reloading
+[2025-05-06 11:50:23,365]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\param_functions.py', reloading
+[2025-05-06 11:50:23,406]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\requests.py', reloading
+[2025-05-06 11:50:23,433]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\requests.py', reloading
+[2025-05-06 11:50:23,458]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\responses.py', reloading
+[2025-05-06 11:50:23,485]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\responses.py', reloading
+[2025-05-06 11:50:23,515]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\routing.py', reloading
+[2025-05-06 11:50:23,563]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\routing.py', reloading
+[2025-05-06 11:50:23,588]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\security\\__init__.py', reloading
+[2025-05-06 11:50:23,608]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\security\\api_key.py', reloading
+[2025-05-06 11:50:23,636]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\security\\http.py', reloading
+[2025-05-06 11:50:23,664]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\security\\oauth2.py', reloading
+[2025-05-06 11:50:23,685]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\security\\open_id_connect_url.py', reloading
+[2025-05-06 11:50:23,700]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\staticfiles.py', reloading
+[2025-05-06 11:50:23,720]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\staticfiles.py', reloading
+[2025-05-06 11:50:23,740]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\templating.py', reloading
+[2025-05-06 11:50:23,769]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\templating.py', reloading
+[2025-05-06 11:50:23,787]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\testclient.py', reloading
+[2025-05-06 11:50:23,814]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\testclient.py', reloading
+[2025-05-06 11:50:23,840]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\types.py', reloading
+[2025-05-06 11:50:23,859]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\utils.py', reloading
+[2025-05-06 11:50:23,875]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\websockets.py', reloading
+[2025-05-06 11:50:23,900]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\websockets.py', reloading
+[2025-05-06 11:50:23,921]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\fastapi\\__init__.py', reloading
+[2025-05-06 11:50:23,937]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\starlette\\__init__.py', reloading
+[2025-05-06 11:50:23,955]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\filelock\\__init__.py', reloading
+[2025-05-06 11:50:23,981]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\filelock\\_api.py', reloading
+[2025-05-06 11:50:23,998]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\filelock\\_error.py', reloading
+[2025-05-06 11:50:24,018]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\filelock\\_soft.py', reloading
+[2025-05-06 11:50:24,037]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\filelock\\_unix.py', reloading
+[2025-05-06 11:50:24,057]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\filelock\\_windows.py', reloading
+[2025-05-06 11:50:24,083]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\filelock\\asyncio.py', reloading
+[2025-05-06 11:50:24,336]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:25,388]  * Debugger is active!
+[2025-05-06 11:50:25,397]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:25,460]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\httpcore\\_models.py', reloading
+[2025-05-06 11:50:25,533]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:26,813]  * Debugger is active!
+[2025-05-06 11:50:26,820]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:26,897]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\joblib\\compressor.py', reloading
+[2025-05-06 11:50:26,923]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\joblib\\parallel.py', reloading
+[2025-05-06 11:50:26,949]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\joblib\\_cloudpickle_wrapper.py', reloading
+[2025-05-06 11:50:26,970]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\__init__.py', reloading
+[2025-05-06 11:50:26,992]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jinit.py', reloading
+[2025-05-06 11:50:27,017]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jpackage.py', reloading
+[2025-05-06 11:50:27,039]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jproxy.py', reloading
+[2025-05-06 11:50:27,070]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_core.py', reloading
+[2025-05-06 11:50:27,098]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jvmfinder.py', reloading
+[2025-05-06 11:50:27,123]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_gui.py', reloading
+[2025-05-06 11:50:27,146]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_classpath.py', reloading
+[2025-05-06 11:50:27,169]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jclass.py', reloading
+[2025-05-06 11:50:27,196]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jobject.py', reloading
+[2025-05-06 11:50:27,220]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\types.py', reloading
+[2025-05-06 11:50:27,403]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jstring.py', reloading
+[2025-05-06 11:50:27,437]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jcustomizer.py', reloading
+[2025-05-06 11:50:27,474]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jpype\\_jexception.py', reloading
+[2025-05-06 11:50:27,499]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\kiwisolver\\__init__.py', reloading
+[2025-05-06 11:50:27,553]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\kiwisolver\\exceptions.py', reloading
+[2025-05-06 11:50:27,571]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\konlpy\\__init__.py', reloading
+[2025-05-06 11:50:27,601]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\lazy_loader\\__init__.py', reloading
+[2025-05-06 11:50:27,649]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\librosa\\_cache.py', reloading
+[2025-05-06 11:50:27,666]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\librosa\\util\\exceptions.py', reloading
+[2025-05-06 11:50:27,684]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\librosa\\util\\files.py', reloading
+[2025-05-06 11:50:27,705]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\librosa\\version.py', reloading
+[2025-05-06 11:50:27,749]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\librosa\\core\\convert.py', reloading
+[2025-05-06 11:50:27,790]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\librosa\\core\\audio.py', reloading
+[2025-05-06 11:50:27,889]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\librosa\\core\\spectrum.py', reloading
+[2025-05-06 11:50:27,985]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:28,745]  * Debugger is active!
+[2025-05-06 11:50:28,751]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:29,074]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\matplotlib\\typing.py', reloading
+[2025-05-06 11:50:29,166]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\numpy\\_typing\\_extended_precision.py', reloading
+[2025-05-06 11:50:29,938]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:30,622]  * Debugger is active!
+[2025-05-06 11:50:30,631]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:30,689]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_utils\\__init__.py', reloading
+[2025-05-06 11:50:30,716]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_utils\\_utils.py', reloading
+[2025-05-06 11:50:30,740]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_client.py', reloading
+[2025-05-06 11:50:30,774]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_streaming.py', reloading
+[2025-05-06 11:50:30,791]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_models.py', reloading
+[2025-05-06 11:50:30,805]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_version.py', reloading
+[2025-05-06 11:50:30,830]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_response.py', reloading
+[2025-05-06 11:50:30,847]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_constants.py', reloading
+[2025-05-06 11:50:30,866]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_exceptions.py', reloading
+[2025-05-06 11:50:30,899]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_base_client.py', reloading
+[2025-05-06 11:50:30,929]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_legacy_response.py', reloading
+[2025-05-06 11:50:30,939]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\lib\\__init__.py', reloading
+[2025-05-06 11:50:30,958]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\lib\\_tools.py', reloading
+[2025-05-06 11:50:30,976]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\version.py', reloading
+[2025-05-06 11:50:30,993]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\lib\\azure.py', reloading
+[2025-05-06 11:50:31,008]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\lib\\streaming\\__init__.py', reloading
+[2025-05-06 11:50:31,029]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\lib\\streaming\\_assistants.py', reloading
+[2025-05-06 11:50:31,071]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\openai\\_module_client.py', reloading
+[2025-05-06 11:50:31,085]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\ordlookup\\__init__.py', reloading
+[2025-05-06 11:50:31,103]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\peft\\__init__.py', reloading
+[2025-05-06 11:50:31,136]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\site-packages\\pip\\__init__.py', reloading
+[2025-05-06 11:50:31,166]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pooch\\__init__.py', reloading
+[2025-05-06 11:50:31,175]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\premailer\\__init__.py', reloading
+[2025-05-06 11:50:31,187]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\propcache\\__init__.py', reloading
+[2025-05-06 11:50:31,200]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\propcache\\api.py', reloading
+[2025-05-06 11:50:31,216]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\propcache\\_helpers.py', reloading
+[2025-05-06 11:50:31,230]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\__init__.py', reloading
+[2025-05-06 11:50:31,254]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\_tpc.py', reloading
+[2025-05-06 11:50:31,266]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\copy.py', reloading
+[2025-05-06 11:50:31,279]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\_enums.py', reloading
+[2025-05-06 11:50:31,297]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\cursor.py', reloading
+[2025-05-06 11:50:31,316]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\errors.py', reloading
+[2025-05-06 11:50:31,338]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\_column.py', reloading
+[2025-05-06 11:50:31,355]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\dbapi20.py', reloading
+[2025-05-06 11:50:31,367]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\version.py', reloading
+[2025-05-06 11:50:31,384]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\_pipeline.py', reloading
+[2025-05-06 11:50:31,401]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\connection.py', reloading
+[2025-05-06 11:50:31,422]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\raw_cursor.py', reloading
+[2025-05-06 11:50:31,443]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\transaction.py', reloading
+[2025-05-06 11:50:31,464]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\cursor_async.py', reloading
+[2025-05-06 11:50:31,484]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\_capabilities.py', reloading
+[2025-05-06 11:50:31,506]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\client_cursor.py', reloading
+[2025-05-06 11:50:31,530]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\server_cursor.py', reloading
+[2025-05-06 11:50:31,548]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\_connection_base.py', reloading
+[2025-05-06 11:50:31,570]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\_connection_info.py', reloading
+[2025-05-06 11:50:31,586]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg\\connection_async.py', reloading
+[2025-05-06 11:50:31,603]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg_binary\\__init__.py', reloading
+[2025-05-06 11:50:31,620]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\psycopg_binary\\version.py', reloading
+[2025-05-06 11:50:31,639]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pyarrow\\__init__.py', reloading
+[2025-05-06 11:50:31,664]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pydantic\\__init__.py', reloading
+[2025-05-06 11:50:31,690]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pydantic\\errors.py', reloading
+[2025-05-06 11:50:31,785]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:32,436]  * Debugger is active!
+[2025-05-06 11:50:32,441]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:32,492]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pyparsing\\helpers.py', reloading
+[2025-05-06 11:50:32,515]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pyparsing\\unicode.py', reloading
+[2025-05-06 11:50:32,786]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_ntlm\\__init__.py', reloading
+[2025-05-06 11:50:32,809]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_ntlm\\requests_ntlm.py', reloading
+[2025-05-06 11:50:32,835]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\__init__.py', reloading
+[2025-05-06 11:50:32,857]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\adapters\\__init__.py', reloading
+[2025-05-06 11:50:32,874]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\adapters\\ssl.py', reloading
+[2025-05-06 11:50:32,891]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\adapters\\source.py', reloading
+[2025-05-06 11:50:32,914]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\auth\\guess.py', reloading
+[2025-05-06 11:50:32,937]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\multipart\\__init__.py', reloading
+[2025-05-06 11:50:32,961]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\multipart\\encoder.py', reloading
+[2025-05-06 11:50:32,983]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\multipart\\decoder.py', reloading
+[2025-05-06 11:50:33,000]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\streaming_iterator.py', reloading
+[2025-05-06 11:50:33,020]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\requests_toolbelt\\utils\\user_agent.py', reloading
+[2025-05-06 11:50:33,035]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\rich\\__init__.py', reloading
+[2025-05-06 11:50:33,049]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\rsa\\__init__.py', reloading
+[2025-05-06 11:50:33,069]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\rsa\\key.py', reloading
+[2025-05-06 11:50:33,103]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\rsa\\pkcs1.py', reloading
+[2025-05-06 11:50:33,126]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\s3transfer\\__init__.py', reloading
+[2025-05-06 11:50:33,164]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\conftest.py', reloading
+[2025-05-06 11:50:33,187]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\constants\\__init__.py', reloading
+[2025-05-06 11:50:33,230]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\constants\\_codata.py', reloading
+[2025-05-06 11:50:33,296]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\constants\\_constants.py', reloading
+[2025-05-06 11:50:33,325]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\datasets\\__init__.py', reloading
+[2025-05-06 11:50:33,344]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\datasets\\_fetchers.py', reloading
+[2025-05-06 11:50:33,359]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\datasets\\_download_all.py', reloading
+[2025-05-06 11:50:33,375]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\datasets\\_utils.py', reloading
+[2025-05-06 11:50:33,387]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\differentiate\\__init__.py', reloading
+[2025-05-06 11:50:33,413]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\differentiate\\_differentiate.py', reloading
+[2025-05-06 11:50:33,425]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\misc\\__init__.py', reloading
+[2025-05-06 11:50:33,439]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\version.py', reloading
+[2025-05-06 11:50:33,455]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\__config__.py', reloading
+[2025-05-06 11:50:33,480]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\__init__.py', reloading
+[2025-05-06 11:50:33,562]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:34,281]  * Debugger is active!
+[2025-05-06 11:50:34,287]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:34,335]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\interpolate\\_rgi.py', reloading
+[2025-05-06 11:50:34,363]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\interpolate\\_bary_rational.py', reloading
+[2025-05-06 11:50:34,379]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\io\\__init__.py', reloading
+[2025-05-06 11:50:34,414]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\__init__.py', reloading
+[2025-05-06 11:50:34,434]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_misc.py', reloading
+[2025-05-06 11:50:34,494]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_basic.py', reloading
+[2025-05-06 11:50:34,530]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp.py', reloading
+[2025-05-06 11:50:34,552]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_lu.py', reloading
+[2025-05-06 11:50:34,587]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_ldl.py', reloading
+[2025-05-06 11:50:34,616]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_cholesky.py', reloading
+[2025-05-06 11:50:34,641]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_qr.py', reloading
+[2025-05-06 11:50:34,725]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_qz.py', reloading
+[2025-05-06 11:50:34,767]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_svd.py', reloading
+[2025-05-06 11:50:34,855]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_schur.py', reloading
+[2025-05-06 11:50:34,908]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_decomp_polar.py', reloading
+[2025-05-06 11:50:34,970]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_matfuncs.py', reloading
+[2025-05-06 11:50:35,057]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\blas.py', reloading
+[2025-05-06 11:50:35,217]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\lapack.py', reloading
+[2025-05-06 11:50:35,320]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\linalg\\_special_matrices.py', reloading
+[2025-05-06 11:50:35,445]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:36,206]  * Debugger is active!
+[2025-05-06 11:50:36,216]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:36,314]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\signal\\_ltisys.py', reloading
+[2025-05-06 11:50:36,350]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\signal\\_lti_conversion.py', reloading
+[2025-05-06 11:50:36,392]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\signal\\_signaltools.py', reloading
+[2025-05-06 11:50:36,439]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\signal\\_spectral_py.py', reloading
+[2025-05-06 11:50:36,475]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\signal\\_short_time_fft.py', reloading
+[2025-05-06 11:50:36,499]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\signal\\_peak_finding.py', reloading
+[2025-05-06 11:50:36,535]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\signal\\_czt.py', reloading
+[2025-05-06 11:50:36,553]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\__init__.py', reloading
+[2025-05-06 11:50:36,575]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_base.py', reloading
+[2025-05-06 11:50:36,599]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_csr.py', reloading
+[2025-05-06 11:50:36,618]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_csc.py', reloading
+[2025-05-06 11:50:36,636]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_lil.py', reloading
+[2025-05-06 11:50:36,658]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_dok.py', reloading
+[2025-05-06 11:50:36,685]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_coo.py', reloading
+[2025-05-06 11:50:36,705]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_dia.py', reloading
+[2025-05-06 11:50:36,725]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_bsr.py', reloading
+[2025-05-06 11:50:36,754]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_construct.py', reloading
+[2025-05-06 11:50:36,773]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_extract.py', reloading
+[2025-05-06 11:50:36,791]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\sparse\\_matrix_io.py', reloading
+[2025-05-06 11:50:36,812]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\spatial\\__init__.py', reloading
+[2025-05-06 11:50:36,831]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\spatial\\_kdtree.py', reloading
+[2025-05-06 11:50:36,862]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\spatial\\_plotutils.py', reloading
+[2025-05-06 11:50:36,896]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\__init__.py', reloading
+[2025-05-06 11:50:36,990]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_basic.py', reloading
+[2025-05-06 11:50:37,018]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_multiufuncs.py', reloading
+[2025-05-06 11:50:37,049]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_sf_error.py', reloading
+[2025-05-06 11:50:37,067]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_logsumexp.py', reloading
+[2025-05-06 11:50:37,082]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_spfun_stats.py', reloading
+[2025-05-06 11:50:37,102]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_ellip_harm.py', reloading
+[2025-05-06 11:50:37,118]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_lambertw.py', reloading
+[2025-05-06 11:50:37,136]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\special\\_spherical_bessel.py', reloading
+[2025-05-06 11:50:37,155]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\stats\\__init__.py', reloading
+[2025-05-06 11:50:37,195]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\stats\\_stats_py.py', reloading
+[2025-05-06 11:50:37,232]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\stats\\distributions.py', reloading
+[2025-05-06 11:50:37,281]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\scipy\\stats\\_continuous_distns.py', reloading
+[2025-05-06 11:50:37,364]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:38,085]  * Debugger is active!
+[2025-05-06 11:50:38,092]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:38,141]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\compiler.py', reloading
+[2025-05-06 11:50:38,185]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\engine\\base.py', reloading
+[2025-05-06 11:50:38,217]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\engine\\create.py', reloading
+[2025-05-06 11:50:38,239]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\engine\\mock.py', reloading
+[2025-05-06 11:50:38,261]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\engine\\cursor.py', reloading
+[2025-05-06 11:50:38,286]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\engine\\reflection.py', reloading
+[2025-05-06 11:50:38,308]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\engine\\url.py', reloading
+[2025-05-06 11:50:38,331]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\inspection.py', reloading
+[2025-05-06 11:50:38,346]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\pool\\__init__.py', reloading
+[2025-05-06 11:50:38,367]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\pool\\impl.py', reloading
+[2025-05-06 11:50:38,385]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\pool\\base.py', reloading
+[2025-05-06 11:50:38,403]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\schema.py', reloading
+[2025-05-06 11:50:38,425]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\ddl.py', reloading
+[2025-05-06 11:50:38,463]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\schema.py', reloading
+[2025-05-06 11:50:38,496]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\__init__.py', reloading
+[2025-05-06 11:50:38,517]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\_typing.py', reloading
+[2025-05-06 11:50:38,538]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\expression.py', reloading
+[2025-05-06 11:50:38,563]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\selectable.py', reloading
+[2025-05-06 11:50:38,590]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\_selectable_constructors.py', reloading
+[2025-05-06 11:50:38,616]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\_elements_constructors.py', reloading
+[2025-05-06 11:50:38,655]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\elements.py', reloading
+[2025-05-06 11:50:38,691]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\cache_key.py', reloading
+[2025-05-06 11:50:38,720]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\base.py', reloading
+[2025-05-06 11:50:38,749]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\operators.py', reloading
+[2025-05-06 11:50:38,780]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\dml.py', reloading
+[2025-05-06 11:50:38,800]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\_dml_constructors.py', reloading
+[2025-05-06 11:50:38,824]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\functions.py', reloading
+[2025-05-06 11:50:38,844]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\lambdas.py', reloading
+[2025-05-06 11:50:38,867]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\visitors.py', reloading
+[2025-05-06 11:50:38,886]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\types.py', reloading
+[2025-05-06 11:50:38,912]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\sqltypes.py', reloading
+[2025-05-06 11:50:38,947]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sqlalchemy\\sql\\type_api.py', reloading
+[2025-05-06 11:50:38,965]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sspilib\\__init__.py', reloading
+[2025-05-06 11:50:38,988]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sspilib\\raw\\__init__.py', reloading
+[2025-05-06 11:50:39,041]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sspilib\\_credential.py', reloading
+[2025-05-06 11:50:39,060]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sspilib\\_sec_context.py', reloading
+[2025-05-06 11:50:39,195]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:39,846]  * Debugger is active!
+[2025-05-06 11:50:39,853]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:40,001]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\functions\\__init__.py', reloading
+[2025-05-06 11:50:40,351]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\functions\\elementary\\integers.py', reloading
+[2025-05-06 11:50:40,465]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\geometry\\__init__.py', reloading
+[2025-05-06 11:50:40,516]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\geometry\\exceptions.py', reloading
+[2025-05-06 11:50:40,872]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\matrices\\matrices.py', reloading
+[2025-05-06 11:50:41,022]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:41,696]  * Debugger is active!
+[2025-05-06 11:50:41,702]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:42,463]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\printing\\smtlib.py', reloading
+[2025-05-06 11:50:42,488]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\release.py', reloading
+[2025-05-06 11:50:42,648]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\series\\residues.py', reloading
+[2025-05-06 11:50:42,665]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\sympy\\series\\series.py', reloading
+[2025-05-06 11:50:42,842]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:43,550]  * Debugger is active!
+[2025-05-06 11:50:43,558]  * Debugger PIN: 438-957-268
+[2025-05-06 11:50:43,873]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\functional.py', reloading
+[2025-05-06 11:50:43,950]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_tensor.py', reloading
+[2025-05-06 11:50:44,049]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\storage.py', reloading
+[2025-05-06 11:50:44,095]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_tensor_str.py', reloading
+[2025-05-06 11:50:44,145]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\amp\\__init__.py', reloading
+[2025-05-06 11:50:44,169]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\amp\\autocast_mode.py', reloading
+[2025-05-06 11:50:44,192]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\amp\\grad_scaler.py', reloading
+[2025-05-06 11:50:44,215]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\random.py', reloading
+[2025-05-06 11:50:44,241]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\serialization.py', reloading
+[2025-05-06 11:50:44,278]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_lowrank.py', reloading
+[2025-05-06 11:50:44,301]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\autograd\\__init__.py', reloading
+[2025-05-06 11:50:44,325]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\autograd\\grad_mode.py', reloading
+[2025-05-06 11:50:44,339]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\signal\\__init__.py', reloading
+[2025-05-06 11:50:44,358]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_ops.py', reloading
+[2025-05-06 11:50:44,379]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_classes.py', reloading
+[2025-05-06 11:50:44,399]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_lobpcg.py', reloading
+[2025-05-06 11:50:44,415]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_higher_order_ops\\__init__.py', reloading
+[2025-05-06 11:50:44,436]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_higher_order_ops\\cond.py', reloading
+[2025-05-06 11:50:44,461]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_higher_order_ops\\while_loop.py', reloading
+[2025-05-06 11:50:44,472]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\func\\__init__.py', reloading
+[2025-05-06 11:50:44,498]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torch\\_functorch\\apis.py', reloading
+[2025-05-06 11:50:44,516]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torchaudio\\__init__.py', reloading
+[2025-05-06 11:50:44,542]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torchaudio\\_backend\\__init__.py', reloading
+[2025-05-06 11:50:44,557]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torchaudio\\_backend\\common.py', reloading
+[2025-05-06 11:50:44,572]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torchgen\\__init__.py', reloading
+[2025-05-06 11:50:44,584]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\torio\\__init__.py', reloading
+[2025-05-06 11:50:44,690]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:50:45,462]  * Debugger is active!
+[2025-05-06 11:50:45,468]  * Debugger PIN: 438-957-268
+[2025-05-06 11:51:47,775]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc.2198201628944', reloading
+[2025-05-06 11:51:47,776]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 11:51:47,778]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc.2198200835248', reloading
+[2025-05-06 11:51:47,778]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:51:47,779]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:51:47,784]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc.2198200841904', reloading
+[2025-05-06 11:51:47,785]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:51:47,785]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:51:47,788]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc.2198200836528', reloading
+[2025-05-06 11:51:47,790]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:51:47,791]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:51:47,793]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc.2198200834736', reloading
+[2025-05-06 11:51:47,794]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:51:47,794]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:51:48,577]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:51:49,147]  * Debugger is active!
+[2025-05-06 11:51:49,154]  * Debugger PIN: 438-957-268
