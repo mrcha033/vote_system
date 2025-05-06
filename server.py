@@ -16,15 +16,27 @@ import logging
 import tempfile
 from PIL import ImageDraw, ImageFont
 from urllib.parse import quote 
+from pathlib import Path
 
+# ── ① 실행 디렉터리 결정 ─────────────────────────
+if getattr(sys, 'frozen', False):                    # PyInstaller 실행본
+    APP_DIR = Path(sys.executable).parent           # exe 가 있는 폴더
+else:                                               # 평상시 파이썬 실행
+    APP_DIR = Path(__file__).parent
 
+# ── ② 로그 폴더/파일 준비 ────────────────────────
+LOG_DIR  = APP_DIR / "log"
+LOG_DIR.mkdir(exist_ok=True)                        # 폴더가 없으면 생성
+LOG_FILE = LOG_DIR / "server_runtime.log"
 
-log_path = os.path.join('log', 'server_runtime.log')
+# ── ③ 로깅 설정 ───────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
     format='[%(asctime)s] %(message)s',
-    handlers=[logging.FileHandler(log_path, encoding="utf-8"), logging.StreamHandler()]
+    handlers=[logging.FileHandler(LOG_FILE, encoding="utf-8"), logging.StreamHandler(sys.stdout)]
 )
+
+logging.info("Logger ready → %s", LOG_FILE)
 
 # Load environment variables from .env file
 load_dotenv(override=True)
