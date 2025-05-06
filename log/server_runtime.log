@@ -1,0 +1,670 @@
+[2025-05-06 10:49:01,541] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 10:49:01,541] [33mPress CTRL+C to quit[0m
+[2025-05-06 10:49:01,558]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:49:02,069]  * Debugger is active!
+[2025-05-06 10:49:02,073]  * Debugger PIN: 438-957-268
+[2025-05-06 10:50:08,726]  * Detected change in 'C:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:50:08,740]  * Detected change in 'C:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:50:08,740]  * Detected change in 'C:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:50:09,027]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:50:09,505]  * Debugger is active!
+[2025-05-06 10:50:09,511]  * Debugger PIN: 438-957-268
+[2025-05-06 10:50:57,170]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\posixpath.py', reloading
+[2025-05-06 10:50:57,353]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:50:57,820]  * Debugger is active!
+[2025-05-06 10:50:57,824]  * Debugger PIN: 438-957-268
+[2025-05-06 10:51:16,020]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\data.py', reloading
+[2025-05-06 10:51:16,022]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\sqldata.py', reloading
+[2025-05-06 10:51:16,053]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pytest_cov\\__init__.py', reloading
+[2025-05-06 10:51:16,190]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:51:16,884]  * Debugger is active!
+[2025-05-06 10:51:16,889]  * Debugger PIN: 438-957-268
+[2025-05-06 10:51:19,988]  * Detected change in 'C:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:51:19,989]  * Detected change in 'C:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:51:21,044]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:51:21,822]  * Debugger is active!
+[2025-05-06 10:51:21,831]  * Debugger PIN: 438-957-268
+[2025-05-06 10:52:49,455] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 10:52:49,456] [33mPress CTRL+C to quit[0m
+[2025-05-06 10:52:49,476]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:52:50,540]  * Debugger is active!
+[2025-05-06 10:52:50,547]  * Debugger PIN: 438-957-268
+[2025-05-06 10:52:58,094] 192.168.0.4 - - [06/May/2025 10:52:58] "GET /login HTTP/1.1" 200 -
+[2025-05-06 10:52:58,178] 192.168.0.4 - - [06/May/2025 10:52:58] "GET /static/style.css HTTP/1.1" 200 -
+[2025-05-06 10:53:03,437] 192.168.0.4 - - [06/May/2025 10:53:03] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-05-06 10:53:03,461] 192.168.0.4 - - [06/May/2025 10:53:03] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:53:03,489] 192.168.0.4 - - [06/May/2025 10:53:03] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:53:07,001] 192.168.0.4 - - [06/May/2025 10:53:07] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 10:53:07,014] 192.168.0.4 - - [06/May/2025 10:53:07] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:53:07,043] 192.168.0.4 - - [06/May/2025 10:53:07] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:53:33,424]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pyqt5.py', reloading
+[2025-05-06 10:53:33,433]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\fake-modules\\_pyi_rth_utils\\__init__.py', reloading
+[2025-05-06 10:53:33,474]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py', reloading
+[2025-05-06 10:53:33,582]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py', reloading
+[2025-05-06 10:53:33,595]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py', reloading
+[2025-05-06 10:53:33,613]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pyinstaller_hooks_contrib\\rthooks\\pyi_rth_cryptography_openssl.py', reloading
+[2025-05-06 10:53:33,624]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_setuptools.py', reloading
+[2025-05-06 10:53:33,630]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py', reloading
+[2025-05-06 10:53:34,487]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:53:35,439]  * Debugger is active!
+[2025-05-06 10:53:35,448]  * Debugger PIN: 438-957-268
+[2025-05-06 10:53:38,274]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:53:38,275]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:53:38,711]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:53:39,939]  * Debugger is active!
+[2025-05-06 10:53:39,945]  * Debugger PIN: 438-957-268
+[2025-05-06 10:54:16,459]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:54:16,459]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:54:16,693]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:54:17,309]  * Debugger is active!
+[2025-05-06 10:54:17,317]  * Debugger PIN: 438-957-268
+[2025-05-06 10:54:20,055] 192.168.0.4 - - [06/May/2025 10:54:20] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 10:54:20,079] 192.168.0.4 - - [06/May/2025 10:54:20] "GET /login HTTP/1.1" 200 -
+[2025-05-06 10:54:20,263] 192.168.0.4 - - [06/May/2025 10:54:20] "GET /static/style.css HTTP/1.1" 200 -
+[2025-05-06 10:54:28,358] 192.168.0.4 - - [06/May/2025 10:54:28] "POST /login HTTP/1.1" 200 -
+[2025-05-06 10:54:28,401] 192.168.0.4 - - [06/May/2025 10:54:28] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:54:33,393] 192.168.0.4 - - [06/May/2025 10:54:33] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-05-06 10:54:33,437] 192.168.0.4 - - [06/May/2025 10:54:33] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:54:33,487] 192.168.0.4 - - [06/May/2025 10:54:33] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:54:36,458] 192.168.0.4 - - [06/May/2025 10:54:36] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 10:54:36,475] 192.168.0.4 - - [06/May/2025 10:54:36] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:54:36,663] 192.168.0.4 - - [06/May/2025 10:54:36] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:54:38,039]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc.2587259813120', reloading
+[2025-05-06 10:54:38,041]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\loader\\pyimod01_archive.py', reloading
+[2025-05-06 10:54:38,041]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 10:54:38,043]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc.2587264423728', reloading
+[2025-05-06 10:54:38,044]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 10:54:38,046]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 10:54:38,046]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\loader\\pyimod02_importers.py', reloading
+[2025-05-06 10:54:38,053]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc.2587264426800', reloading
+[2025-05-06 10:54:38,056]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 10:54:38,058]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 10:54:38,059]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\loader\\pyimod03_ctypes.py', reloading
+[2025-05-06 10:54:38,060]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 10:54:38,062]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc.2587264421680', reloading
+[2025-05-06 10:54:38,063]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 10:54:38,065]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 10:54:38,066]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\loader\\pyimod04_pywin32.py', reloading
+[2025-05-06 10:54:38,067]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc.2587264433456', reloading
+[2025-05-06 10:54:38,068]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 10:54:38,069]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 10:54:38,852]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:54:39,479]  * Debugger is active!
+[2025-05-06 10:54:39,484]  * Debugger PIN: 438-957-268
+[2025-05-06 10:54:41,490]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py', reloading
+[2025-05-06 10:54:41,609]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:54:42,211]  * Debugger is active!
+[2025-05-06 10:54:42,216]  * Debugger PIN: 438-957-268
+[2025-05-06 10:54:44,846] 192.168.0.4 - - [06/May/2025 10:54:44] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 10:54:44,911] 192.168.0.4 - - [06/May/2025 10:54:44] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:54:45,012] 192.168.0.4 - - [06/May/2025 10:54:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:55:32,690]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:55:32,691]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:55:33,238]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:55:33,885]  * Debugger is active!
+[2025-05-06 10:55:33,890]  * Debugger PIN: 438-957-268
+[2025-05-06 10:55:41,621] 192.168.0.4 - - [06/May/2025 10:55:41] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 10:55:41,651] 192.168.0.4 - - [06/May/2025 10:55:41] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:55:41,775] 192.168.0.4 - - [06/May/2025 10:55:41] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:57:26,947] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 10:57:26,948] [33mPress CTRL+C to quit[0m
+[2025-05-06 10:57:26,964]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:57:27,484]  * Debugger is active!
+[2025-05-06 10:57:27,489]  * Debugger PIN: 438-957-268
+[2025-05-06 10:57:31,742] 192.168.0.4 - - [06/May/2025 10:57:31] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:57:31,835] 192.168.0.4 - - [06/May/2025 10:57:31] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 10:57:34,831] 192.168.0.4 - - [06/May/2025 10:57:34] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 10:57:34,842] 192.168.0.4 - - [06/May/2025 10:57:34] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:58:56,111]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:58:56,112]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 10:58:57,018]  * Restarting with watchdog (windowsapi)
+[2025-05-06 10:58:57,721]  * Debugger is active!
+[2025-05-06 10:58:57,727]  * Debugger PIN: 438-957-268
+[2025-05-06 10:59:03,177] 192.168.0.4 - - [06/May/2025 10:59:03] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 10:59:03,276] 192.168.0.4 - - [06/May/2025 10:59:03] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:00:41,281]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:00:41,281]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:00:41,356]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:00:41,988]  * Debugger is active!
+[2025-05-06 11:00:41,996]  * Debugger PIN: 438-957-268
+[2025-05-06 11:01:02,931] 192.168.0.4 - - [06/May/2025 11:01:02] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 11:01:02,973] 192.168.0.4 - - [06/May/2025 11:01:02] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:04:18,945]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:04:18,946]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:04:19,552]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:04:20,304]  * Debugger is active!
+[2025-05-06 11:04:20,309]  * Debugger PIN: 438-957-268
+[2025-05-06 11:04:22,661] 192.168.0.4 - - [06/May/2025 11:04:22] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 11:04:22,688] 192.168.0.4 - - [06/May/2025 11:04:22] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:05:32,212]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:05:32,538]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:05:59,136] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:05:59,137] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:05:59,150]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:05:59,637]  * Debugger is active!
+[2025-05-06 11:05:59,644]  * Debugger PIN: 438-957-268
+[2025-05-06 11:06:02,905] token generation failed
+Traceback (most recent call last):
+  File "c:\Projects\vote_system\server.py", line 310, in generate_tokens
+    cur = conn.execute("SELECT COALESCE(MAX(serial_number), 0) FROM tokens")
+sqlite3.OperationalError: no such column: serial_number
+[2025-05-06 11:06:02,907] 192.168.0.4 - - [06/May/2025 11:06:02] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 11:06:02,937] 192.168.0.4 - - [06/May/2025 11:06:02] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:06:37,145]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pytest_cov\\plugin.py', reloading
+[2025-05-06 11:06:37,160]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\results.py', reloading
+[2025-05-06 11:06:37,172]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\coverage\\misc.py', reloading
+[2025-05-06 11:06:37,430]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:06:38,226]  * Debugger is active!
+[2025-05-06 11:06:38,230]  * Debugger PIN: 438-957-268
+[2025-05-06 11:08:16,038] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:08:16,039] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:08:16,056]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:08:16,609]  * Debugger is active!
+[2025-05-06 11:08:16,614]  * Debugger PIN: 438-957-268
+[2025-05-06 11:08:19,813] token generation failed
+Traceback (most recent call last):
+  File "c:\Projects\vote_system\server.py", line 310, in generate_tokens
+    cur = conn.execute("SELECT COALESCE(MAX(serial_number), 0) FROM tokens")
+sqlite3.OperationalError: no such column: serial_number
+[2025-05-06 11:08:19,815] 192.168.0.4 - - [06/May/2025 11:08:19] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 11:08:19,854] 192.168.0.4 - - [06/May/2025 11:08:19] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:10:52,823] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:10:52,823] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:10:52,845]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:10:53,789]  * Debugger is active!
+[2025-05-06 11:10:53,796]  * Debugger PIN: 438-957-268
+[2025-05-06 11:11:00,402] token generation failed
+Traceback (most recent call last):
+  File "c:\Projects\vote_system\server.py", line 310, in generate_tokens
+    cur = conn.execute("SELECT COALESCE(MAX(serial_number), 0) FROM tokens")
+sqlite3.OperationalError: no such column: serial_number
+[2025-05-06 11:11:00,404] 192.168.0.4 - - [06/May/2025 11:11:00] "[32mPOST /admin/generate_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 11:11:00,438] 192.168.0.4 - - [06/May/2025 11:11:00] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:15:15,682] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:15:15,683] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:15:15,702]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:15:16,219]  * Debugger is active!
+[2025-05-06 11:15:16,222]  * Debugger PIN: 438-957-268
+[2025-05-06 11:16:04,982] 192.168.0.4 - - [06/May/2025 11:16:04] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:16:05,199] 192.168.0.4 - - [06/May/2025 11:16:05] "GET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[2025-05-06 11:16:05,201] 192.168.0.4 - - [06/May/2025 11:16:05] "GET /admin?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[2025-05-06 11:16:05,446] 192.168.0.4 - - [06/May/2025 11:16:05] "GET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[2025-05-06 11:16:05,562] 192.168.0.4 - - [06/May/2025 11:16:05] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:19:20,870]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:19:31,188] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:19:31,189] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:19:31,204]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:19:31,770]  * Debugger is active!
+[2025-05-06 11:19:31,774]  * Debugger PIN: 438-957-268
+[2025-05-06 11:20:04,586] 192.168.0.4 - - [06/May/2025 11:20:04] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:20:04,736] 192.168.0.4 - - [06/May/2025 11:20:04] "[36mGET /admin?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-05-06 11:20:04,737] 192.168.0.4 - - [06/May/2025 11:20:04] "[36mGET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:20:05,053] 192.168.0.4 - - [06/May/2025 11:20:05] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:20:05,126] 192.168.0.4 - - [06/May/2025 11:20:05] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:29,626] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:22:29,627] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:22:29,643]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:22:30,257]  * Debugger is active!
+[2025-05-06 11:22:30,262]  * Debugger PIN: 438-957-268
+[2025-05-06 11:22:32,615] 192.168.0.4 - - [06/May/2025 11:22:32] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:22:32,741] 192.168.0.4 - - [06/May/2025 11:22:32] "[36mGET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:32,747] 192.168.0.4 - - [06/May/2025 11:22:32] "[36mGET /admin?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:33,006] 192.168.0.4 - - [06/May/2025 11:22:33] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:33,068] 192.168.0.4 - - [06/May/2025 11:22:33] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:33,527] 192.168.0.4 - - [06/May/2025 11:22:33] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:22:33,565] 192.168.0.4 - - [06/May/2025 11:22:33] "[36mGET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:33,566] 192.168.0.4 - - [06/May/2025 11:22:33] "[36mGET /admin?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:33,912] 192.168.0.4 - - [06/May/2025 11:22:33] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:33,979] 192.168.0.4 - - [06/May/2025 11:22:33] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:34,063] 192.168.0.4 - - [06/May/2025 11:22:34] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:22:34,096] 192.168.0.4 - - [06/May/2025 11:22:34] "[36mGET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:34,098] 192.168.0.4 - - [06/May/2025 11:22:34] "[36mGET /admin?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:34,451] 192.168.0.4 - - [06/May/2025 11:22:34] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:34,532] 192.168.0.4 - - [06/May/2025 11:22:34] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:34,581] 192.168.0.4 - - [06/May/2025 11:22:34] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:22:34,825] 192.168.0.4 - - [06/May/2025 11:22:34] "[36mGET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:34,869] 192.168.0.4 - - [06/May/2025 11:22:34] "[36mGET /admin?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:35,119] 192.168.0.4 - - [06/May/2025 11:22:35] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:22:35,186] 192.168.0.4 - - [06/May/2025 11:22:35] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:24:42,878] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:24:42,878] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:24:42,896]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:24:43,703]  * Debugger is active!
+[2025-05-06 11:24:43,709]  * Debugger PIN: 438-957-268
+[2025-05-06 11:24:44,694]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\flask\\app.py', reloading
+[2025-05-06 11:24:44,720] 192.168.0.4 - - [06/May/2025 11:24:44] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:24:44,934] 192.168.0.4 - - [06/May/2025 11:24:44] "[36mGET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:24:45,141]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:24:46,056]  * Debugger is active!
+[2025-05-06 11:24:46,060]  * Debugger PIN: 438-957-268
+[2025-05-06 11:24:50,433] 192.168.0.4 - - [06/May/2025 11:24:50] "[35m[1mGET /admin HTTP/1.1[0m" 500 -
+[2025-05-06 11:24:50,574] 192.168.0.4 - - [06/May/2025 11:24:50] "[36mGET /admin?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-05-06 11:24:50,588] 192.168.0.4 - - [06/May/2025 11:24:50] "[36mGET /admin?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:24:50,941] 192.168.0.4 - - [06/May/2025 11:24:50] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:24:51,124] 192.168.0.4 - - [06/May/2025 11:24:51] "[36mGET /admin?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-05-06 11:32:56,156] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:32:56,157] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:32:56,172]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:32:56,636]  * Debugger is active!
+[2025-05-06 11:32:56,641]  * Debugger PIN: 438-957-268
+[2025-05-06 11:33:01,081] 192.168.0.4 - - [06/May/2025 11:33:01] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:33:01,165] 192.168.0.4 - - [06/May/2025 11:33:01] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:33:04,006] 192.168.0.4 - - [06/May/2025 11:33:04] "POST /admin/generate_tokens HTTP/1.1" 200 -
+[2025-05-06 11:36:05,395]  * Detected change in 'c:\\Projects\\vote_system\\init_db_and_run.py', reloading
+[2025-05-06 11:36:05,864]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\datastructures\\__init__.py', reloading
+[2025-05-06 11:36:05,867]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\wrappers\\__init__.py', reloading
+[2025-05-06 11:36:05,867]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\sansio\\response.py', reloading
+[2025-05-06 11:36:05,868]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\utils.py', reloading
+[2025-05-06 11:36:05,873]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\wrappers\\request.py', reloading
+[2025-05-06 11:36:05,877]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\wrappers\\response.py', reloading
+[2025-05-06 11:36:05,881]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\_internal.py', reloading
+[2025-05-06 11:36:05,883]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\sansio\\request.py', reloading
+[2025-05-06 11:36:05,885]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\sqlite3\\dbapi2.py', reloading
+[2025-05-06 11:36:05,886]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\io.py', reloading
+[2025-05-06 11:36:05,951]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\uuid.py', reloading
+[2025-05-06 11:36:06,006]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\functools.py', reloading
+[2025-05-06 11:36:06,008]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\csv.py', reloading
+[2025-05-06 11:36:06,607]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:36:08,183]  * Debugger is active!
+[2025-05-06 11:36:08,214]  * Debugger PIN: 438-957-268
+[2025-05-06 11:38:36,242] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:38:36,242] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:38:36,255]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:38:36,709]  * Debugger is active!
+[2025-05-06 11:38:36,712]  * Debugger PIN: 438-957-268
+[2025-05-06 11:38:44,564] 192.168.0.4 - - [06/May/2025 11:38:44] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:38:44,639] 192.168.0.4 - - [06/May/2025 11:38:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:38:47,990] 192.168.0.4 - - [06/May/2025 11:38:47] "POST /admin/generate_tokens HTTP/1.1" 200 -
+[2025-05-06 11:39:11,378] 192.168.0.4 - - [06/May/2025 11:39:11] "[32mPOST /admin/delete_tokens HTTP/1.1[0m" 302 -
+[2025-05-06 11:39:11,401] 192.168.0.4 - - [06/May/2025 11:39:11] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:39:11,484] 192.168.0.4 - - [06/May/2025 11:39:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:15,841] 192.168.0.4 - - [06/May/2025 11:39:15] "POST /admin/generate_tokens HTTP/1.1" 200 -
+[2025-05-06 11:39:32,553] 클라이언트 IP: 192.168.0.5 / 허용 네트워크: 192.168.0.0/24
+[2025-05-06 11:39:32,564] 192.168.0.5 - - [06/May/2025 11:39:32] "GET /vote?token=f862b6d7-e99a-43f4-a3cb-775068503e2a HTTP/1.1" 200 -
+[2025-05-06 11:39:32,639] 192.168.0.5 - - [06/May/2025 11:39:32] "GET /static/style.css HTTP/1.1" 200 -
+[2025-05-06 11:39:38,226] 192.168.0.4 - - [06/May/2025 11:39:38] "[32mPOST /admin/create_agenda HTTP/1.1[0m" 302 -
+[2025-05-06 11:39:38,238] 192.168.0.4 - - [06/May/2025 11:39:38] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:39:38,272] 192.168.0.4 - - [06/May/2025 11:39:38] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:43,055] 192.168.0.4 - - [06/May/2025 11:39:43] "[32mPOST /admin/create_vote HTTP/1.1[0m" 302 -
+[2025-05-06 11:39:43,069] 192.168.0.4 - - [06/May/2025 11:39:43] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:39:43,103] 192.168.0.4 - - [06/May/2025 11:39:43] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:45,192] 192.168.0.4 - - [06/May/2025 11:39:45] "[32mPOST /admin/create_agenda HTTP/1.1[0m" 302 -
+[2025-05-06 11:39:45,215] 192.168.0.4 - - [06/May/2025 11:39:45] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:39:45,246] 192.168.0.4 - - [06/May/2025 11:39:45] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:48,482] 192.168.0.4 - - [06/May/2025 11:39:48] "[32mPOST /admin/create_vote HTTP/1.1[0m" 302 -
+[2025-05-06 11:39:48,494] 192.168.0.4 - - [06/May/2025 11:39:48] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:39:48,537] 192.168.0.4 - - [06/May/2025 11:39:48] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:49,758] 클라이언트 IP: 192.168.0.5 / 허용 네트워크: 192.168.0.0/24
+[2025-05-06 11:39:49,761] 192.168.0.5 - - [06/May/2025 11:39:49] "GET /vote?token=f862b6d7-e99a-43f4-a3cb-775068503e2a HTTP/1.1" 200 -
+[2025-05-06 11:39:49,787] 192.168.0.5 - - [06/May/2025 11:39:49] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:51,346] 클라이언트 IP: 192.168.0.5 / 허용 네트워크: 192.168.0.0/24
+[2025-05-06 11:39:51,348] 192.168.0.5 - - [06/May/2025 11:39:51] "GET /vote?token=f862b6d7-e99a-43f4-a3cb-775068503e2a HTTP/1.1" 200 -
+[2025-05-06 11:39:51,368] 192.168.0.5 - - [06/May/2025 11:39:51] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:53,928] 192.168.0.4 - - [06/May/2025 11:39:53] "[32mGET /admin/start_vote/6259fae6-51b9-4e78-b1c2-73fb2934db0d HTTP/1.1[0m" 302 -
+[2025-05-06 11:39:53,944] 192.168.0.4 - - [06/May/2025 11:39:53] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:39:53,985] 192.168.0.4 - - [06/May/2025 11:39:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:56,102] 192.168.0.4 - - [06/May/2025 11:39:56] "[32mGET /admin/start_vote/156b31f7-b0cc-4d07-a041-b351840a1ab2 HTTP/1.1[0m" 302 -
+[2025-05-06 11:39:56,118] 192.168.0.4 - - [06/May/2025 11:39:56] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:39:56,189] 192.168.0.4 - - [06/May/2025 11:39:56] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:39:57,025] 클라이언트 IP: 192.168.0.5 / 허용 네트워크: 192.168.0.0/24
+[2025-05-06 11:39:57,028] 192.168.0.5 - - [06/May/2025 11:39:57] "GET /vote?token=f862b6d7-e99a-43f4-a3cb-775068503e2a HTTP/1.1" 200 -
+[2025-05-06 11:39:57,060] 192.168.0.5 - - [06/May/2025 11:39:57] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:40:00,255] 클라이언트 IP: 192.168.0.5 / 허용 네트워크: 192.168.0.0/24
+[2025-05-06 11:40:00,267] 192.168.0.5 - - [06/May/2025 11:40:00] "[32mPOST /submit_vote HTTP/1.1[0m" 302 -
+[2025-05-06 11:40:00,292] 클라이언트 IP: 192.168.0.5 / 허용 네트워크: 192.168.0.0/24
+[2025-05-06 11:40:00,297] 192.168.0.5 - - [06/May/2025 11:40:00] "GET /vote?token=f862b6d7-e99a-43f4-a3cb-775068503e2a HTTP/1.1" 200 -
+[2025-05-06 11:40:00,317] 192.168.0.5 - - [06/May/2025 11:40:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:40:09,166] 192.168.0.4 - - [06/May/2025 11:40:09] "[32mGET /admin/end_vote/6259fae6-51b9-4e78-b1c2-73fb2934db0d HTTP/1.1[0m" 302 -
+[2025-05-06 11:40:09,185] 192.168.0.4 - - [06/May/2025 11:40:09] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:40:09,223] 192.168.0.4 - - [06/May/2025 11:40:09] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:40:11,764] 192.168.0.4 - - [06/May/2025 11:40:11] "[32mGET /admin/cleanup_vote/6259fae6-51b9-4e78-b1c2-73fb2934db0d HTTP/1.1[0m" 302 -
+[2025-05-06 11:40:11,774] 192.168.0.4 - - [06/May/2025 11:40:11] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:40:11,819] 192.168.0.4 - - [06/May/2025 11:40:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:40:13,825] 192.168.0.4 - - [06/May/2025 11:40:13] "[32mGET /admin/cleanup_vote/6259fae6-51b9-4e78-b1c2-73fb2934db0d HTTP/1.1[0m" 302 -
+[2025-05-06 11:40:13,840] 192.168.0.4 - - [06/May/2025 11:40:13] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:40:13,886] 192.168.0.4 - - [06/May/2025 11:40:13] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:40:16,747] 192.168.0.4 - - [06/May/2025 11:40:16] "[32mGET /admin/end_vote/156b31f7-b0cc-4d07-a041-b351840a1ab2 HTTP/1.1[0m" 302 -
+[2025-05-06 11:40:16,769] 192.168.0.4 - - [06/May/2025 11:40:16] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:40:16,802] 192.168.0.4 - - [06/May/2025 11:40:16] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:40:18,739] 192.168.0.4 - - [06/May/2025 11:40:18] "[32mGET /admin/cleanup_vote/156b31f7-b0cc-4d07-a041-b351840a1ab2 HTTP/1.1[0m" 302 -
+[2025-05-06 11:40:18,764] 192.168.0.4 - - [06/May/2025 11:40:18] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:40:18,820] 192.168.0.4 - - [06/May/2025 11:40:18] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:40:44,856]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:40:44,858]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:40:44,858]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:40:44,864]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:40:44,864]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:40:44,865]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 11:40:45,129]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:40:46,063]  * Debugger is active!
+[2025-05-06 11:40:46,069]  * Debugger PIN: 438-957-268
+[2025-05-06 11:40:51,323]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\token.py', reloading
+[2025-05-06 11:40:52,291]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:40:53,051]  * Debugger is active!
+[2025-05-06 11:40:53,056]  * Debugger PIN: 438-957-268
+[2025-05-06 11:40:54,708]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:40:54,892]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:40:55,147]  * Detected change in 'c:\\Projects\\vote_system\\launcher.py', reloading
+[2025-05-06 11:40:55,244]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:40:56,435]  * Debugger is active!
+[2025-05-06 11:40:56,439]  * Debugger PIN: 438-957-268
+[2025-05-06 11:40:56,516]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\idna\\package_data.py', reloading
+[2025-05-06 11:40:56,517]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\urllib3\\util\\request.py', reloading
+[2025-05-06 11:40:56,530]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\urllib3\\util\\retry.py', reloading
+[2025-05-06 11:40:56,540]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\urllib3\\connectionpool.py', reloading
+[2025-05-06 11:40:56,587]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\urllib3\\_collections.py', reloading
+[2025-05-06 11:40:56,608]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\urllib3\\filepost.py', reloading
+[2025-05-06 11:40:56,797]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\urllib3\\poolmanager.py', reloading
+[2025-05-06 11:40:57,038]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\charset_normalizer\\__init__.py', reloading
+[2025-05-06 11:40:57,043]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\charset_normalizer\\api.py', reloading
+[2025-05-06 11:40:57,099]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\charset_normalizer\\models.py', reloading
+[2025-05-06 11:40:57,114]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\charset_normalizer\\utils.py', reloading
+[2025-05-06 11:40:57,132]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\charset_normalizer\\legacy.py', reloading
+[2025-05-06 11:40:57,135]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\charset_normalizer\\version.py', reloading
+[2025-05-06 11:40:57,137]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\chardet\\__init__.py', reloading
+[2025-05-06 11:40:57,152]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\chardet\\universaldetector.py', reloading
+[2025-05-06 11:40:57,560]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:40:58,185]  * Debugger is active!
+[2025-05-06 11:40:58,190]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:00,577]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\cryptography\\__about__.py', reloading
+[2025-05-06 11:41:01,187]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\certifi\\__init__.py', reloading
+[2025-05-06 11:41:01,198]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\certifi\\core.py', reloading
+[2025-05-06 11:41:01,355]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:02,045]  * Debugger is active!
+[2025-05-06 11:41:02,048]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:02,320]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\__init__.py', reloading
+[2025-05-06 11:41:02,321]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\serving.py', reloading
+[2025-05-06 11:41:02,546]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\markupsafe\\__init__.py', reloading
+[2025-05-06 11:41:02,752]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\test.py', reloading
+[2025-05-06 11:41:03,187]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:03,816]  * Debugger is active!
+[2025-05-06 11:41:03,820]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:03,908]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\click\\formatting.py', reloading
+[2025-05-06 11:41:03,918]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\click\\termui.py', reloading
+[2025-05-06 11:41:03,959]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\click\\decorators.py', reloading
+[2025-05-06 11:41:04,169]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\flask\\cli.py', reloading
+[2025-05-06 11:41:04,201]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\blinker\\__init__.py', reloading
+[2025-05-06 11:41:04,202]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\blinker\\base.py', reloading
+[2025-05-06 11:41:04,227]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\flask\\debughelpers.py', reloading
+[2025-05-06 11:41:04,240]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jinja2\\bccache.py', reloading
+[2025-05-06 11:41:04,399]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jinja2\\utils.py', reloading
+[2025-05-06 11:41:04,428]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jinja2\\runtime.py', reloading
+[2025-05-06 11:41:04,468]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jinja2\\exceptions.py', reloading
+[2025-05-06 11:41:04,754]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\jinja2\\loaders.py', reloading
+[2025-05-06 11:41:04,857]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\concurrent\\__init__.py', reloading
+[2025-05-06 11:41:04,949]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:05,964]  * Debugger is active!
+[2025-05-06 11:41:05,969]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:06,066]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\flask\\sansio\\blueprints.py', reloading
+[2025-05-06 11:41:06,145]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\itsdangerous\\__init__.py', reloading
+[2025-05-06 11:41:06,146]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\itsdangerous\\encoding.py', reloading
+[2025-05-06 11:41:06,148]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\itsdangerous\\exc.py', reloading
+[2025-05-06 11:41:06,150]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\itsdangerous\\serializer.py', reloading
+[2025-05-06 11:41:06,163]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\itsdangerous\\signer.py', reloading
+[2025-05-06 11:41:06,171]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\itsdangerous\\timed.py', reloading
+[2025-05-06 11:41:06,181]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\itsdangerous\\url_safe.py', reloading
+[2025-05-06 11:41:06,201]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\flask\\logging.py', reloading
+[2025-05-06 11:41:06,204]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\flask\\testing.py', reloading
+[2025-05-06 11:41:07,088]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:07,613]  * Debugger is active!
+[2025-05-06 11:41:07,616]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:12,888]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\distutils\\__init__.py', reloading
+[2025-05-06 11:41:12,968]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\packaging\\__init__.py', reloading
+[2025-05-06 11:41:13,504]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\tomli\\__init__.py', reloading
+[2025-05-06 11:41:13,505]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\tomli\\_parser.py', reloading
+[2025-05-06 11:41:13,814]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:14,389]  * Debugger is active!
+[2025-05-06 11:41:14,394]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:15,937]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\numpy\\_typing\\__init__.py', reloading
+[2025-05-06 11:41:15,958]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\numpy\\_typing\\_array_like.py', reloading
+[2025-05-06 11:41:16,528]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:17,161]  * Debugger is active!
+[2025-05-06 11:41:17,167]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:17,895]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\numpy\\typing\\__init__.py', reloading
+[2025-05-06 11:41:18,288]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:18,898]  * Debugger is active!
+[2025-05-06 11:41:18,903]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:22,390]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\__init__.py', reloading
+[2025-05-06 11:41:22,393]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_checkers.py', reloading
+[2025-05-06 11:41:22,538]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_config.py', reloading
+[2025-05-06 11:41:22,540]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_functions.py', reloading
+[2025-05-06 11:41:22,548]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_suppression.py', reloading
+[2025-05-06 11:41:22,550]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_exceptions.py', reloading
+[2025-05-06 11:41:22,553]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_memo.py', reloading
+[2025-05-06 11:41:22,554]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_utils.py', reloading
+[2025-05-06 11:41:22,564]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_decorators.py', reloading
+[2025-05-06 11:41:22,606]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\typeguard\\_importhook.py', reloading
+[2025-05-06 11:41:22,778]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\platformdirs\\__init__.py', reloading
+[2025-05-06 11:41:22,786]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\platformdirs\\api.py', reloading
+[2025-05-06 11:41:22,795]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\platformdirs\\version.py', reloading
+[2025-05-06 11:41:23,067]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:23,665]  * Debugger is active!
+[2025-05-06 11:41:23,669]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:26,017]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\config\\__init__.py', reloading
+[2025-05-06 11:41:26,072]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\config\\exceptions.py', reloading
+[2025-05-06 11:41:26,084]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\iniconfig\\__init__.py', reloading
+[2025-05-06 11:41:26,095]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\iniconfig\\exceptions.py', reloading
+[2025-05-06 11:41:26,097]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\iniconfig\\_parse.py', reloading
+[2025-05-06 11:41:26,145]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\config\\argparsing.py', reloading
+[2025-05-06 11:41:26,184]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\fixtures.py', reloading
+[2025-05-06 11:41:26,279]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\nodes.py', reloading
+[2025-05-06 11:41:26,296]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\mark\\__init__.py', reloading
+[2025-05-06 11:41:26,312]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\mark\\structures.py', reloading
+[2025-05-06 11:41:26,331]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\stash.py', reloading
+[2025-05-06 11:41:26,334]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\main.py', reloading
+[2025-05-06 11:41:26,355]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\reports.py', reloading
+[2025-05-06 11:41:26,370]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\runner.py', reloading
+[2025-05-06 11:41:26,385]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\exceptiongroup\\__init__.py', reloading
+[2025-05-06 11:41:26,386]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\exceptiongroup\\_catch.py', reloading
+[2025-05-06 11:41:26,389]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\exceptiongroup\\_exceptions.py', reloading
+[2025-05-06 11:41:26,400]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\exceptiongroup\\_formatting.py', reloading
+[2025-05-06 11:41:26,416]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\exceptiongroup\\_suppress.py', reloading
+[2025-05-06 11:41:26,417]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\terminal.py', reloading
+[2025-05-06 11:41:26,470]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\assertion\\__init__.py', reloading
+[2025-05-06 11:41:26,551]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\python_api.py', reloading
+[2025-05-06 11:41:26,670]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\python.py', reloading
+[2025-05-06 11:41:26,720]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\cacheprovider.py', reloading
+[2025-05-06 11:41:26,771]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\capture.py', reloading
+[2025-05-06 11:41:26,831]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:27,360]  * Debugger is active!
+[2025-05-06 11:41:27,365]  * Debugger PIN: 438-957-268
+[2025-05-06 11:41:27,712]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\test\\__init__.py', reloading
+[2025-05-06 11:41:28,281]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\_pytest\\junitxml.py', reloading
+[2025-05-06 11:41:28,461]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:41:28,998]  * Debugger is active!
+[2025-05-06 11:41:29,002]  * Debugger PIN: 438-957-268
+[2025-05-06 11:43:18,460]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc.2458976794224', reloading
+[2025-05-06 11:43:18,461]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 11:43:18,463]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc.2458976939568', reloading
+[2025-05-06 11:43:18,465]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:43:18,465]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:43:18,471]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc.2458976932528', reloading
+[2025-05-06 11:43:18,472]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:43:18,473]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:43:18,474]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:43:18,477]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc.2458976930992', reloading
+[2025-05-06 11:43:18,478]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:43:18,479]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:43:18,481]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc.2458976943792', reloading
+[2025-05-06 11:43:18,481]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:43:18,483]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:43:19,055]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:43:19,750]  * Debugger is active!
+[2025-05-06 11:43:19,764]  * Debugger PIN: 438-957-268
+[2025-05-06 11:43:56,396]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\pytest_cov\\compat.py', reloading
+[2025-05-06 11:43:56,456]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:43:57,013]  * Debugger is active!
+[2025-05-06 11:43:57,021]  * Debugger PIN: 438-957-268
+[2025-05-06 11:44:06,110]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:44:06,111]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:44:06,111]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:44:06,213]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:44:07,010]  * Debugger is active!
+[2025-05-06 11:44:07,014]  * Debugger PIN: 438-957-268
+[2025-05-06 11:44:17,786]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:44:17,787]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:44:17,787]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:44:17,788]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:44:17,788]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:44:17,788]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 11:44:18,251]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:44:19,145]  * Debugger is active!
+[2025-05-06 11:44:19,152]  * Debugger PIN: 438-957-268
+[2025-05-06 11:44:21,336]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\typing.py', reloading
+[2025-05-06 11:44:22,321]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:44:23,199]  * Debugger is active!
+[2025-05-06 11:44:23,205]  * Debugger PIN: 438-957-268
+[2025-05-06 11:44:24,346] 192.168.0.4 - - [06/May/2025 11:44:24] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:44:24,435] 192.168.0.4 - - [06/May/2025 11:44:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:44:25,694]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:44:25,775]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:44:26,408]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:44:27,096]  * Debugger is active!
+[2025-05-06 11:44:27,101]  * Debugger PIN: 438-957-268
+[2025-05-06 11:44:28,825] 192.168.0.4 - - [06/May/2025 11:44:28] "[32mPOST /admin/create_agenda HTTP/1.1[0m" 302 -
+[2025-05-06 11:44:28,873] 192.168.0.4 - - [06/May/2025 11:44:28] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:44:29,029] 192.168.0.4 - - [06/May/2025 11:44:29] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:44:32,223] 192.168.0.4 - - [06/May/2025 11:44:32] "[32mPOST /admin/create_vote HTTP/1.1[0m" 302 -
+[2025-05-06 11:44:32,243] 192.168.0.4 - - [06/May/2025 11:44:32] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:44:32,275] 192.168.0.4 - - [06/May/2025 11:44:32] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:44:34,131] 192.168.0.4 - - [06/May/2025 11:44:34] "[32mGET /admin/cleanup_vote/33abe4c8-a6b4-4012-bf9c-01259cfd979e HTTP/1.1[0m" 302 -
+[2025-05-06 11:44:34,168] 192.168.0.4 - - [06/May/2025 11:44:34] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:44:34,213] 192.168.0.4 - - [06/May/2025 11:44:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:44:57,276] 192.168.0.4 - - [06/May/2025 11:44:57] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:44:57,324] 192.168.0.4 - - [06/May/2025 11:44:57] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:45:05,923] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:45:05,923] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:45:05,941]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:45:06,532]  * Debugger is active!
+[2025-05-06 11:45:06,538]  * Debugger PIN: 438-957-268
+[2025-05-06 11:45:08,144] 192.168.0.4 - - [06/May/2025 11:45:08] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:45:08,239] 192.168.0.4 - - [06/May/2025 11:45:08] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:45:10,858]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:10,859]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:10,859]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:11,011]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:11,014]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:11,257]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:11,258]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:11,259]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:45:11,750]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:45:12,384]  * Debugger is active!
+[2025-05-06 11:45:12,391]  * Debugger PIN: 438-957-268
+[2025-05-06 11:45:13,820] 192.168.0.4 - - [06/May/2025 11:45:13] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:45:13,951] 192.168.0.4 - - [06/May/2025 11:45:13] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:45:51,312]  * Detected change in 'C:\\Users\\USER\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\isolated\\_child.py', reloading
+[2025-05-06 11:45:52,285]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:45:53,019]  * Debugger is active!
+[2025-05-06 11:45:53,026]  * Debugger PIN: 438-957-268
+[2025-05-06 11:46:24,616]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:46:24,618]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:46:24,619]  * Detected change in 'c:\\Projects\\vote_system\\server.py', reloading
+[2025-05-06 11:46:24,804]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:46:25,568]  * Debugger is active!
+[2025-05-06 11:46:25,577]  * Debugger PIN: 438-957-268
+[2025-05-06 11:46:52,048]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\struct.py', reloading
+[2025-05-06 11:46:52,050]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc.1825178335504', reloading
+[2025-05-06 11:46:52,051]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 11:46:52,052]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 11:46:52,058]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc.1825177609776', reloading
+[2025-05-06 11:46:52,059]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:46:52,065]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc.1825177601840', reloading
+[2025-05-06 11:46:52,069]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:46:52,077]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc.1825177607600', reloading
+[2025-05-06 11:46:52,081]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:46:52,082]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:46:52,084]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc.1825177607344', reloading
+[2025-05-06 11:46:52,085]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:46:53,293]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:46:53,944]  * Debugger is active!
+[2025-05-06 11:46:53,951]  * Debugger PIN: 438-957-268
+[2025-05-06 11:47:10,975] 192.168.0.4 - - [06/May/2025 11:47:10] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:47:11,080] 192.168.0.4 - - [06/May/2025 11:47:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:47:16,324] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:47:16,324] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:47:16,346]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:47:17,179]  * Debugger is active!
+[2025-05-06 11:47:17,185]  * Debugger PIN: 438-957-268
+[2025-05-06 11:47:17,827] 192.168.0.4 - - [06/May/2025 11:47:17] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:47:17,914] 192.168.0.4 - - [06/May/2025 11:47:17] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:47:20,851] 192.168.0.4 - - [06/May/2025 11:47:20] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:47:20,895] 192.168.0.4 - - [06/May/2025 11:47:20] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:47:37,230] 192.168.0.4 - - [06/May/2025 11:47:37] "[32mPOST /admin/create_agenda HTTP/1.1[0m" 302 -
+[2025-05-06 11:47:37,279] 192.168.0.4 - - [06/May/2025 11:47:37] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:47:37,324] 192.168.0.4 - - [06/May/2025 11:47:37] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:49:01,619] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.4:5000
+[2025-05-06 11:49:01,620] [33mPress CTRL+C to quit[0m
+[2025-05-06 11:49:01,635]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:49:02,179]  * Debugger is active!
+[2025-05-06 11:49:02,184]  * Debugger PIN: 438-957-268
+[2025-05-06 11:49:07,269] 192.168.56.1 - - [06/May/2025 11:49:07] "GET /login HTTP/1.1" 200 -
+[2025-05-06 11:49:07,364] 192.168.56.1 - - [06/May/2025 11:49:07] "GET /static/style.css HTTP/1.1" 200 -
+[2025-05-06 11:49:07,777] 192.168.56.1 - - [06/May/2025 11:49:07] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[2025-05-06 11:49:12,160] 192.168.56.1 - - [06/May/2025 11:49:12] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-05-06 11:49:12,187] 192.168.56.1 - - [06/May/2025 11:49:12] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:49:12,224] 192.168.56.1 - - [06/May/2025 11:49:12] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:49:15,305] 192.168.56.1 - - [06/May/2025 11:49:15] "[32mGET /admin/delete_agenda/891f0d40-3197-4bc1-a83d-6c256e31f981 HTTP/1.1[0m" 302 -
+[2025-05-06 11:49:15,317] 192.168.56.1 - - [06/May/2025 11:49:15] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:49:15,340] 192.168.56.1 - - [06/May/2025 11:49:15] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:49:17,109] 192.168.56.1 - - [06/May/2025 11:49:17] "[32mGET /admin/delete_agenda/81af0440-de71-40e0-b01e-8d2b8470f9d3 HTTP/1.1[0m" 302 -
+[2025-05-06 11:49:17,131] 192.168.56.1 - - [06/May/2025 11:49:17] "GET /admin HTTP/1.1" 200 -
+[2025-05-06 11:49:17,169] 192.168.56.1 - - [06/May/2025 11:49:17] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+[2025-05-06 11:49:23,704]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:49:23,705]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod01_archive.pyc', reloading
+[2025-05-06 11:49:23,705]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod02_importers.pyc', reloading
+[2025-05-06 11:49:23,705]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod03_ctypes.pyc', reloading
+[2025-05-06 11:49:23,706]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\pyimod04_pywin32.pyc', reloading
+[2025-05-06 11:49:23,706]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\localpycs\\struct.pyc', reloading
+[2025-05-06 11:49:24,755]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:49:25,506]  * Debugger is active!
+[2025-05-06 11:49:25,513]  * Debugger PIN: 438-957-268
+[2025-05-06 11:49:30,156]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:49:30,251]  * Detected change in 'c:\\Projects\\vote_system\\build\\vote_system\\base_library.zip', reloading
+[2025-05-06 11:49:30,726]  * Restarting with watchdog (windowsapi)
+[2025-05-06 11:49:31,336]  * Debugger is active!
+[2025-05-06 11:49:31,342]  * Debugger PIN: 438-957-268

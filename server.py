@@ -1,25 +1,29 @@
-from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session
+from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session, Response
 import sqlite3
 import uuid
 import qrcode
 import io
-from zipfile import ZipFile
+from zipfile import ZipFile, ZIP_DEFLATED
 import os
 from datetime import datetime
 from functools import wraps
 from dotenv import load_dotenv
-import socket
 import ipaddress
 import netifaces
 import csv
 import sys
 import logging
+import tempfile
+from PIL import ImageDraw, ImageFont
+from urllib.parse import quote 
+
+
 
 log_path = os.path.join('log', 'server_runtime.log')
 logging.basicConfig(
     level=logging.INFO,
     format='[%(asctime)s] %(message)s',
-    handlers=[logging.FileHandler(log_path), logging.StreamHandler()]
+    handlers=[logging.FileHandler(log_path, encoding="utf-8"), logging.StreamHandler()]
 )
 
 # Load environment variables from .env file
@@ -180,6 +184,7 @@ if not os.path.exists('data.db'):
     from scripts.init_db import init_db
     init_db()
 DB_PATH = os.path.join(os.path.dirname(__file__), 'data.db')
+print("### DB in use: ", DB_PATH)
 
 # DB 초기화
 def init_db():
@@ -194,7 +199,8 @@ def init_db():
         cur.execute("""
         CREATE TABLE IF NOT EXISTS tokens (
             token TEXT PRIMARY KEY,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            serial_number INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )""")
         cur.execute("""
         CREATE TABLE IF NOT EXISTS vote_agendas (
@@ -235,29 +241,50 @@ def get_meeting_title():
     return row["value"] if row else "회의명 미설정"
 
 def generate_qr_zip(tokens):
-    """Generate a ZIP file containing QR codes for tokens"""
+    print("QR ZIP 생성 시작")
     local_ip = get_local_ip()
     memory_file = io.BytesIO()
+
     with ZipFile(memory_file, 'w') as zipf:
-        for i, token in enumerate(tokens, 1):
-            # 로컬 IP 기반 URL 생성
+        for token, serial in tokens:
+            print(f"QR 생성 중: {serial=}")
             voting_url = f"http://{local_ip}:5000/vote?token={token}"
-            
-            # Generate QR code with the full URL
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
             qr.add_data(voting_url)
             qr.make(fit=True)
-            img = qr.make_image(fill_color="black", back_color="white")
-            
-            # Save QR code to memory
-            img_byte_arr = io.BytesIO()
-            img.save(img_byte_arr, format='PNG')
-            img_byte_arr = img_byte_arr.getvalue()
-            
-            # Add to ZIP
-            zipf.writestr(f'token_{i:03d}.png', img_byte_arr)
-    
+            img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+
+            try:
+                font_path = resource_path("static/NanumGothic.ttf")
+                font = ImageFont.truetype(font_path, 20)
+            except Exception as font_err:
+                print(f"폰트 로딩 실패: {font_err}")
+                font = ImageFont.load_default()
+
+            try:
+                draw = ImageDraw.Draw(img)
+                text = f"{serial:03d}"
+                bbox = draw.textbbox((0, 0), text, font=font)
+                text_width = bbox[2] - bbox[0]
+                text_height = bbox[3] - bbox[1]
+                img_width, img_height = img.size
+                draw.text(
+                    ((img_width - text_width) / 2, img_height - text_height - 10),
+                    text, fill="black", font=font
+                )
+            except Exception as draw_err:
+                print(f"텍스트 추가 실패: {draw_err}")
+
+            try:
+                img_byte_arr = io.BytesIO()
+                img.save(img_byte_arr, format='PNG')
+                img_byte_arr.seek(0)
+                zipf.writestr(f'token_{serial:03d}.png', img_byte_arr.read())
+            except Exception as zip_err:
+                print(f"ZIP에 쓰기 실패: {zip_err}")
+
     memory_file.seek(0)
+    print("QR ZIP 생성 완료")
     return memory_file
 
 @app.route('/')
@@ -267,33 +294,60 @@ def index():
 @app.route('/admin/generate_tokens', methods=['POST'])
 @login_required
 def generate_tokens():
-    count = int(request.form['count'])
-    if count <= 0:
-        flash('생성할 토큰 수는 1 이상이어야 합니다.', 'error')
+    print("토큰 생성중")
+    try:
+        count = int(request.form['count'])
+        if count <= 0:
+            flash('생성할 토큰 수는 1 이상이어야 합니다.', 'error')
+            return redirect(url_for('admin_dashboard'))
+    except (KeyError, ValueError):
+        flash('수량이 잘못되었습니다.', 'error')
         return redirect(url_for('admin_dashboard'))
-    
+
     tokens = []
     conn = get_db_connection()
     try:
-        for _ in range(count):
-            token = str(uuid.uuid4())
-            conn.execute('''
-                INSERT INTO tokens (token, created_at)
-                VALUES (?, datetime('now'))
-            ''', (token,))
-            tokens.append(token)
+        # ① 토큰·시리얼 DB 저장
+        cur = conn.execute("SELECT COALESCE(MAX(serial_number), 0) FROM tokens")
+        current_max = cur.fetchone()[0]
+
+        for i in range(count):
+            serial = current_max + i + 1
+            token  = str(uuid.uuid4())
+            conn.execute(
+                "INSERT INTO tokens (token, serial_number, created_at) "
+                "VALUES (?, ?, datetime('now'))",
+                (token, serial)
+            )
+            tokens.append((token, serial))
         conn.commit()
-        
-        # Generate and return ZIP file
-        zip_file = generate_qr_zip(tokens)
-        return send_file(
-            zip_file,
-            mimetype='application/zip',
+
+        # ② QR → ZIP 메모리 생성
+        zip_bytes = generate_qr_zip(tokens)
+        zip_bytes.seek(0)                       # **반드시 한 번만!**
+
+        # ③ 파일 전송
+        filename          = f"voting_tokens_{datetime.now():%Y%m%d_%H%M%S}.zip"
+        encoded_filename  = quote(filename)
+
+        # Flask ≥2.0 : download_name 만 주면 Content-Disposition 자동 완성
+        response = send_file(
+            zip_bytes,
+            mimetype="application/zip",
             as_attachment=True,
-            download_name=f'voting_tokens_{datetime.now().strftime("%Y%m%d_%H%M%S")}.zip'
+            download_name=filename
         )
-    except sqlite3.Error as e:
-        flash(f'토큰 생성 중 오류가 발생했습니다: {str(e)}', 'error')
+
+        # (Flask 1.x 호환용) 직접 헤더를 건드리고 싶다면 ↓ 처럼 덮어쓰기
+        response.headers["Content-Disposition"] = (
+            f"attachment; filename*=UTF-8''{encoded_filename}"
+        )
+        return response
+
+    except Exception as e:
+        conn.rollback()
+        flash(f"토큰 생성 중 오류 발생: {e}", "error")
+        logging.exception("token generation failed")
         return redirect(url_for('admin_dashboard'))
     finally:
         conn.close()
@@ -381,10 +435,10 @@ def admin_dashboard():
     conn = get_db_connection()
     try:
         # 전체 안건 목록
-        agenda_rows = conn.execute('SELECT * FROM vote_agendas ORDER BY created_at DESC').fetchall()
+        agenda_rows = conn.execute('SELECT * FROM vote_agendas ORDER BY created_at ASC').fetchall()
         
         # 모든 표결 항목
-        vote_rows = conn.execute('SELECT * FROM vote_items ORDER BY created_at DESC').fetchall()
+        vote_rows = conn.execute('SELECT * FROM vote_items ORDER BY agenda_id ASC, created_at ASC').fetchall()
 
         # 안건에 따라 표결 항목 묶기
         agenda_dict = {}
@@ -457,7 +511,7 @@ def vote():
         token_row = conn.execute("SELECT * FROM tokens WHERE token = ?", (token,)).fetchone()
         if not token_row:
             return render_template("vote.html", grouped_votes=[], token=token, error="유효하지 않은 토큰입니다.")
-
+        serial_number = token_row['serial_number']
         # 활성 vote_items + 연결된 안건 불러오기
         vote_rows = conn.execute('''
             SELECT va.agenda_id, va.title as agenda_title,
@@ -465,7 +519,7 @@ def vote():
             FROM vote_items vi
             JOIN vote_agendas va ON vi.agenda_id = va.agenda_id
             WHERE vi.is_active = 1
-            ORDER BY va.created_at DESC, vi.created_at ASC
+            ORDER BY va.created_at ASC, vi.created_at ASC
         ''').fetchall()
 
         # grouped_votes 형태로 변환
@@ -484,7 +538,7 @@ def vote():
                 'options': row['options']
             })
 
-        return render_template("vote.html", meeting_title=get_meeting_title(), token=token, grouped_votes=list(grouped.values()))
+        return render_template("vote.html", meeting_title=get_meeting_title(), token=token, serial_number=serial_number, grouped_votes=list(grouped.values()))
     finally:
         conn.close()
 
@@ -507,18 +561,16 @@ def log_vote(vote_id, token, choice):
 # 사용자: 투표 제출
 @app.route('/submit_vote', methods=['POST'])
 def submit_vote():
-    # 네트워크 접근 권한 확인
     allowed, message = check_network_access()
     if not allowed:
         return message, 403
-    
+
     token = request.form.get('token')
     if not token:
         return "토큰이 누락되었습니다.", 400
 
     conn = get_db_connection()
     try:
-        # 1. 토큰 유효성 확인
         token_row = conn.execute(
             "SELECT token FROM tokens WHERE token = ?", (token,)
         ).fetchone()
@@ -526,36 +578,65 @@ def submit_vote():
             flash("유효하지 않거나 만료된 토큰입니다.", "error")
             return redirect(url_for("vote", token=token))
 
-        # 2. 모든 choice_* 항목을 순회하며 투표 삽입
+        # 기존 투표 내역 미리 조회
+        voted_rows = conn.execute(
+            "SELECT vote_id FROM votes WHERE token = ?", (token,)
+        ).fetchall()
+        already_voted_ids = set(row["vote_id"] for row in voted_rows)
+
+        success_count = 0
+        duplicate_count = 0
+        insert_queue = []
+
         for key in request.form:
             if key.startswith("choice_"):
                 vote_id = key.split("_", 1)[1]
                 choice = request.form.get(key)
-
-                # 중복 투표 확인
-                already_voted = conn.execute(
-                    "SELECT 1 FROM votes WHERE vote_id = ? AND token = ?",
-                    (vote_id, token)
-                ).fetchone()
-                if already_voted:
-                    flash(f"이미 투표한 항목이 있습니다. (vote_id={vote_id})", "error")
+                if not choice:
                     continue
 
-                # 투표 삽입
+                if vote_id in already_voted_ids:
+                    duplicate_count += 1
+                    continue
+
+                insert_queue.append((vote_id, token, choice))
+
+        try:
+            for vote_id, token, choice in insert_queue:
                 conn.execute(
                     "INSERT INTO votes (vote_id, token, choice) VALUES (?, ?, ?)",
                     (vote_id, token, choice)
                 )
                 log_vote(vote_id, token, choice)
+                success_count += 1
+            conn.commit()
+        except sqlite3.IntegrityError as e:
+            conn.rollback()
+            logging.error(f"투표 삽입 실패: {str(e)}")
+            flash("투표 중 오류가 발생하여 일부 항목이 저장되지 않았습니다.", "error")
+            return redirect(url_for("vote", token=token))
 
-        conn.commit()
-        flash("모든 투표가 성공적으로 제출되었습니다.", "success")
+
+        # 메시지 출력
+        if success_count > 0:
+            conn.commit()
+            flash(f"{success_count}개 항목에 투표가 성공적으로 제출되었습니다.", "success")
+
+        if duplicate_count > 0:
+            flash(f"{duplicate_count}개 항목은 이미 투표하여 제외되었습니다.", "info")
+
+        if success_count == 0 and duplicate_count == 0:
+            flash("선택된 항목이 없습니다.", "warning")
+
+
         return redirect(url_for("vote", token=token))
 
     except Exception as e:
+        conn.rollback()
         return f"투표 처리 중 오류 발생: {str(e)}", 500
     finally:
         conn.close()
+
 @app.route('/admin/start_vote/<vote_id>')
 @login_required
 def start_vote(vote_id):
@@ -599,31 +680,70 @@ def cleanup_vote(vote_id):
     conn = get_db_connection()
     try:
         # Get all tokens used in this vote
-        used_tokens = conn.execute('''
-            SELECT DISTINCT token 
-            FROM votes 
-            WHERE vote_id = ?
-        ''', (vote_id,)).fetchall()
-        
-        # Delete used tokens
-        for token in used_tokens:
-            conn.execute('''
-                DELETE FROM tokens 
-                WHERE id = ?
-            ''', (token['token'],))
-        
-        # Delete the vote item
-        conn.execute('''
-            DELETE FROM vote_items 
-            WHERE vote_id = ?
-        ''', (vote_id,))
-        
+        conn.execute(
+            'DELETE FROM votes WHERE vote_id = ?',
+            (vote_id,)
+        )
+
+        # ② 표결 자체 제거
+        conn.execute(
+            'DELETE FROM vote_items WHERE vote_id = ?',
+            (vote_id,)
+        )
+
         conn.commit()
-        flash('Vote and related tokens cleaned up successfully!', 'success')
+        flash('표결이 삭제되었습니다.', 'success')
+
     except sqlite3.Error as e:
-        flash(f'Error cleaning up vote: {str(e)}', 'error')
+        conn.rollback()
+        flash(f'표결 삭제 중 오류: {e}', 'error')
+
     finally:
         conn.close()
+
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_agenda/<agenda_id>')
+@login_required
+def delete_agenda(agenda_id):
+    conn = get_db_connection()
+    try:
+        # ① 먼저 이 안건에 속한 vote_id 목록을 구함
+        vote_id_rows = conn.execute(
+            'SELECT vote_id FROM vote_items WHERE agenda_id = ?',
+            (agenda_id,)
+        ).fetchall()
+        vote_ids = [row['vote_id'] for row in vote_id_rows]
+
+        # ② vote_id 들에 남아 있는 투표 기록 삭제
+        if vote_ids:
+            conn.executemany(
+                'DELETE FROM votes WHERE vote_id = ?',
+                [(vid,) for vid in vote_ids]
+            )
+
+        # ③ vote_items 삭제
+        conn.execute(
+            'DELETE FROM vote_items WHERE agenda_id = ?',
+            (agenda_id,)
+        )
+
+        # ④ 마지막으로 안건 자체 삭제
+        conn.execute(
+            'DELETE FROM vote_agendas WHERE agenda_id = ?',
+            (agenda_id,)
+        )
+
+        conn.commit()
+        flash('안건과 관련 표결이 모두 삭제되었습니다.', 'success')
+
+    except sqlite3.Error as e:
+        conn.rollback()
+        flash(f'안건 삭제 중 오류: {e}', 'error')
+
+    finally:
+        conn.close()
+
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/delete_tokens', methods=['POST'])
@@ -631,10 +751,10 @@ def cleanup_vote(vote_id):
 def delete_tokens():
     conn = get_db_connection()
     try:
-        # 사용되지 않은 모든 토큰 삭제
-        conn.execute('DELETE FROM tokens WHERE token = ?')
+        # 모든 토큰 삭제
+        conn.execute('DELETE FROM tokens')
         conn.commit()
-        flash('미사용 의결권이 모두 삭제되었습니다.', 'success')
+        flash('모든 의결권이 삭제되었습니다.', 'success')
     except Exception as e:
         conn.rollback()
         flash('의결권 삭제 중 오류가 발생했습니다.', 'error')

@@ -56,6 +56,14 @@
     <div class="section">
         <h2>안건: {{ agenda.title }}</h2>
 
+        <div class="controls" style="margin-bottom:1rem;">
+            <a href="{{ url_for('delete_agenda', agenda_id=agenda.agenda_id) }}"
+               class="btn btn-danger"
+               onclick="return confirm('안건과 관련된 모든 표결·투표 기록이 삭제됩니다. 진행할까요?');">
+               안건 삭제
+            </a>
+        </div>
+
         {% for vote in agenda['items'] %}
         <div class="vote-item">
             <h3>{{ vote.title }}</h3>
@@ -72,7 +80,7 @@
                 {% else %}
                 <a href="{{ url_for('end_vote', vote_id=vote.vote_id) }}" class="btn">표결 종료</a>
                 {% endif %}
-            </div>
+            </div>            
         </div>
         {% endfor %}
     </div>
@@ -81,17 +89,17 @@
     <!-- 의결권 관리 -->
     <div class="section">
         <h2>의결권 관리</h2>
+    
         <form action="{{ url_for('generate_tokens') }}" method="post">
-            <label for="token_count">생성할 수량:</label>
-            <input type="number" name="count" id="token_count" required>
-            <button type="submit">의결권 생성</button>
-        </form>
-
+            <input type="number" name="count" required>
+            <button type="submit">의결권 생성 및 다운로드</button>
+          </form>          
+        
         <form action="{{ url_for('delete_tokens') }}" method="post" style="margin-top: 10px;">
-            <button type="submit" onclick="return confirm('미사용 의결권을 모두 삭제하시겠습니까?')">미사용 의결권 삭제</button>
+            <button type="submit" onclick="return confirm('모든 의결권을 삭제하시겠습니까?')">모든 의결권 삭제</button>
         </form>
     </div>
-
+        
     <!-- 통계 -->
     <div class="section">
         <h2>통계</h2>

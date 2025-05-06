@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="token-display" style="position: absolute; top: 10px; right: 20px; font-size: 1.1em; font-weight: bold;">
+    비표번호: {{ serial_number }}
+</div>
+    
 <div class="container">
     <!-- 회의 제목 -->
     <h1 class="meeting-title">{{ meeting_title }}</h1>
@@ -22,7 +26,7 @@
             {% for vote in agenda['items'] %}
             <div class="form-group">
                 <label for="choice_{{ vote.vote_id }}">
-                    <strong>{{ vote.subtitle }}</strong>
+                    <span class="vote-title">{{ vote.subtitle }}</span>
                 </label>
                 <div class="vote-options">
                     {% for option in vote.options.split(',') %}

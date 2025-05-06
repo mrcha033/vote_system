@@ -239,6 +239,11 @@ button:hover {
     gap: 15px;
 }
 
+.vote-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 .vote-item {
     background-color: #f8f9fa;
     padding: 15px;
