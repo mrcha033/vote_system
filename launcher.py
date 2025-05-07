@@ -509,7 +509,7 @@ class VoteLauncher(QMainWindow):
     def load_current_password(self):
         env_path = os.path.join(os.getcwd(), '.env')
         if os.path.exists(env_path):
-            with open(env_path, 'r') as f:
+            with open(env_path, 'r', encoding="utf-8") as f:
                 for line in f:
                     if line.startswith("ADMIN_PASSWORD="):
                         pw = line.strip().split("=", 1)[1]
