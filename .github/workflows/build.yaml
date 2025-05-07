@@ -115,17 +115,17 @@ jobs:
           cp -R "$VENV_DIR" "$DIST/$VENV_DIR"
 
           cat > "$DIST/.env" <<EOF
-ADMIN_PASSWORD=changeme123
-EOF
+          ADMIN_PASSWORD=changeme123
+          EOF
 
           # 간단한 .app 런처
           mkdir -p "$DIST/VoteSystemLauncher.app/Contents/MacOS"
           cat > "$DIST/VoteSystemLauncher.app/Contents/MacOS/VoteSystemLauncher" <<'SH'
-#!/bin/bash
-cd "$(dirname "$0")"/../../
-source venv/bin/activate
-python3 launcher.py
-SH
+          #!/bin/bash
+          cd "$(dirname "$0")"/../../
+          source venv/bin/activate
+          python3 launcher.py
+          SH
           chmod +x "$DIST/VoteSystemLauncher.app/Contents/MacOS/VoteSystemLauncher"
 
           # Info.plist
