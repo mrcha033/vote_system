@@ -32,8 +32,8 @@ jobs:
             qrcode \
             netifaces \
             requests \
-            pillow \            #  ← 추가 (대문자 Pillow도 OK)
-            PyQt5==5.15.*
+            pillow \
+            "PyQt5==5.15.*"   # ← 마지막 줄엔 \ 없이 따옴표로 감싸도 OK
 
       - name: Prepare environment
         run: |
