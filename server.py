@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session, Response
+from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session, Response, abort
 import sqlite3
 import uuid
 import qrcode
@@ -114,29 +114,11 @@ def calculate_network_range(ip, netmask):
         return None
 
 def get_local_ip():
-    """실제 유선/무선 인터페이스의 로컬 IP 주소를 가져옵니다."""
-    static_ip = os.environ.get("STATIC_SERVER_IP")
-    if static_ip:
-        return static_ip
-    try:
-        for iface in netifaces.interfaces():
-            if "VirtualBox" in iface or "VMware" in iface or "vEthernet" in iface or "Loopback" in iface:
-                continue  # 가상 인터페이스 제외
-            addrs = netifaces.ifaddresses(iface)
-            if netifaces.AF_INET in addrs:
-                for entry in addrs[netifaces.AF_INET]:
-                    ip = entry.get('addr')
-                    if ip and ipaddress.ip_address(ip).is_private and not ip.startswith("192.168.56."):
-                        return ip
-    except:
-        pass
-    return "127.0.0.1"
+    return os.environ.get("STATIC_SERVER_IP", "127.0.0.1")
 
-ip, netmask = get_network_info()
-if ip and netmask:
-    ALLOWED_NETWORK = calculate_network_range(ip, netmask)
-else:
-    ALLOWED_NETWORK = "192.168.1.0/24"  # fallback
+ip = os.environ.get("STATIC_SERVER_IP", "127.0.0.1")
+netmask = os.environ.get("SUBNET_MASK", "127.0.0.1")
+ALLOWED_NETWORK = os.environ.get("ALLOWED_NETWORK", "192.168.1.0/24")
 print(f"허용된 네트워크: {ALLOWED_NETWORK}")
 
 def is_allowed_network(ip):
@@ -147,6 +129,12 @@ def is_allowed_network(ip):
         return client_ip in network
     except ValueError:
         return False
+    
+@app.before_request
+def check_ip():
+    client_ip = request.remote_addr
+    if not is_allowed_network(client_ip):
+        abort(403)
 
 def check_network_access():
     """네트워크 접근 권한을 확인합니다."""

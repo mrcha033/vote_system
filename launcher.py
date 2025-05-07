@@ -18,6 +18,7 @@ from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt5.QtGui import QFont, QIcon, QTextCursor
 from flask import Flask
 from server import app as flask_app
+from server import get_local_ip, get_network_info
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import threading
@@ -26,58 +27,62 @@ import socket
 import ipaddress
 import netifaces
 
-def get_local_ip():
-    """실제 유선/무선 인터페이스의 로컬 IP 주소를 가져옵니다."""
-    try:
-        for iface in netifaces.interfaces():
-            if "VirtualBox" in iface or "VMware" in iface or "vEthernet" in iface or "Loopback" in iface:
-                continue  # 가상 인터페이스 제외
-            addrs = netifaces.ifaddresses(iface)
-            if netifaces.AF_INET in addrs:
-                for entry in addrs[netifaces.AF_INET]:
-                    ip = entry.get('addr')
-                    if ip and ipaddress.ip_address(ip).is_private and not ip.startswith("192.168.56."):
-                        return ip
-    except:
-        pass
-    return "127.0.0.1"
-
 def is_private_ip(ip):
     try:
         return ipaddress.ip_address(ip).is_private
     except ValueError:
         return False
+    
+def set_static_ip():
+    if platform.system() == "Windows":
+        try:
+            adapter_name = "Wi-Fi"  # 어댑터 이름은 상황에 따라 변경될 수 있음
+            ip = "165.132.176.34"
+            netmask = "255.255.252.0"
+            gateway = "165.132.176.1"
+            dns1 = "165.132.10.21"
+            dns2 = "165.132.5.21"
 
-def get_network_info():
-    """기본 게이트웨이 인터페이스의 IP 및 넷마스크를 반환 (모든 인터페이스에서 시도)"""
-    try:
-        gws = netifaces.gateways()
-        default_iface = gws.get('default', {}).get(netifaces.AF_INET, [None])[1]
+            subprocess.run([
+                "netsh", "interface", "ip", "set", "address",
+                f"name={adapter_name}", "static", ip, netmask, gateway
+            ], shell=True, check=True)
 
-        if default_iface:
-            addrs = netifaces.ifaddresses(default_iface)
-            inet = addrs.get(netifaces.AF_INET)
-            if inet:
-                for addr in inet:
-                    ip = addr.get("addr")
-                    netmask = addr.get("netmask")
-                    if ip and netmask and ipaddress.ip_address(ip).is_private:
-                        return ip, netmask
+            subprocess.run([
+                "netsh", "interface", "ip", "set", "dns",
+                f"name={adapter_name}", "static", dns1, "primary"
+            ], shell=True, check=True)
 
-        # fallback: 모든 인터페이스 순회
-        for iface in netifaces.interfaces():
-            addrs = netifaces.ifaddresses(iface)
-            inet = addrs.get(netifaces.AF_INET)
-            if not inet:
-                continue
-            for addr in inet:
-                ip = addr.get("addr")
-                netmask = addr.get("netmask")
-                if ip and netmask and ipaddress.ip_address(ip).is_private:
-                    return ip, netmask
-    except Exception as e:
-        print(f"[!] 네트워크 정보 가져오기 실패: {e}")
-    return None, None
+            subprocess.run([
+                "netsh", "interface", "ip", "add", "dns",
+                f"name={adapter_name}", dns2, "index=2"
+            ], shell=True, check=True)
+
+            print("[✓] 고정 IP 설정 완료")
+        except Exception as e:
+            print(f"[!] 고정 IP 설정 실패: {e}")
+    
+    if platform.system() =="Darwin":
+        try:
+            adapter_name = "Wi-Fi"
+            ip = "165.132.176.34"
+            netmask = "255.255.252.0"
+            gateway = "165.132.176.1"
+            dns1 = "165.132.10.21"
+            dns2 = "165.132.5.21"
+
+            # osascript로 관리자 권한 요청
+            script = f'''
+            do shell script "
+                networksetup -setmanual '{adapter_name}' {ip} {netmask} {gateway} &&
+                networksetup -setdnsservers '{adapter_name}' {dns1} {dns2}
+            " with administrator privileges
+            '''
+            subprocess.run(["osascript", "-e", script], check=True)
+
+            print("[✓] 고정 IP 설정 완료 (macOS)")
+        except Exception as e:
+            print(f"[!] 고정 IP 설정 실패 (macOS): {e}")
 
 def calculate_network_range(ip, netmask):
     try:
@@ -119,9 +124,8 @@ class ServerThread(QThread):
             else:
                 self.log_signal.emit("[경고] 유효한 네트워크 정보를 감지하지 못해 기본값 사용")
 
-            server_url = f"http://{get_local_ip()}:5000"
-            self.log_signal.emit(f"[서버 주소] {server_url}")
-
+            server_url = "http://127.0.0.1:5000"   # 고정
+            
             if platform.system() == "Windows":
                 self.log_signal.emit("Windows 환경: Waitress 서버로 실행합니다.")
                 from waitress import serve
@@ -140,9 +144,9 @@ class ServerThread(QThread):
             # 서버 시작 대기 및 상태 확인
             start_time = time.time()
             server_started = False
-            server_url = f"http://{get_local_ip()}:5000"
-            self.log_signal.emit(f"서버 주소: {server_url}")
             
+            STATIC_IP = os.getenv("STATIC_SERVER_IP", "165.132.176.34")
+
             while self.is_running and time.time() - start_time < 10:  # 10초 동안 대기
                 try:
                     response = requests.get(server_url)
@@ -540,6 +544,7 @@ class VoteLauncher(QMainWindow):
 
 
 if __name__ == '__main__':
+    set_static_ip()
     app = QApplication(sys.argv)
     # 아이콘 설정
     try:
