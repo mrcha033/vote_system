@@ -233,8 +233,12 @@ def init_db():
             token TEXT,
             choice TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE(token, vote_id)
-        )""")
+            voter_name TEXT,
+            UNIQUE(token, vote_id),          -- ✔ 복합 제약만
+            FOREIGN KEY (vote_id) REFERENCES vote_items(vote_id),
+            FOREIGN KEY (token)   REFERENCES tokens(token)
+        )
+        """)
         conn.commit()
 
 if not os.path.exists(DB_PATH):

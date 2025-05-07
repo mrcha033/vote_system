@@ -21,6 +21,7 @@ def init_database():
     CREATE TABLE IF NOT EXISTS tokens (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         token TEXT UNIQUE,
+        serial_number INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         is_used BOOLEAN DEFAULT FALSE
     )""")
@@ -47,17 +48,19 @@ def init_database():
     
     # votes 테이블
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS votes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        vote_id TEXT,
-        token TEXT UNIQUE,
-        choice TEXT,
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        voter_name TEXT,
-        FOREIGN KEY (vote_id) REFERENCES vote_items (vote_id),
-        FOREIGN KEY (token) REFERENCES tokens(token),
-        UNIQUE(token, vote_id)
-    )""")
+        CREATE TABLE IF NOT EXISTS votes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            vote_id TEXT,
+            token TEXT,
+            choice TEXT,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            voter_name TEXT,
+            UNIQUE(token, vote_id),          -- ✔ 복합 제약만
+            FOREIGN KEY (vote_id) REFERENCES vote_items(vote_id),
+            FOREIGN KEY (token)   REFERENCES tokens(token)
+        )
+        """)
+
     
     conn.commit()
     conn.close()
