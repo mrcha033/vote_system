@@ -55,14 +55,22 @@ jobs:
           Copy-Item static,templates -Destination $DIST -Recurse
           Copy-Item $VENV_DIR -Destination $DIST -Recurse
           @'
-          ADMIN_PASSWORD=changeme123
+          ADMIN_PASSWORD=chairperson113@
           STATIC_SERVER_IP=165.132.176.34
           '@ | Set-Content -Encoding UTF8 -NoNewline "$DIST\.env"
           @"
           @echo off
-          cd /d %%~dp0
-          %%~dp0$VENV_DIR\Scripts\python.exe launcher.py
-          echo.
+          cd /d ""%%~dp0""
+          set ""PYTHON_EXE=%%~dp0$VENV_DIR\Scripts\python.exe""
+          set ""SCRIPT=launcher.py""
+
+          if not exist ""%%PYTHON_EXE%%"" (
+              echo ❌ Python 실행 파일을 찾을 수 없습니다: ""%%PYTHON_EXE%%""
+              pause & exit /b 1
+          )
+
+          ""%%PYTHON_EXE%%"" ""%%SCRIPT%%""
+          echo(
           echo 프로그램 종료 (코드=%%ERRORLEVEL%%)
           pause
           "@ | Out-File "$DIST\vote_system.bat" -Encoding OEM
@@ -93,9 +101,9 @@ jobs:
           .\venv\Scripts\Activate.ps1
           pip install -U pip
           pip install pyinstaller flask waitress python-dotenv PyQt5 watchdog requests pillow qrcode netifaces
-          pyinstaller launcher.py --noconfirm --onefile ^
-            --add-data "templates;templates" ^
-            --add-data "static;static" ^
+          pyinstaller launcher.py --noconfirm --onefile `
+            --add-data "templates;templates" `
+            --add-data "static;static" `
             --distpath dist --workpath build --log-level=WARN
           Remove-Item -Recurse -Force $DIST -ErrorAction SilentlyContinue
           New-Item -ItemType Directory $DIST | Out-Null
@@ -187,9 +195,9 @@ jobs:
           source venv/bin/activate
           pip install -U pip
           pip install pyinstaller flask gunicorn gevent PyQt5 python-dotenv watchdog requests pillow qrcode netifaces
-          pyinstaller launcher.py --noconfirm --onefile ^
-            --add-data "templates;templates" ^
-            --add-data "static;static" ^
+          pyinstaller launcher.py --noconfirm --onefile \
+            --add-data "templates:templates" \
+            --add-data "static:static" \
             --distpath dist --workpath build --log-level=WARN
           mkdir -p "$DIST"
           cp dist/launcher "$DIST/vote_system_mac"
