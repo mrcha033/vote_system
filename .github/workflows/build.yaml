@@ -54,11 +54,10 @@ jobs:
           Copy-Item $VENV_DIR                          -Destination $DIST -Recurse
 
           #─ .env 생성
-        $envContent = @"
+    @'
 ADMIN_PASSWORD=changeme123
 STATIC_SERVER_IP=165.132.176.34
-"@
-        $envContent | Out-File -Encoding UTF8 -NoNewline "$DIST/.env"
+'@ | Set-Content -Encoding UTF8 -NoNewline "$DIST/.env"
 
           #─ 실행 배치
           $bat = @"
