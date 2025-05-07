@@ -13,26 +13,28 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # 1) 레포지토리 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2) Python 3.10 설치 + 캐시
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: 'pip'
 
-      # 3) 의존성 설치
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install \
-            pyinstaller flask python-dotenv qrcode netifaces requests \
-            PyQt5==5.15.*  # macOS용 바이너리 배포본
+            pyinstaller \
+            flask \
+            python-dotenv \
+            qrcode \
+            netifaces \
+            requests \
+            pillow \            #  ← 추가 (대문자 Pillow도 OK)
+            PyQt5==5.15.*
 
-      # 4) 환경 준비 (로그 폴더·DB·.env)
       - name: Prepare environment
         run: |
           mkdir -p log
@@ -40,9 +42,8 @@ jobs:
           from server import init_db
           init_db()
           PY
-          echo "ADMIN_PASSWORD=chairperson113@" >> .env
+          echo "ADMIN_PASSWORD=changeme123" >> .env
 
-      # 5) PyInstaller 빌드
       - name: Build macOS App with PyInstaller
         run: |
           pyinstaller \
@@ -58,7 +59,6 @@ jobs:
             --add-data "server.py:." \
             launcher.py
 
-      # 6) 산출물 업로드
       - name: Upload macOS App
         uses: actions/upload-artifact@v4
         with:
