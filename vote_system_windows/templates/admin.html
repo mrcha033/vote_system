@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ meeting_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+
+    <!-- 회의명 -->
+    <h1 class="meeting-title">{{ meeting_title }}</h1>
+    <h2 style="text-align: center; margin-bottom: 40px;">관리자 대시보드</h2>
+
+    <!-- 안건/표결 등록 폼 그리드 -->
+    <div class="form-grid">
+        <!-- 안건 등록 -->
+        <div class="section">
+            <h2>안건 등록</h2>
+            <form action="{{ url_for('create_agenda') }}" method="post">
+                <div class="form-group">
+                    <label for="agenda_title">안건명:</label>
+                    <input type="text" id="agenda_title" name="agenda_title" required>
+                </div>
+                <button type="submit">안건 등록</button>
+            </form>
+        </div>
+
+        <!-- 표결 등록 -->
+        <div class="section">
+            <h2>표결 등록</h2>
+            <form action="{{ url_for('create_vote') }}" method="post">
+                <div class="form-group">
+                    <label for="agenda_id">안건 선택:</label>
+                    <select name="agenda_id" required>
+                        {% for agenda in agendas %}
+                            <option value="{{ agenda['agenda_id'] }}">{{ agenda['title'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vote_title">표결명:</label>
+                    <input type="text" id="vote_title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="vote_options">선지 (쉼표로 구분):</label>
+                    <input type="text" id="vote_options" name="options" required>
+                </div>
+                <button type="submit">표결 등록</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 표결 리스트 -->
+    {% for agenda in agendas %}
+    <div class="section">
+        <h2>안건: {{ agenda.title }}</h2>
+
+        <div class="controls" style="margin-bottom:1rem;">
+            <a href="{{ url_for('delete_agenda', agenda_id=agenda.agenda_id) }}"
+               class="btn btn-danger"
+               onclick="return confirm('안건과 관련된 모든 표결·투표 기록이 삭제됩니다. 진행할까요?');">
+               안건 삭제
+            </a>
+        </div>
+
+        {% for vote in agenda['items'] %}
+        <div class="vote-item">
+            <h3>{{ vote.title }}</h3>
+            <span class="status {{ 'active' if vote.is_active else 'ended' }}">
+                {{ '진행 중' if vote.is_active else '종료됨' }}
+            </span>
+            <p><strong>선택지:</strong> {{ vote.options }}</p>
+
+            <div class="controls">
+                <a href="{{ url_for('vote_status', vote_id=vote.vote_id) }}" class="btn">상세 보기</a>
+                {% if not vote.is_active %}
+                <a href="{{ url_for('start_vote', vote_id=vote.vote_id) }}" class="btn">표결 시작</a>
+                <a href="{{ url_for('cleanup_vote', vote_id=vote.vote_id) }}" class="btn btn-danger">표결 삭제</a>
+                {% else %}
+                <a href="{{ url_for('end_vote', vote_id=vote.vote_id) }}" class="btn">표결 종료</a>
+                {% endif %}
+            </div>            
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <!-- 의결권 관리 -->
+    <div class="section">
+        <h2>의결권 관리</h2>
+    
+        <form action="{{ url_for('generate_tokens') }}" method="post">
+            <input type="number" name="count" required>
+            <button type="submit">의결권 생성 및 다운로드</button>
+          </form>          
+        
+        <form action="{{ url_for('delete_tokens') }}" method="post" style="margin-top: 10px;">
+            <button type="submit" onclick="return confirm('모든 의결권을 삭제하시겠습니까?')">모든 의결권 삭제</button>
+        </form>
+    </div>
+        
+    <!-- 통계 -->
+    <div class="section">
+        <h2>통계</h2>
+        <ul>
+            <li>총 안건 수: {{ total_agendas }}</li>
+            <li>총 표결 수: {{ total_votes }}</li>
+            <li>활성 표결 수: {{ active_votes }}</li>
+            <li>사용된 의결권 수: {{ used_tokens }}</li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>

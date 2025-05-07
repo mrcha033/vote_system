@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ meeting_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="token-display" style="position: absolute; top: 10px; right: 20px; font-size: 1.1em; font-weight: bold;">
+    비표번호: {{ serial_number }}
+</div>
+    
+<div class="container">
+    <!-- 회의 제목 -->
+    <h1 class="meeting-title">{{ meeting_title }}</h1>
+
+    {% if grouped_votes %}
+    <form action="{{ url_for('submit_vote') }}" method="post">
+        <input type="hidden" name="token" value="{{ token }}">
+
+        {% for agenda in grouped_votes %}
+        <div class="section">
+            <h2>{{ agenda.title }}</h2>
+
+            {% for vote in agenda['items'] %}
+            <div class="form-group">
+                <label for="choice_{{ vote.vote_id }}">
+                    <span class="vote-title">{{ vote.subtitle }}</span>
+                </label>
+                <div class="vote-options">
+                    {% for option in vote.options.split(',') %}
+                    <div class="vote-option">
+                        <input type="radio" name="choice_{{ vote.vote_id }}" id="choice_{{ vote.vote_id }}_{{ loop.index }}" value="{{ option }}" required>
+                        <label for="choice_{{ vote.vote_id }}_{{ loop.index }}">{{ option }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        <div class="form-group" style="text-align: center; margin-top: 30px;">
+            <button type="submit">투표 제출</button>
+        </div>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+            <li class="alert alert-{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% else %}
+    <div class="section empty-message">
+        현재 진행 중인 투표가 없습니다.
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+</div>
+</body>
+</html>

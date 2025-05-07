@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import sys
 import os
+import subprocess
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts'))
 
@@ -121,19 +122,17 @@ class ServerThread(QThread):
             server_url = f"http://{get_local_ip()}:5000"
             self.log_signal.emit(f"[서버 주소] {server_url}")
 
-            # Flask 서버를 별도 스레드에서 실행
-            def run_flask():
-                try:
-                    flask_app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
-                except Exception as e:
-                    import traceback
-                    self.log_signal.emit("Flask 서버 실행 중 예외 발생:")
-                    self.log_signal.emit(traceback.format_exc())
-                    self.error_signal.emit(f"Flask 서버 오류: {str(e)}")
-            
-            flask_thread = threading.Thread(target=run_flask, daemon=True)
-            flask_thread.start()
-            
+            gunicorn_cmd = [
+                "gunicorn",
+                "-w", "4",                 # 워커 수: CPU 수에 따라 조정
+                "-k", "gevent",            # 비동기 처리
+                "-b", "0.0.0.0:5000",
+                "server:app"
+            ]
+
+            self.gunicorn_proc = subprocess.Popen(gunicorn_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            threading.Thread(target=self.stream_logs, args=(self.gunicorn_proc.stdout,), daemon=True).start()
+
             # 서버 시작 대기 및 상태 확인
             start_time = time.time()
             server_started = False
@@ -171,13 +170,20 @@ class ServerThread(QThread):
         self.is_running = False
         try:
             # 서버 종료 요청
-            response = requests.post(f'http://{get_local_ip()}:5000/shutdown')
-            if response.status_code == 200:
-                self.log_signal.emit("서버가 종료되었습니다.")
+            if hasattr(self, 'gunicorn_proc') and self.gunicorn_proc.poll() is None:
+                self.gunicorn_proc.terminate()
+                self.gunicorn_proc.wait(timeout=5)
+                self.log_signal.emit("Gunicorn 서버가 정상적으로 종료되었습니다.")
             else:
                 self.error_signal.emit("서버 종료 실패: 서버가 실행 중이지 않습니다.")
         except Exception as e:
             self.error_signal.emit(f"서버 종료 중 오류 발생: {str(e)}")
+
+    def stream_logs(self, pipe):
+        for line in iter(pipe.readline, b''):
+            decoded = line.decode('utf-8', errors='replace').strip()
+            self.log_signal.emit(decoded)
+
 
 class DotEnvChangeHandler(FileSystemEventHandler):
     def __init__(self, restart_callback):
