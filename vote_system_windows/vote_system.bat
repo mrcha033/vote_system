@@ -1,4 +1,7 @@
 @echo off
-cd /d C:\Projects\vote_system\
-call venv\Scripts\activate
+cd /d %~dp0
+call venv-build\Scripts\activate
 python launcher.py
+echo.
+echo 프로그램이 종료되었습니다. 종료 코드: %ERRORLEVEL%
+pause

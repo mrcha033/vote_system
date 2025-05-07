@@ -116,6 +116,9 @@ def calculate_network_range(ip, netmask):
 
 def get_local_ip():
     """실제 유선/무선 인터페이스의 로컬 IP 주소를 가져옵니다."""
+    static_ip = os.environ.get("STATIC_SERVER_IP")
+    if static_ip:
+        return static_ip
     try:
         for iface in netifaces.interfaces():
             if "VirtualBox" in iface or "VMware" in iface or "vEthernet" in iface or "Loopback" in iface:

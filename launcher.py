@@ -544,13 +544,15 @@ class VoteLauncher(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    launcher = VoteLauncher()
     # 아이콘 설정
     try:
         icon_path = get_resource_path('static/favicon.ico')
         if os.path.exists(icon_path):
             app.setWindowIcon(QIcon(icon_path))
-            launcher.setWindowIcon(QIcon(icon_path))
+            
+        launcher = VoteLauncher()
+        launcher.show()
+        
     except Exception as e:
         print(f"아이콘 로드 실패: {str(e)}")
     
