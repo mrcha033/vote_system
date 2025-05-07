@@ -87,7 +87,6 @@ def calculate_network_range(ip, netmask):
         print(f"[!] 네트워크 대역 계산 실패: {e}")
         return None
 
-
 def get_resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller"""
     try:
@@ -189,7 +188,6 @@ class ServerThread(QThread):
             decoded = line.decode('utf-8', errors='replace').strip()
             self.log_signal.emit(decoded)
 
-
 class DotEnvChangeHandler(FileSystemEventHandler):
     def __init__(self, restart_callback):
         self.restart_callback = restart_callback
@@ -202,7 +200,6 @@ class DotEnvChangeHandler(FileSystemEventHandler):
                 self.last_modified = now
                 print("[자동감지] .env 변경 감지됨, 서버 재시작")
                 self.restart_callback()
-
 
 class VoteLauncher(QMainWindow):
     def __init__(self):
@@ -449,7 +446,7 @@ class VoteLauncher(QMainWindow):
         
     def log_error(self, message):
         self.log_text.append(f"[{datetime.now().strftime('%H:%M:%S')}] ERROR: {message}")
-        
+
     def export_logs(self):
         try:
             response = requests.get(f"http://{get_local_ip()}:5000/admin/export_logs")

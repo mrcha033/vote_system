@@ -3,15 +3,22 @@ name: Build & Release · Vote System (Win + macOS)
 on:
   push:
     tags:
-      - 'v*.*.*'          # 예: v1.2.3
+      - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      build_mode:
+        description: 'Build mode'
+        required: true
+        default: 'venv'
+        type: choice
+        options:
+          - venv
+          - pyinstaller
 
 permissions:
-  contents: write     # 릴리스·태그 작성 권한
-
+  contents: write
 
 #──────────────────────────────────────────────────
-#  공통 – 릴리스 태그 이름 추출
 jobs:
   pre:
     runs-on: ubuntu-latest
@@ -22,107 +29,113 @@ jobs:
         run: echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
 
 #──────────────────────────────────────────────────
-#  WINDOWS ZIP
-  win-zip:
+# WINDOWS: VENV 방식
+  win-venv:
+    if: github.event_name == 'push' || github.event.inputs.build_mode == 'venv'
     needs: pre
     runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      - name: Build Windows package
+      - name: Build Windows (venv)
         shell: pwsh
         run: |
-          $ErrorActionPreference = 'Stop'
-
-          #─ 설정값
-          $DIST     = 'vote_system_windows'
+          $DIST = 'vote_system_windows'
           $VENV_DIR = 'venv-build'
-          $ZIP      = 'vote_system_windows.zip'
-
-          #─ 가상환경 ──────────────────────────────
+          $ZIP = 'vote_system_windows_venv.zip'
           python -m venv $VENV_DIR
           ."$VENV_DIR/Scripts/Activate.ps1"
           pip install -U pip
           pip install flask waitress python-dotenv PyQt5 watchdog requests pillow qrcode netifaces
-
-          #─ 배포 폴더 ─────────────────────────────
           Remove-Item -Recurse -Force $DIST -ErrorAction SilentlyContinue
-          New-Item -ItemType Directory $DIST           | Out-Null
-          Copy-Item launcher.py,server.py              -Destination $DIST
-          Copy-Item static,templates                   -Destination $DIST -Recurse
-          Copy-Item $VENV_DIR                          -Destination $DIST -Recurse
-
-          #─ .env 생성
+          New-Item -ItemType Directory $DIST | Out-Null
+          Copy-Item launcher.py,server.py -Destination $DIST
+          Copy-Item static,templates -Destination $DIST -Recurse
+          Copy-Item $VENV_DIR -Destination $DIST -Recurse
           @'
           ADMIN_PASSWORD=changeme123
           STATIC_SERVER_IP=165.132.176.34
-          '@ | Set-Content -Encoding UTF8 -NoNewline "$DIST/.env"
-
-          #─ 실행 배치
-          $bat = @"
+          '@ | Set-Content -Encoding UTF8 -NoNewline "$DIST\.env"
+          @"
           @echo off
-          cd /d %~dp0
-          %~dp0$VENV_DIR\Scripts\python.exe launcher.py
+          cd /d %%~dp0
+          %%~dp0$VENV_DIR\Scripts\python.exe launcher.py
           echo.
-          echo 프로그램 종료 (코드=%ERRORLEVEL%)
+          echo 프로그램 종료 (코드=%%ERRORLEVEL%%)
           pause
-          "@
-          $bat | Out-File "$DIST/vote_system.bat" -Encoding OEM
-
-          #─ ZIP 압축
-          Remove-Item $ZIP -ErrorAction SilentlyContinue
+          "@ | Out-File "$DIST\vote_system.bat" -Encoding OEM
           Compress-Archive -Path "$DIST\*" -DestinationPath $ZIP -Force
-
-      - name: Upload Windows asset
-        uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.pre.outputs.tag }}
-          name: vote_system_windows.zip
-          files: vote_system_windows.zip
+          name: vote_system_windows_venv.zip
+          files: vote_system_windows_venv.zip
 
 #──────────────────────────────────────────────────
-#  macOS ZIP
-  mac-zip:
+# WINDOWS: PyInstaller
+  win-pyinstaller:
+    if: github.event.inputs.build_mode == 'pyinstaller'
     needs: pre
-    runs-on: macos-latest
-
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      - name: Build macOS package
+      - name: Build Windows (PyInstaller)
+        shell: pwsh
         run: |
-          set -e
+          $DIST = 'vote_system_windows'
+          $ZIP  = 'vote_system_windows_pyinstaller.zip'
+          python -m venv venv
+          .\venv\Scripts\Activate.ps1
+          pip install -U pip
+          pip install pyinstaller flask waitress python-dotenv PyQt5 watchdog requests pillow qrcode netifaces
+          pyinstaller launcher.py --noconfirm --onefile --distpath dist --workpath build --log-level=WARN
+          Remove-Item -Recurse -Force $DIST -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory $DIST | Out-Null
+          Copy-Item dist\launcher.exe -Destination "$DIST\vote_system.exe"
+          Copy-Item server.py -Destination $DIST
+          Copy-Item static,templates -Destination $DIST -Recurse
+          @'
+          ADMIN_PASSWORD=changeme123
+          STATIC_SERVER_IP=165.132.176.34
+          '@ | Set-Content -Encoding UTF8 -NoNewline "$DIST\.env"
+          Compress-Archive -Path "$DIST\*" -DestinationPath $ZIP -Force
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.pre.outputs.tag }}
+          name: vote_system_windows_pyinstaller.zip
+          files: vote_system_windows_pyinstaller.zip
 
+#──────────────────────────────────────────────────
+# macOS: VENV 방식
+  mac-venv:
+    if: github.event_name == 'push' || github.event.inputs.build_mode == 'venv'
+    needs: pre
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Build macOS (venv)
+        run: |
           DIST="vote_system_mac"
           VENV_DIR="venv"
-          ZIP="vote_system_mac.zip"
-
+          ZIP="vote_system_mac_venv.zip"
           python3 -m venv "$VENV_DIR"
           source "$VENV_DIR/bin/activate"
           pip install -U pip
           pip install flask gunicorn gevent PyQt5 python-dotenv watchdog requests pillow qrcode netifaces
-
           rm -rf "$DIST"
-          mkdir  "$DIST"
+          mkdir "$DIST"
           cp launcher.py server.py "$DIST"
-          cp -R static      "$DIST/static"
-          cp -R templates   "$DIST/templates"
+          cp -R static templates "$DIST"
           cp -R "$VENV_DIR" "$DIST/$VENV_DIR"
-
-          cat > "$DIST/.env" <<EOF
-          ADMIN_PASSWORD=changeme123
-          EOF
-
-          # 간단한 .app 런처
+          echo "ADMIN_PASSWORD=changeme123" > "$DIST/.env"
           mkdir -p "$DIST/VoteSystemLauncher.app/Contents/MacOS"
           cat > "$DIST/VoteSystemLauncher.app/Contents/MacOS/VoteSystemLauncher" <<'SH'
           #!/bin/bash
@@ -131,8 +144,6 @@ jobs:
           python3 launcher.py
           SH
           chmod +x "$DIST/VoteSystemLauncher.app/Contents/MacOS/VoteSystemLauncher"
-
-          # Info.plist
           cat > "$DIST/VoteSystemLauncher.app/Contents/Info.plist" <<'PLIST'
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
@@ -146,14 +157,41 @@ jobs:
           </dict>
           </plist>
           PLIST
-
-          # ZIP 압축
-          rm -f "$ZIP"
           (cd "$DIST" && zip -r "../$ZIP" .)
-
-      - name: Upload macOS asset
-        uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.pre.outputs.tag }}
-          name: vote_system_mac.zip
-          files: vote_system_mac.zip
+          name: vote_system_mac_venv.zip
+          files: vote_system_mac_venv.zip
+
+#──────────────────────────────────────────────────
+# macOS: PyInstaller
+  mac-pyinstaller:
+    if: github.event.inputs.build_mode == 'pyinstaller'
+    needs: pre
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Build macOS (PyInstaller)
+        run: |
+          DIST="vote_system_mac"
+          ZIP="vote_system_mac_pyinstaller.zip"
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -U pip
+          pip install pyinstaller flask gunicorn gevent PyQt5 python-dotenv watchdog requests pillow qrcode netifaces
+          pyinstaller launcher.py --noconfirm --onefile --distpath dist --workpath build --log-level=WARN
+          mkdir -p "$DIST"
+          cp dist/launcher "$DIST/vote_system_mac"
+          cp server.py "$DIST"
+          cp -R static templates "$DIST"
+          echo "ADMIN_PASSWORD=changeme123" > "$DIST/.env"
+          (cd "$DIST" && zip -r "../$ZIP" .)
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.pre.outputs.tag }}
+          name: vote_system_mac_pyinstaller.zip
+          files: vote_system_mac_pyinstaller.zip
