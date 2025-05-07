@@ -61,13 +61,13 @@ jobs:
 
           #─ 실행 배치
           $bat = @"
-@echo off
-cd /d %~dp0
-%~dp0$VENV_DIR\Scripts\python.exe launcher.py
-echo.
-echo 프로그램 종료 (코드=%ERRORLEVEL%)
-pause
-"@
+          @echo off
+          cd /d %~dp0
+          %~dp0$VENV_DIR\Scripts\python.exe launcher.py
+          echo.
+          echo 프로그램 종료 (코드=%ERRORLEVEL%)
+          pause
+          "@
           $bat | Out-File "$DIST/vote_system.bat" -Encoding OEM
 
           #─ ZIP 압축
