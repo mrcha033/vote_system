@@ -41,6 +41,8 @@ logging.info("Logger ready → %s", LOG_FILE)
 # Load environment variables from .env file
 load_dotenv(override=True)
 
+DB_PATH = os.path.join(os.path.dirname(__file__), 'data.db')
+
 def resource_path(relative_path):
     """PyInstaller 환경에서 리소스 경로를 정확히 가져오기 위한 함수"""
     if hasattr(sys, '_MEIPASS'):
@@ -192,12 +194,6 @@ def logout():
     flash('로그아웃 되었습니다.', 'success')
     return redirect(url_for('login'))
 
-if not os.path.exists('data.db'):
-    from scripts.init_db import init_db
-    init_db()
-DB_PATH = os.path.join(os.path.dirname(__file__), 'data.db')
-print("### DB in use: ", DB_PATH)
-
 # DB 초기화
 def init_db():
     with sqlite3.connect(DB_PATH) as conn:
@@ -240,6 +236,10 @@ def init_db():
             UNIQUE(token, vote_id)
         )""")
         conn.commit()
+
+if not os.path.exists(DB_PATH):
+    init_db()           # ← 이걸 호출
+
 
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)

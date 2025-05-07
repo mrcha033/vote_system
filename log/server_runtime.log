@@ -1035,3 +1035,35 @@ sqlite3.OperationalError: no such column: serial_number
 [2025-05-06 11:51:48,577]  * Restarting with watchdog (windowsapi)
 [2025-05-06 11:51:49,147]  * Debugger is active!
 [2025-05-06 11:51:49,154]  * Debugger PIN: 438-957-268
+[2025-05-07 09:08:48,132] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 09:09:51,189] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 09:09:51,370] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.24.87.91:5000
+[2025-05-07 09:09:51,371] [33mPress CTRL+C to quit[0m
+[2025-05-07 09:09:51,399]  * Restarting with watchdog (windowsapi)
+[2025-05-07 09:09:51,797] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 09:09:51,893]  * Debugger is active!
+[2025-05-07 09:09:51,899]  * Debugger PIN: 236-319-043
+[2025-05-07 09:10:37,930]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\sqlite3\\dbapi2.py', reloading
+[2025-05-07 09:10:38,132]  * Restarting with watchdog (windowsapi)
+[2025-05-07 09:10:38,658] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 09:10:38,758]  * Debugger is active!
+[2025-05-07 09:10:38,764]  * Debugger PIN: 236-319-043
+[2025-05-07 09:12:02,935]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\shutil.py', reloading
+[2025-05-07 09:12:03,538]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\genericpath.py', reloading
+[2025-05-07 09:12:03,811]  * Restarting with watchdog (windowsapi)
+[2025-05-07 09:12:04,318] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 09:12:04,464]  * Debugger is active!
+[2025-05-07 09:12:04,470]  * Debugger PIN: 236-319-043
+[2025-05-07 09:12:42,510]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\ntpath.py', reloading
+[2025-05-07 09:12:43,313]  * Restarting with watchdog (windowsapi)
+[2025-05-07 09:12:43,796] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 09:12:43,898]  * Debugger is active!
+[2025-05-07 09:12:43,906]  * Debugger PIN: 236-319-043
+[2025-05-07 09:12:44,042]  * Detected change in 'C:\\Program Files\\Python310\\Lib\\os.py', reloading
+[2025-05-07 09:12:45,028]  * Restarting with watchdog (windowsapi)
+[2025-05-07 09:12:45,454] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 09:12:45,564]  * Debugger is active!
+[2025-05-07 09:12:45,569]  * Debugger PIN: 236-319-043
