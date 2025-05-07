@@ -44,10 +44,9 @@ load_dotenv(override=True)
 DB_PATH = os.path.join(os.path.dirname(__file__), 'data.db')
 
 def resource_path(relative_path):
-    """PyInstaller 환경에서 리소스 경로를 정확히 가져오기 위한 함수"""
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
+    """PyInstaller 환경에서 리소스 경로를 반환"""
+    base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+    return os.path.join(base_path, relative_path)
 
 template_dir = resource_path("templates")
 static_dir = resource_path("static")

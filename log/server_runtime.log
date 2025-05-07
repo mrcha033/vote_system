@@ -1074,3 +1074,8 @@ sqlite3.OperationalError: no such column: serial_number
 [2025-05-07 17:23:03,454] Serving on http://0.0.0.0:5000
 [2025-05-07 17:25:34,906] Logger ready → C:\Projects\vote_system\log\server_runtime.log
 [2025-05-07 17:25:48,176] Serving on http://0.0.0.0:5000
+[2025-05-07 19:25:32,205] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 19:25:41,030] Serving on http://0.0.0.0:5000
+[2025-05-07 19:25:57,019] Serving on http://0.0.0.0:5000
+[2025-05-07 19:37:18,564] Logger ready → C:\Projects\vote_system\log\server_runtime.log
+[2025-05-07 19:37:25,455] Serving on http://0.0.0.0:5000

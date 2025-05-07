@@ -93,14 +93,17 @@ jobs:
           .\venv\Scripts\Activate.ps1
           pip install -U pip
           pip install pyinstaller flask waitress python-dotenv PyQt5 watchdog requests pillow qrcode netifaces
-          pyinstaller launcher.py --noconfirm --onefile --distpath dist --workpath build --log-level=WARN
+          pyinstaller launcher.py --noconfirm --onefile ^
+            --add-data "templates;templates" ^
+            --add-data "static;static" ^
+            --distpath dist --workpath build --log-level=WARN
           Remove-Item -Recurse -Force $DIST -ErrorAction SilentlyContinue
           New-Item -ItemType Directory $DIST | Out-Null
           Copy-Item dist\launcher.exe -Destination "$DIST\vote_system.exe"
           Copy-Item server.py -Destination $DIST
           Copy-Item static,templates -Destination $DIST -Recurse
           @'
-          ADMIN_PASSWORD=changeme123
+          ADMIN_PASSWORD=chairperson113@
           STATIC_SERVER_IP=165.132.176.34
           '@ | Set-Content -Encoding UTF8 -NoNewline "$DIST\.env"
           Compress-Archive -Path "$DIST\*" -DestinationPath $ZIP -Force
@@ -135,7 +138,8 @@ jobs:
           cp launcher.py server.py "$DIST"
           cp -R static templates "$DIST"
           cp -R "$VENV_DIR" "$DIST/$VENV_DIR"
-          echo "ADMIN_PASSWORD=changeme123" > "$DIST/.env"
+          echo "ADMIN_PASSWORD=chairperson113@" > "$DIST/.env"
+          echo "STATIC_SERVER_IP=165.132.176.34" >> "$DIST/.env"
           mkdir -p "$DIST/VoteSystemLauncher.app/Contents/MacOS"
           cat > "$DIST/VoteSystemLauncher.app/Contents/MacOS/VoteSystemLauncher" <<'SH'
           #!/bin/bash
@@ -183,12 +187,16 @@ jobs:
           source venv/bin/activate
           pip install -U pip
           pip install pyinstaller flask gunicorn gevent PyQt5 python-dotenv watchdog requests pillow qrcode netifaces
-          pyinstaller launcher.py --noconfirm --onefile --distpath dist --workpath build --log-level=WARN
+          pyinstaller launcher.py --noconfirm --onefile ^
+            --add-data "templates;templates" ^
+            --add-data "static;static" ^
+            --distpath dist --workpath build --log-level=WARN
           mkdir -p "$DIST"
           cp dist/launcher "$DIST/vote_system_mac"
           cp server.py "$DIST"
           cp -R static templates "$DIST"
-          echo "ADMIN_PASSWORD=changeme123" > "$DIST/.env"
+          echo "ADMIN_PASSWORD=chairperson113@" > "$DIST/.env"
+          echo "STATIC_SERVER_IP=165.132.176.34" >> "$DIST/.env"
           (cd "$DIST" && zip -r "../$ZIP" .)
       - uses: softprops/action-gh-release@v2
         with:
