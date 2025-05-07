@@ -55,9 +55,9 @@ jobs:
 
           #─ .env 생성
           @'
-      ADMIN_PASSWORD=changeme123
-      STATIC_SERVER_IP=165.132.176.34
-      '@ | Set-Content -Encoding UTF8 -NoNewline "$DIST/.env"
+          ADMIN_PASSWORD=changeme123
+          STATIC_SERVER_IP=165.132.176.34
+          '@ | Set-Content -Encoding UTF8 -NoNewline "$DIST/.env"
 
           #─ 실행 배치
           $bat = @"
