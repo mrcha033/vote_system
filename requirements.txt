@@ -10,3 +10,4 @@ requests==2.32.2
 pyinstaller==6.3.0
 watchdog==6.0.0
 gevent==25.4.2
+waitress==3.0.2

@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import sys
 import os
 import subprocess
+import platform
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts'))
 
@@ -122,16 +123,20 @@ class ServerThread(QThread):
             server_url = f"http://{get_local_ip()}:5000"
             self.log_signal.emit(f"[서버 주소] {server_url}")
 
-            gunicorn_cmd = [
-                "gunicorn",
-                "-w", "4",                 # 워커 수: CPU 수에 따라 조정
-                "-k", "gevent",            # 비동기 처리
-                "-b", "0.0.0.0:5000",
-                "server:app"
-            ]
-
-            self.gunicorn_proc = subprocess.Popen(gunicorn_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            threading.Thread(target=self.stream_logs, args=(self.gunicorn_proc.stdout,), daemon=True).start()
+            if platform.system() == "Windows":
+                self.log_signal.emit("Windows 환경: Waitress 서버로 실행합니다.")
+                from waitress import serve
+                threading.Thread(target=lambda: serve(flask_app, host='0.0.0.0', port=5000), daemon=True).start()
+            else:
+                gunicorn_cmd = [
+                    "gunicorn",
+                    "-w", "4",
+                    "-k", "gevent",
+                    "-b", "0.0.0.0:5000",
+                    "server:app"
+                ]
+                self.gunicorn_proc = subprocess.Popen(gunicorn_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                threading.Thread(target=self.stream_logs, args=(self.gunicorn_proc.stdout,), daemon=True).start()
 
             # 서버 시작 대기 및 상태 확인
             start_time = time.time()
