@@ -17,8 +17,8 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt5.QtGui import QFont, QIcon, QTextCursor
 from flask import Flask
-from server import app as flask_app
-from server import get_local_ip, get_network_info
+from app.server import app as flask_app
+from app.server import get_local_ip, get_network_info
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import threading
@@ -62,7 +62,7 @@ def set_static_ip():
         except Exception as e:
             print(f"[!] 고정 IP 설정 실패: {e}")
     
-    if platform.system() =="Darwin":
+    elif platform.system() =="Darwin":
         try:
             adapter_name = "Wi-Fi"
             ip = "165.132.176.34"
@@ -83,6 +83,28 @@ def set_static_ip():
             print("[✓] 고정 IP 설정 완료 (macOS)")
         except Exception as e:
             print(f"[!] 고정 IP 설정 실패 (macOS): {e}")
+
+def unset_static_ip():
+    if platform.system() == "Windows":
+        try:
+            subprocess.run(["netsh", "interface", "ip", "set", "address", "name=Wi-Fi", "source=dhcp"], shell=True, check=True)
+            subprocess.run(["netsh", "interface", "ip", "set", "dns", "name=Wi-Fi", "source=dhcp"], shell=True, check=True)
+            print("[✓] 고정 IP 해제 완료 (Windows)")
+        except Exception as e:
+            print(f"[!] 고정 IP 해제 실패 (Windows): {e}")
+    elif platform.system() == "Darwin":
+        try:
+            script = '''
+            do shell script "
+                networksetup -setdhcp 'Wi-Fi' &&
+                networksetup -setdnsservers 'Wi-Fi' empty
+            " with administrator privileges
+            '''
+            subprocess.run(["osascript", "-e", script], check=True)
+            print("[✓] 고정 IP 해제 완료 (macOS)")
+        except Exception as e:
+            print(f"[!] 고정 IP 해제 실패 (macOS): {e}")
+
 
 def calculate_network_range(ip, netmask):
     try:
@@ -124,7 +146,7 @@ class ServerThread(QThread):
             else:
                 self.log_signal.emit("[경고] 유효한 네트워크 정보를 감지하지 못해 기본값 사용")
 
-            server_url = "http://127.0.0.1:5000"   # 고정
+            server_url = f"http://{get_local_ip()}:5000"            
             
             if platform.system() == "Windows":
                 self.log_signal.emit("Windows 환경: Waitress 서버로 실행합니다.")
@@ -283,6 +305,16 @@ class VoteLauncher(QMainWindow):
         # 서버 상태 표시
         self.status_label = QLabel("서버 상태: 중지됨")
         server_group_layout.addWidget(self.status_label)
+
+        # 고정 IP 설정/해제 버튼
+        ip_layout = QHBoxLayout()
+        self.set_ip_button = QPushButton("고정 IP 설정")
+        self.set_ip_button.clicked.connect(self.set_static_ip_clicked)
+        self.unset_ip_button = QPushButton("인터넷 사용 (DHCP 복원)")
+        self.unset_ip_button.clicked.connect(self.unset_static_ip_clicked)
+        ip_layout.addWidget(self.set_ip_button)
+        ip_layout.addWidget(self.unset_ip_button)
+        server_group_layout.addLayout(ip_layout)
         
         # 서버 시작/종료 버튼
         button_layout = QHBoxLayout()
@@ -542,9 +574,21 @@ class VoteLauncher(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "오류", f"회의명 저장 실패: {str(e)}")
 
+    def set_static_ip_clicked(self):
+        try:
+            set_static_ip()
+            QMessageBox.information(self, "고정 IP", "고정 IP가 설정되었습니다.")
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"고정 IP 설정 실패: {str(e)}")
+
+    def unset_static_ip_clicked(self):
+        try:
+            unset_static_ip()
+            QMessageBox.information(self, "DHCP 복원", "인터넷 사용을 위해 DHCP로 복원되었습니다.")
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"DHCP 복원 실패: {str(e)}")
 
 if __name__ == '__main__':
-    set_static_ip()
     app = QApplication(sys.argv)
     # 아이콘 설정
     try:
