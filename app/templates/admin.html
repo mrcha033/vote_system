@@ -10,6 +10,44 @@
 
     <!-- 회의명 -->
     <h1 class="meeting-title">{{ meeting_title }}</h1>
+    
+    <!-- 회의명 변경 폼 -->
+    <div style="text-align: center; margin-bottom: 40px;">
+        <label for="meeting_title_input">회의명 변경:</label>
+        <input type="text" id="meeting_title_input" value="{{ meeting_title }}" style="padding: 5px;">
+        <button onclick="submitMeetingTitle()" style="padding: 5px 10px;">저장</button>
+        <span id="meeting-title-status" style="margin-left: 10px; color: green;"></span>
+    </div>
+
+    <script>
+    function submitMeetingTitle() {
+        const title = document.getElementById('meeting_title_input').value;
+        const statusSpan = document.getElementById('meeting-title-status');
+
+        fetch("/admin/set_meeting_title", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ meeting_title: title })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("요청 실패");
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('meeting-title').innerText = title;
+            statusSpan.textContent = "저장됨 ✔";
+            setTimeout(() => statusSpan.textContent = "", 2000);
+        })
+        .catch(err => {
+            statusSpan.textContent = "오류 발생 ✖";
+            statusSpan.style.color = "red";
+            setTimeout(() => statusSpan.textContent = "", 2000);
+        });
+    }
+    </script>
+
     <h2 style="text-align: center; margin-bottom: 40px;">관리자 대시보드</h2>
 
     <!-- 안건/표결 등록 폼 그리드 -->

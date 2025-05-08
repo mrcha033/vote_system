@@ -1,9 +1,9 @@
-from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session, Response, abort
+from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session, jsonify
 import sqlite3
 import uuid
 import qrcode
 import io
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZipFile
 import os
 from datetime import datetime
 from functools import wraps
@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 import csv
 import sys
 import logging
-from PIL import ImageDraw, ImageFont
+from PIL import ImageDraw
 from urllib.parse import quote 
 from pathlib import Path
 
@@ -136,11 +136,21 @@ def init_db():
 if not os.path.exists(DB_PATH):
     init_db()           # ← 이걸 호출
 
-
 def db():
     conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
+
+def set_meeting_title(title):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)")
+        cur.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", ('meeting_title', title))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"회의명 저장 실패: {str(e)}")
 
 def get_meeting_title():
     conn = db()
@@ -190,6 +200,21 @@ def generate_qr_zip(tokens):
 @app.route('/')
 def index():
     return '서버가 실행중입니다', 200
+
+
+@app.route('/admin/set_meeting_title', methods=['POST'])
+@login_required
+def set_meeting_title_route():
+    data = request.get_json()
+    title = data.get('meeting_title', '').strip()
+    if not title:
+        return jsonify({"error": "회의명이 비어 있습니다."}), 400
+    try:
+        set_meeting_title(title)
+        return jsonify({"message": "회의명 저장 성공", "title": title}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/admin/generate_tokens', methods=['POST'])
 @login_required
