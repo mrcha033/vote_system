@@ -491,8 +491,6 @@ button:hover {
     margin-bottom: 5px;
 }
 
-
-
 @media screen and (max-width: 600px) {
     .container {
       padding: 15px;

@@ -201,6 +201,9 @@ def generate_qr_zip(tokens):
 def index():
     return '서버가 실행중입니다', 200
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_file('static/favicon.ico')
 
 @app.route('/admin/set_meeting_title', methods=['POST'])
 @login_required

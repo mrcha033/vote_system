@@ -7,13 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="token-display" style="position: absolute; top: 10px; right: 20px; font-size: 1.1em; font-weight: bold;">
-    비표번호: {{ serial_number }}
-</div>
-    
-<div class="container">
+    <div class="header-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+        <h1 class="meeting-title" style="margin: 0 auto;">{{ meeting_title }}</h1>
+        <div class="token-display">비표번호: {{ serial_number }}</div>
+    </div>
+    <div class="container">
     <!-- 회의 제목 -->
-    <h1 class="meeting-title">{{ meeting_title }}</h1>
 
     {% if grouped_votes %}
     <form action="{{ url_for('submit_vote') }}" method="post">
