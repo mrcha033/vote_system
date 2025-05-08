@@ -24,7 +24,6 @@ LOG_DIR  = os.path.join(APP_DIR, "log")
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # ── ② 로그 폴더/파일 준비 ────────────────────────
-LOG_DIR  = APP_DIR / "log"
 LOG_DIR.mkdir(exist_ok=True)                        # 폴더가 없으면 생성
 LOG_FILE = LOG_DIR / "server_runtime.log"
 
