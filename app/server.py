@@ -18,14 +18,13 @@ from pathlib import Path
 # ── ① 실행 디렉터리 결정 ─────────────────────────
 load_dotenv(override=True)
 
-APP_DIR  = os.path.dirname(__file__)
-DB_PATH  = os.path.join(APP_DIR, "data.db")
-LOG_DIR  = os.path.join(APP_DIR, "log")
-os.makedirs(LOG_DIR, exist_ok=True)
+APP_DIR = Path(__file__).parent.resolve()
+DB_PATH = APP_DIR / "data.db"
+LOG_DIR = APP_DIR / "log"
+LOG_DIR.mkdir(exist_ok=True)
+LOG_FILE = LOG_DIR / "server_runtime.log"
 
 # ── ② 로그 폴더/파일 준비 ────────────────────────
-LOG_DIR.mkdir(exist_ok=True)                        # 폴더가 없으면 생성
-LOG_FILE = LOG_DIR / "server_runtime.log"
 
 # ── ③ 로깅 설정 ───────────────────────────────────
 logging.basicConfig(
@@ -442,7 +441,7 @@ def vote():
 
 def log_vote(vote_id, token, choice):
     """투표 로그를 CSV 파일에 기록합니다."""
-    log_file = os.path.join(LOG_DIR, f'votes_{datetime.now().strftime("%Y%m%d")}.csv')
+    log_file = LOG_DIR / f'votes_{datetime.now().strftime("%Y%m%d")}.csv'
     file_exists = os.path.exists(log_file)
     
     with open(log_file, 'a', newline='', encoding='utf-8') as f:
@@ -665,7 +664,7 @@ def export_logs():
         with ZipFile(memory_file, 'w') as zipf:
             for filename in os.listdir(LOG_DIR):
                 if filename.endswith('.csv'):
-                    file_path = os.path.join(LOG_DIR, filename)
+                    file_path = LOG_DIR / filename
                     zipf.write(file_path, filename)
         
         memory_file.seek(0)

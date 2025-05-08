@@ -13,4 +13,4 @@ WORKDIR /app/app
 
 # Fly 가 넘겨주는 $PORT 준수
 ENV PORT=8080
-CMD sh -c "gunicorn server:app -k gevent -w 2 -b 0.0.0.0:${PORT}"
+CMD ["gunicorn", "server:app", "-k", "gevent", "-w", "2", "-b", "0.0.0.0:8080"]
