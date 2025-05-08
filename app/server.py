@@ -8,12 +8,9 @@ import os
 from datetime import datetime
 from functools import wraps
 from dotenv import load_dotenv
-import ipaddress
-import netifaces
 import csv
 import sys
 import logging
-import tempfile
 from PIL import ImageDraw, ImageFont
 from urllib.parse import quote 
 from pathlib import Path
