@@ -31,10 +31,14 @@ python -m app
 
 ## Fly.io 배포
 
-`fly launch` 후 다음과 같이 비밀값을 저장합니다.
+Fly.io CLI인 `flyctl`을 먼저 설치해야 합니다. [설치 안내](https://fly.io/docs/flyctl/install/)를 참고하세요.
+`fly auth login` 명령으로 로그인하거나 `FLY_API_TOKEN` 환경 변수를 설정해 인증을 완료합니다.
+
+애플리케이션 초기화는 `fly launch`로 수행합니다. 배포 전에 다음과 같이 비밀값을 등록합니다.
 ```bash
 fly secrets set SECRET_KEY=$(openssl rand -hex 32) ADMIN_PASSWORD=your_password
 ```
+비밀값을 등록한 뒤 `flyctl deploy` 명령으로 배포를 진행합니다.
 볼륨 마운트를 통해 `/data` 경로가 애플리케이션의 `DATA_DIR`로 사용됩니다. 데이터베이스와 로그가 이 위치에 저장됩니다.
 
 ## 라이선스
