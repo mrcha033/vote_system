@@ -186,7 +186,7 @@ def set_meeting_title(title):
         session.commit()
     except Exception as e:
         session.rollback()
-        print(f"회의명 저장 실패: {str(e)}")
+        logging.exception("회의명 저장 실패: %s", e)
     finally:
         session.close()
 
@@ -199,12 +199,12 @@ def get_meeting_title():
         session.close()
 
 def generate_qr_zip(tokens):
-    print("QR ZIP 생성 시작")
+    logging.info("QR ZIP 생성 시작")
     memory_file = io.BytesIO()
 
     with ZipFile(memory_file, 'w') as zipf:
         for token, serial in tokens:
-            print(f"QR 생성 중: {serial=}")
+            logging.info("QR 생성 중: serial=%s", serial)
             voting_url = f"{public_base_url()}/vote?token={token}"
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
             qr.add_data(voting_url)
@@ -223,7 +223,7 @@ def generate_qr_zip(tokens):
                     text, fill="black"
                 )
             except Exception as draw_err:
-                print(f"텍스트 추가 실패: {draw_err}")
+                logging.exception("텍스트 추가 실패: %s", draw_err)
 
             try:
                 img_byte_arr = io.BytesIO()
@@ -231,10 +231,10 @@ def generate_qr_zip(tokens):
                 img_byte_arr.seek(0)
                 zipf.writestr(f'token_{serial:03d}.png', img_byte_arr.read())
             except Exception as zip_err:
-                print(f"ZIP에 쓰기 실패: {zip_err}")
+                logging.exception("ZIP에 쓰기 실패: %s", zip_err)
 
     memory_file.seek(0)
-    print("QR ZIP 생성 완료")
+    logging.info("QR ZIP 생성 완료")
     return memory_file
 
 @bp.route('/')
@@ -262,7 +262,7 @@ def set_meeting_title_route():
 @bp.route('/admin/generate_tokens', methods=['POST'])
 @login_required
 def generate_tokens():
-    print("토큰 생성중")
+    logging.info("토큰 생성중")
     try:
         count = int(request.form['count'])
         if count <= 0:
