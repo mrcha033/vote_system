@@ -4,3 +4,4 @@ gevent
 qrcode
 Pillow
 python-dotenv
+SQLAlchemy>=2.0
