@@ -20,14 +20,14 @@
     <!-- 회의명 -->
     <h1 class="meeting-title" id="meeting-title">{{ meeting_title }}</h1>
 
-    <h2 style="text-align: center; margin-bottom: 40px;">관리자 대시보드</h2>
+    <h2 class="dashboard-title">관리자 대시보드</h2>
 
     <!-- 회의명 변경 폼 -->
-    <div class="section" style="text-align: center; margin-bottom: 20px;">
+    <div class="section center-section">
         <label for="meeting_title_input">회의명 변경:</label>
-        <input type="text" id="meeting_title_input" value="{{ meeting_title }}" style="width: 200px; padding: 5px;">
+        <input type="text" id="meeting_title_input" value="{{ meeting_title }}" class="meeting-input">
         <button onclick="submitMeetingTitle()">저장</button>
-        <span id="meeting-title-status" style="margin-left: 10px; color: green;"></span>
+        <span id="meeting-title-status" class="status-message"></span>
     </div>
 
     <script>
@@ -103,7 +103,7 @@
     <div class="section">
         <h2>안건: {{ agenda.title }}</h2>
 
-        <div class="controls" style="margin-bottom:1rem;">
+        <div class="controls controls-spacing">
             <a href="{{ url_for('main.delete_agenda', agenda_id=agenda.agenda_id) }}"
                class="btn btn-danger"
                onclick="return confirm('안건과 관련된 모든 표결·투표 기록이 삭제됩니다. 진행할까요?');">
@@ -137,13 +137,13 @@
     <div class="section">
         <h2>의결권 관리</h2>
     
-        <form action="{{ url_for('main.generate_tokens') }}" method="post" style="display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-            <input type="number" name="count" required style="padding: 5px; width: 360px;">
-            <button type="submit" style="padding: 5px 10px; height: 36px">의결권 생성 및 다운로드</button>
-        </form>          
-        
-        <form action="{{ url_for('main.delete_tokens') }}" method="post" style="display: inline-block; padding: 5px 10px;">
-            <button type="submit" onclick="return confirm('모든 의결권을 삭제하시겠습니까?')" style="padding: 5px 10px; height: 36px">
+        <form action="{{ url_for('main.generate_tokens') }}" method="post" class="token-form">
+            <input type="number" name="count" required class="token-input">
+            <button type="submit" class="token-button">의결권 생성 및 다운로드</button>
+        </form>
+
+        <form action="{{ url_for('main.delete_tokens') }}" method="post" class="inline-form">
+            <button type="submit" onclick="return confirm('모든 의결권을 삭제하시겠습니까?')" class="token-button">
                 모든 의결권 삭제
             </button>
         </form>
