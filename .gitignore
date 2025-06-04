@@ -37,3 +37,4 @@ var/
 .DS_Store
 Thumbs.db
 app/log/
+venv-build/
