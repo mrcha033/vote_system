@@ -1,5 +1,10 @@
+import os
+import importlib
 import pytest
-from app import app
+
+os.environ.setdefault("SECRET_KEY", "test")
+os.environ.setdefault("ADMIN_PASSWORD", "test")
+app = importlib.import_module("app").app
 
 @pytest.fixture
 def client():

@@ -41,9 +41,10 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 load_dotenv(override=True)
 
 APP_DIR = Path(__file__).parent.resolve()
-DB_PATH = APP_DIR / "data.db"
-LOG_DIR = APP_DIR / "log"
-LOG_DIR.mkdir(exist_ok=True)
+DATA_DIR = Path(os.getenv("DATA_DIR", APP_DIR))
+DB_PATH = Path(os.getenv("DB_PATH", DATA_DIR / "data.db"))
+LOG_DIR = Path(os.getenv("LOG_DIR", DATA_DIR / "log"))
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 LOG_FILE = LOG_DIR / "server_runtime.log"
 
 engine = create_engine(
@@ -107,9 +108,11 @@ logging.basicConfig(
 )
 logging.info("Logger ready → %s", LOG_FILE)
 
-BASE_URL        = os.getenv("BASE_URL")           # ex) https://vote-system.fly.dev
-SECRET_KEY      = os.getenv("SECRET_KEY", "change_me")
-ADMIN_PASSWORD  = os.getenv("ADMIN_PASSWORD", "chairperson113@")
+BASE_URL       = os.getenv("BASE_URL")  # ex) https://vote-system.fly.dev
+SECRET_KEY     = os.getenv("SECRET_KEY")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+if not SECRET_KEY or not ADMIN_PASSWORD:
+    raise RuntimeError("SECRET_KEY and ADMIN_PASSWORD must be set in environment variables")
 
 bp = Blueprint('main', __name__)
 
@@ -131,7 +134,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if not is_logged_in():
             flash('관리자 로그인이 필요합니다.', 'error')
-            return redirect(url_for('login'))
+            return redirect(url_for('main.login'))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -139,14 +142,14 @@ def login_required(f):
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if is_logged_in():
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('main.admin_dashboard'))
         
     if request.method == 'POST':
         password = request.form.get('password')
         if password == ADMIN_PASSWORD:
             session['logged_in'] = True
             flash('로그인 성공', 'success')
-            return redirect(url_for('admin_dashboard'))
+            return redirect(url_for('main.admin_dashboard'))
         else:
             flash('비밀번호가 올바르지 않습니다.', 'error')
     return render_template('login.html')
@@ -156,10 +159,11 @@ def login():
 def logout():
     session.pop('logged_in', None)
     flash('로그아웃 되었습니다.', 'success')
-    return redirect(url_for('login'))
+    return redirect(url_for('main.login'))
 
 # DB 초기화 - SQLAlchemy
-if not os.path.exists(DB_PATH):
+if not DB_PATH.exists():
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     Base.metadata.create_all(bind=engine)
 
 def db():
@@ -263,10 +267,10 @@ def generate_tokens():
         count = int(request.form['count'])
         if count <= 0:
             flash('생성할 토큰 수는 1 이상이어야 합니다.', 'error')
-            return redirect(url_for('admin_dashboard'))
+            return redirect(url_for('main.admin_dashboard'))
     except (KeyError, ValueError):
         flash('수량이 잘못되었습니다.', 'error')
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('main.admin_dashboard'))
 
     tokens = []
     conn = db()
@@ -312,7 +316,7 @@ def generate_tokens():
         conn.rollback()
         flash(f"토큰 생성 중 오류 발생: {e}", "error")
         logging.exception("token generation failed")
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('main.admin_dashboard'))
     finally:
         conn.close()
 
@@ -328,7 +332,7 @@ def create_vote():
     # Validate options
     if not options.strip():
         flash('Options cannot be empty.', 'error')
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('main.admin_dashboard'))
 
     conn = db()
     try:
@@ -343,7 +347,7 @@ def create_vote():
     finally:
         conn.close()
 
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard'))
 
 # 관리자: 현황 페이지
 @bp.route('/admin/status')
@@ -351,7 +355,7 @@ def vote_status():
     vote_id = request.args.get('vote_id')
     if not vote_id:
         flash('Vote ID is required', 'error')
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('main.admin_dashboard'))
     
     conn = db()
     try:
@@ -363,7 +367,7 @@ def vote_status():
         
         if not vote:
             flash('Vote not found', 'error')
-            return redirect(url_for('admin_dashboard'))
+            return redirect(url_for('main.admin_dashboard'))
         
         # Get vote results
         results = conn.execute('''
@@ -456,7 +460,7 @@ def create_agenda():
     conn.commit()
     conn.close()
     flash("안건이 등록되었습니다.")
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard'))
 
 
 # 사용자: 투표 접속
@@ -533,7 +537,7 @@ def submit_vote():
         ).fetchone()
         if not token_row:
             flash("유효하지 않거나 만료된 토큰입니다.", "error")
-            return redirect(url_for("vote", token=token))
+            return redirect(url_for('main.vote', token=token))
 
         # 기존 투표 내역 미리 조회
         voted_rows = conn.execute(
@@ -571,7 +575,7 @@ def submit_vote():
             conn.rollback()
             logging.error(f"투표 삽입 실패: {str(e)}")
             flash("투표 중 오류가 발생하여 일부 항목이 저장되지 않았습니다.", "error")
-            return redirect(url_for("vote", token=token))
+            return redirect(url_for('main.vote', token=token))
 
 
         # 메시지 출력
@@ -586,7 +590,7 @@ def submit_vote():
             flash("선택된 항목이 없습니다.", "warning")
 
 
-        return redirect(url_for("vote", token=token))
+        return redirect(url_for('main.vote', token=token))
 
     except Exception as e:
         conn.rollback()
@@ -610,7 +614,7 @@ def start_vote(vote_id):
         flash(f'Error starting vote: {str(e)}', 'error')
     finally:
         conn.close()
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard'))
 
 @bp.route('/admin/end_vote/<vote_id>')
 @login_required
@@ -629,7 +633,7 @@ def end_vote(vote_id):
         flash(f'Error ending vote: {str(e)}', 'error')
     finally:
         conn.close()
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard'))
 
 @bp.route('/admin/cleanup_vote/<vote_id>')
 @login_required
@@ -658,7 +662,7 @@ def cleanup_vote(vote_id):
     finally:
         conn.close()
 
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard'))
 
 @bp.route('/admin/delete_agenda/<agenda_id>')
 @login_required
@@ -701,7 +705,7 @@ def delete_agenda(agenda_id):
     finally:
         conn.close()
 
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard'))
 
 @bp.route('/admin/delete_tokens', methods=['POST'])
 @login_required
@@ -717,7 +721,7 @@ def delete_tokens():
         flash('의결권 삭제 중 오류가 발생했습니다.', 'error')
     finally:
         conn.close()
-    return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard'))
 
 @bp.route('/admin/export_logs', methods=['GET'])
 @login_required
@@ -740,7 +744,7 @@ def export_logs():
         )
     except Exception as e:
         flash(f'로그 내보내기 실패: {str(e)}', 'error')
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('main.admin_dashboard'))
 
 @bp.route('/shutdown', methods=['POST'])
 def shutdown():
