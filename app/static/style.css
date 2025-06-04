@@ -172,10 +172,10 @@ button:hover {
 
 .vote-item {
     background-color: #fff;
-    border: 1px solid #eaeaea;
+    border: 1px solid #e9ecef;
     border-left: 5px solid #3498db;
     padding: 15px;
-    border-radius: 6px;
+    border-radius: 8px;
     margin-bottom: 15px;
 }
 
@@ -242,13 +242,6 @@ button:hover {
 .vote-title {
     font-size: 1.2em;
     font-weight: bold;
-}
-
-.vote-item {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
 }
 
 .vote-header {
