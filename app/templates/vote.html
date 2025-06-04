@@ -15,7 +15,7 @@
     <!-- 회의 제목 -->
 
     {% if grouped_votes %}
-    <form action="{{ url_for('submit_vote') }}" method="post">
+    <form action="{{ url_for('main.submit_vote') }}" method="post">
         <input type="hidden" name="token" value="{{ token }}">
 
         {% for agenda in grouped_votes %}
