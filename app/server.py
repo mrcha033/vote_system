@@ -1,5 +1,15 @@
-from flask import Flask, request, render_template, redirect, send_file, url_for, flash, session, jsonify
-import sqlite3
+from flask import (
+    Flask,
+    Blueprint,
+    request,
+    render_template,
+    redirect,
+    send_file,
+    url_for,
+    flash,
+    session,
+    jsonify,
+)
 import uuid
 import qrcode
 import io
@@ -12,8 +22,20 @@ import csv
 import sys
 import logging
 from PIL import ImageDraw
-from urllib.parse import quote 
+from urllib.parse import quote
 from pathlib import Path
+import sqlite3
+from sqlalchemy import (
+    create_engine,
+    Column,
+    String,
+    Integer,
+    Boolean,
+    DateTime,
+    ForeignKey,
+    UniqueConstraint,
+)
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 # ── ① 실행 디렉터리 결정 ─────────────────────────
 load_dotenv(override=True)
@@ -23,6 +45,57 @@ DB_PATH = APP_DIR / "data.db"
 LOG_DIR = APP_DIR / "log"
 LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "server_runtime.log"
+
+engine = create_engine(
+    f"sqlite:///{DB_PATH}", connect_args={"check_same_thread": False}
+)
+SessionLocal = sessionmaker(bind=engine)
+Base = declarative_base()
+
+
+class Setting(Base):
+    __tablename__ = "settings"
+    key = Column(String, primary_key=True)
+    value = Column(String)
+
+
+class Token(Base):
+    __tablename__ = "tokens"
+    token = Column(String, primary_key=True)
+    serial_number = Column(Integer)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class VoteAgenda(Base):
+    __tablename__ = "vote_agendas"
+    agenda_id = Column(String, primary_key=True)
+    title = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class VoteItem(Base):
+    __tablename__ = "vote_items"
+    vote_id = Column(String, primary_key=True)
+    agenda_id = Column(String, ForeignKey("vote_agendas.agenda_id"), nullable=False)
+    title = Column(String, nullable=False)
+    options = Column(String, nullable=False)
+    is_active = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Vote(Base):
+    __tablename__ = "votes"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    vote_id = Column(String, ForeignKey("vote_items.vote_id"))
+    token = Column(String, ForeignKey("tokens.token"))
+    choice = Column(String)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    voter_name = Column(String)
+
+    __table_args__ = (UniqueConstraint("token", "vote_id"),)
+
+
+Base.metadata.create_all(bind=engine)
 
 # ── ② 로그 폴더/파일 준비 ────────────────────────
 
@@ -38,8 +111,7 @@ BASE_URL        = os.getenv("BASE_URL")           # ex) https://vote-system.fly.
 SECRET_KEY      = os.getenv("SECRET_KEY", "change_me")
 ADMIN_PASSWORD  = os.getenv("ADMIN_PASSWORD", "chairperson113@")
 
-app = Flask(__name__, template_folder="templates", static_folder="static")
-app.secret_key = SECRET_KEY
+bp = Blueprint('main', __name__)
 
 def public_base_url():
     if BASE_URL:
@@ -64,7 +136,7 @@ def login_required(f):
     return decorated_function
 
 # 로그인 라우트
-@app.route('/login', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
     if is_logged_in():
         return redirect(url_for('admin_dashboard'))
@@ -80,83 +152,47 @@ def login():
     return render_template('login.html')
 
 # 로그아웃 라우트
-@app.route('/logout')
+@bp.route('/logout')
 def logout():
     session.pop('logged_in', None)
     flash('로그아웃 되었습니다.', 'success')
     return redirect(url_for('login'))
 
-# DB 초기화
-def init_db():
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        cur.execute("""
-        CREATE TABLE IF NOT EXISTS settings (
-            key TEXT PRIMARY KEY,
-            value TEXT
-        )
-        """)
-        cur.execute("""
-        CREATE TABLE IF NOT EXISTS tokens (
-            token TEXT PRIMARY KEY,
-            serial_number INTEGER,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )""")
-        cur.execute("""
-        CREATE TABLE IF NOT EXISTS vote_agendas (
-            agenda_id TEXT PRIMARY KEY,
-            title TEXT NOT NULL, --이게 "안건명"
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )""")
-        cur.execute("""
-        CREATE TABLE IF NOT EXISTS vote_items (
-            vote_id TEXT PRIMARY KEY,
-            agenda_id TEXT NOT NULL,
-            title TEXT NOT NULL, -- 이게 "표결명"
-            options TEXT NOT NULL,
-            is_active BOOLEAN DEFAULT FALSE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (agenda_id) REFERENCES vote_agendas(agenda_id)
-        )""")
-        cur.execute("""
-        CREATE TABLE IF NOT EXISTS votes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            vote_id TEXT,
-            token TEXT,
-            choice TEXT,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            voter_name TEXT,
-            UNIQUE(token, vote_id),          -- ✔ 복합 제약만
-            FOREIGN KEY (vote_id) REFERENCES vote_items(vote_id),
-            FOREIGN KEY (token)   REFERENCES tokens(token)
-        )
-        """)
-        conn.commit()
-
+# DB 초기화 - SQLAlchemy
 if not os.path.exists(DB_PATH):
-    init_db()           # ← 이걸 호출
+    Base.metadata.create_all(bind=engine)
 
 def db():
     conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
+def db_session():
+    return SessionLocal()
+
 def set_meeting_title(title):
+    session = db_session()
     try:
-        conn = sqlite3.connect(DB_PATH)
-        cur = conn.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)")
-        cur.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", ('meeting_title', title))
-        conn.commit()
-        conn.close()
+        setting = session.get(Setting, 'meeting_title')
+        if not setting:
+            setting = Setting(key='meeting_title', value=title)
+            session.add(setting)
+        else:
+            setting.value = title
+        session.commit()
     except Exception as e:
+        session.rollback()
         print(f"회의명 저장 실패: {str(e)}")
+    finally:
+        session.close()
 
 def get_meeting_title():
-    conn = db()
-    row = conn.execute("SELECT value FROM settings WHERE key = 'meeting_title'").fetchone()
-    conn.close()
-    return row["value"] if row else "회의명 미설정"
+    session = db_session()
+    try:
+        setting = session.get(Setting, 'meeting_title')
+        return setting.value if setting else '회의명 미설정'
+    finally:
+        session.close()
 
 def generate_qr_zip(tokens):
     print("QR ZIP 생성 시작")
@@ -197,15 +233,15 @@ def generate_qr_zip(tokens):
     print("QR ZIP 생성 완료")
     return memory_file
 
-@app.route('/')
+@bp.route('/')
 def index():
     return '서버가 실행중입니다', 200
 
-@app.route('/favicon.ico')
+@bp.route('/favicon.ico')
 def favicon():
     return send_file('static/favicon.ico')
 
-@app.route('/admin/set_meeting_title', methods=['POST'])
+@bp.route('/admin/set_meeting_title', methods=['POST'])
 @login_required
 def set_meeting_title_route():
     data = request.get_json()
@@ -219,7 +255,7 @@ def set_meeting_title_route():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/admin/generate_tokens', methods=['POST'])
+@bp.route('/admin/generate_tokens', methods=['POST'])
 @login_required
 def generate_tokens():
     print("토큰 생성중")
@@ -281,7 +317,7 @@ def generate_tokens():
         conn.close()
 
 # 관리자: 투표 항목 생성
-@app.route('/admin/create_vote', methods=['POST'])
+@bp.route('/admin/create_vote', methods=['POST'])
 @login_required
 def create_vote():
     agenda_id = request.form['agenda_id']
@@ -310,7 +346,7 @@ def create_vote():
     return redirect(url_for('admin_dashboard'))
 
 # 관리자: 현황 페이지
-@app.route('/admin/status')
+@bp.route('/admin/status')
 def vote_status():
     vote_id = request.args.get('vote_id')
     if not vote_id:
@@ -357,7 +393,7 @@ def vote_status():
         conn.close()
 
 # 관리자: 대시보드
-@app.route('/admin')
+@bp.route('/admin')
 @login_required
 def admin_dashboard():
     conn = db()
@@ -410,7 +446,7 @@ def admin_dashboard():
         conn.close()
 
 
-@app.route('/admin/create_agenda', methods=['POST'])
+@bp.route('/admin/create_agenda', methods=['POST'])
 @login_required
 def create_agenda():
     title = request.form['agenda_title']
@@ -424,7 +460,7 @@ def create_agenda():
 
 
 # 사용자: 투표 접속
-@app.route('/vote')
+@bp.route('/vote')
 def vote():
     token = request.args.get("token")
     if not token:
@@ -484,7 +520,7 @@ def log_vote(vote_id, token, choice):
         ])
 
 # 사용자: 투표 제출
-@app.route('/submit_vote', methods=['POST'])
+@bp.route('/submit_vote', methods=['POST'])
 def submit_vote():
     token = request.form.get('token')
     if not token:
@@ -558,7 +594,7 @@ def submit_vote():
     finally:
         conn.close()
 
-@app.route('/admin/start_vote/<vote_id>')
+@bp.route('/admin/start_vote/<vote_id>')
 @login_required
 def start_vote(vote_id):
     conn = db()
@@ -576,7 +612,7 @@ def start_vote(vote_id):
         conn.close()
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/admin/end_vote/<vote_id>')
+@bp.route('/admin/end_vote/<vote_id>')
 @login_required
 def end_vote(vote_id):
     conn = db()
@@ -595,7 +631,7 @@ def end_vote(vote_id):
         conn.close()
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/admin/cleanup_vote/<vote_id>')
+@bp.route('/admin/cleanup_vote/<vote_id>')
 @login_required
 def cleanup_vote(vote_id):
     conn = db()
@@ -624,7 +660,7 @@ def cleanup_vote(vote_id):
 
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/admin/delete_agenda/<agenda_id>')
+@bp.route('/admin/delete_agenda/<agenda_id>')
 @login_required
 def delete_agenda(agenda_id):
     conn = db()
@@ -667,7 +703,7 @@ def delete_agenda(agenda_id):
 
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/admin/delete_tokens', methods=['POST'])
+@bp.route('/admin/delete_tokens', methods=['POST'])
 @login_required
 def delete_tokens():
     conn = db()
@@ -683,7 +719,7 @@ def delete_tokens():
         conn.close()
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/admin/export_logs', methods=['GET'])
+@bp.route('/admin/export_logs', methods=['GET'])
 @login_required
 def export_logs():
     """로그 파일을 ZIP으로 압축하여 다운로드합니다."""
@@ -706,7 +742,7 @@ def export_logs():
         flash(f'로그 내보내기 실패: {str(e)}', 'error')
         return redirect(url_for('admin_dashboard'))
 
-@app.route('/shutdown', methods=['POST'])
+@bp.route('/shutdown', methods=['POST'])
 def shutdown():
     if not request.environ.get('werkzeug.server.shutdown'):
         return 'Not running with the Werkzeug Server', 500
