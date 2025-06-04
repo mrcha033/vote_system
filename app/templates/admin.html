@@ -9,6 +9,14 @@
 <body>
 <div class="container">
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <!-- 회의명 -->
     <h1 class="meeting-title" id="meeting-title">{{ meeting_title }}</h1>
 
