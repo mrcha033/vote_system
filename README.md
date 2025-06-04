@@ -26,7 +26,7 @@ export ADMIN_PASSWORD=your_password
 
 ### 애플리케이션 실행
 ```bash
-python -m app
+gunicorn --preload app:app -k gevent -w 2 -b 0.0.0.0:8080
 ```
 
 ## Fly.io 배포

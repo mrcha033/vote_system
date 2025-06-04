@@ -15,7 +15,7 @@ export ADMIN_PASSWORD=your_password
 ```
 3. Run the application:
 ```bash
-python -m app
+gunicorn --preload app:app -k gevent -w 2 -b 0.0.0.0:8080
 ```
 
 For Fly.io deployments, store the secrets using `fly secrets set` and ensure a volume is mounted at `/data` for persistent storage.
