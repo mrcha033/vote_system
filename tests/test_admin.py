@@ -34,3 +34,15 @@ def test_login_success_and_generate_tokens(client):
     rv = client.post("/admin/generate_tokens", data={"count": "1"})
     assert rv.status_code == 200
     assert rv.mimetype == "application/zip"
+
+
+def test_shutdown_requires_login(client):
+    rv = client.post("/shutdown")
+    assert rv.status_code == 302
+    assert "/login" in rv.headers["Location"]
+
+
+def test_shutdown_after_login_returns_500(client):
+    login(client)
+    rv = client.post("/shutdown")
+    assert rv.status_code == 500

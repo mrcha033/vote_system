@@ -747,6 +747,7 @@ def export_logs():
         return redirect(url_for('main.admin_dashboard'))
 
 @bp.route('/shutdown', methods=['POST'])
+@login_required
 def shutdown():
     if not request.environ.get('werkzeug.server.shutdown'):
         return 'Not running with the Werkzeug Server', 500
